@@ -1,0 +1,4 @@
+ /*
+  * Ajax
+  * http://www.contao.org/erweiterungsliste/view/ajax.html
+  */
