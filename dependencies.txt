@@ -2,3 +2,8 @@
   * Ajax
   * http://www.contao.org/erweiterungsliste/view/ajax.html
   */
+
+ /*
+  * ajax-upload
+  * http://www.contao.org/erweiterungsliste/view/ajax-upload.html
+  */
