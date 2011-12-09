@@ -15,12 +15,12 @@
             // path to server-side upload script
             action: '<?php echo $this->action; ?>',
             // additional data to send, name-value pairs
-            params: {<?php echo $this->params; ?>},
+            params: {<?php echo $this->params; ?>, type:'valumsFileUploader'},
             // validation    
             // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
             allowedExtensions: [<?php echo $this->helper->getStrExt($this->extensions); ?>],        
             // set to true to output server response to console
-            debug: <?php echo $this->debug; ?>,
+            //debug: <?php echo $this->debug; ?>,
             sizeLimit: <?php echo ($this->maxfilelength) ? $this->maxfilelength : '""'; ?>,
             // Template wrapper for all items
             template: '<div class="qq-uploader">' + 

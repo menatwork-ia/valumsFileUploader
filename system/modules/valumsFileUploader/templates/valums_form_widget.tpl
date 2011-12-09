@@ -16,7 +16,7 @@
             // path to server-side upload script
             action: '<?php echo $this->action; ?>',
             // additional data to send, name-value pairs
-            params: {<?php echo $this->params; ?>},
+            params: {<?php echo $this->params; ?>, type:'valumsFileUploader'},
             // validation    
             // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
             allowedExtensions: [<?php echo $this->helper->getStrExt($this->extensions); ?>],        
