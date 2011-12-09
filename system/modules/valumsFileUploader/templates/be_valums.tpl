@@ -1,34 +1,35 @@
-<?php if (!$this->tableless): ?>
-    <tr class="<?php echo $this->rowClass; ?>">
-        <td class="col_0 col_first"><?php echo $this->generateLabel(); ?></td>
-        <td class="col_1 col_last"><?php echo $this->generateWithError(); ?></td>
-    </tr>
-<?php else: ?>
-    <?php echo $this->generateLabel(); ?> 
-    <?php echo $this->generateWithError(); ?><br>
-<?php endif; ?>
-    
+<div id="tl_soverview">
+    <h3><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_file']['0']; ?></h3>
+    <div class="backend" id="file-uploader">       
+        <noscript>          
+        <p><?php echo sprintf($GLOBALS['TL_LANG']['ERR']['val_be_noscript'], $this->noJsBeLink); ?></p>
+        </noscript>
+    </div>
+    <p class="tl_help tl_tip"><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_file']['1']; ?></p>
+</div>
+
 <script type="text/javascript">
-    /* <![CDATA[ */
     function createUploader(){  
         var uploader = new qq.FileUploader({
-            element: document.getElementById('file-uploader-<?php echo $this->strId; ?>'),
+            element: document.getElementById('file-uploader'),
             // path to server-side upload script
-            action: '<?php echo $this->action; ?>',
+            action: '<?php echo $this->action; ?>',            
             // additional data to send, name-value pairs
-            params: {<?php echo $this->params; ?>},
-            // validation    
+            params: {
+                action: '<?php echo $this->paramAction; ?>',
+                bypassToken: '1'
+            },
             // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
-            allowedExtensions: [<?php echo $this->helper->getStrExt($this->extensions); ?>],        
+            allowedExtensions: ['<?php echo implode("','", $this->uploadTypes); ?>'],        
             // set to true to output server response to console
             debug: <?php echo $this->debug; ?>,
-            sizeLimit: <?php echo ($this->maxfilelength) ? $this->maxfilelength : '""'; ?>,
+            sizeLimit: <?php echo ($this->maxFileSize) ? $this->maxFileSize : '""'; ?>,
             // Template wrapper for all items
             template: '<div class="qq-uploader">' + 
-                '<div class="qq-upload-drop-area"><span><?php echo $GLOBALS['TL_LANG']['UPL']['upload_drop_area']; ?></span></div>' +
-                '<div class="qq-upload-button"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_button']; ?></div>' +
+                '<div class="qq-upload-drop-area"><span><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_drop_area']; ?></span></div>' +
+                '<div class="qq-upload-button"><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_button']; ?></div>' +
                 '<ul class="qq-upload-list"></ul>' + 
-                '</div>',
+                '</div>',            
             // Template for one item in file list
             fileTemplate: '<li>' +
                 '<span class="qq-upload-file"></span>' +
@@ -48,5 +49,4 @@
         });        
     }
     window.onload = createUploader;
-    /* ]]> */
 </script>

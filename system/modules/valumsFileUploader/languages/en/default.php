@@ -33,10 +33,10 @@
 $GLOBALS['TL_LANG']['FFL']['valumsFileUploader'] = array('Multiple File Uploads (Valums File Uploader)');
 
 /**
- *  Valums
+ * Valums
  */
-$GLOBALS['TL_LANG']['UPL']['upload_drop_area'] = 'Drop files here to upload';
-$GLOBALS['TL_LANG']['UPL']['upload_button'] = 'Upload a file';
+$GLOBALS['TL_LANG']['UPL']['fe_upload_drop_area'] = 'Drop files here to upload';
+$GLOBALS['TL_LANG']['UPL']['fe_upload_button'] = 'Upload a file';
 $GLOBALS['TL_LANG']['UPL']['upload_cancel'] = 'Cancel';
 $GLOBALS['TL_LANG']['UPL']['upload_failed_text'] = 'Failed';
 
@@ -44,9 +44,18 @@ $GLOBALS['TL_LANG']['UPL']['upload_failed_text'] = 'Failed';
 $GLOBALS['TL_LANG']['UPL']['log_success'] = 'Uploaded successfully';
 
 // BE
+$GLOBALS['TL_LANG']['UPL']['be_upload_drop_area'] = 'Drop files here to upload';
+$GLOBALS['TL_LANG']['UPL']['be_upload_button'] = 'pload a file';
+$GLOBALS['TL_LANG']['UPL']['be_upload_file'] = array('File-Upload', 'Browse your local computer and select the files you want to upload to the server or drop files (only Firefox and Chrome) here.');
+
 $GLOBALS['TL_LANG']['UPL']['overwriteFile'] = 'Overwrite existing file';
 $GLOBALS['TL_LANG']['UPL']['useSuffix'] = 'Set suffix';
 $GLOBALS['TL_LANG']['UPL']['useTimeStamp'] = 'Set timestemp';
+
+// Uploader
+$GLOBALS['TL_LANG']['UPL']['default'] = 'Standard';
+$GLOBALS['TL_LANG']['UPL']['fancyUpload'] = 'FancyUpload';
+$GLOBALS['TL_LANG']['UPL']['valumsFileUploader'] = 'valumsFileUploader';
 
 /**
  * Error
@@ -56,6 +65,7 @@ $GLOBALS['TL_LANG']['ERR']['val_size_error'] = '"{file} is too large, maximum fi
 $GLOBALS['TL_LANG']['ERR']['val_min_size_error'] = '"{file} is too small, minimum file size is {minSizeLimit}."';
 $GLOBALS['TL_LANG']['ERR']['val_empty_error'] = '"{file} is empty, please select files again without it."';
 $GLOBALS['TL_LANG']['ERR']['val_on_leave'] = '"The files are being uploaded, if you leave now the upload will be cancelled."';
+$GLOBALS['TL_LANG']['ERR']['val_be_no_script'] = 'Please enable JavaScript to use file uploader.<br />Or choose in your <a href="%s" title="User configuration">user configuration</a> the default uploader.';
 
 // Logger
 $GLOBALS['TL_LANG']['ERR']['val_log_no_file'] = 'Could not create file';

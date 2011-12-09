@@ -33,10 +33,10 @@
 $GLOBALS['TL_LANG']['FFL']['valumsFileUploader'] = array('Mehrfacher Datei-Upload (valumsFileUploader)');
 
 /**
- *  Valums
+ * Valums
  */
-$GLOBALS['TL_LANG']['UPL']['upload_drop_area'] = 'Zum Hochladen die Datei in dieses Feld ziehen';
-$GLOBALS['TL_LANG']['UPL']['upload_button'] = 'Datei Hochladen';
+$GLOBALS['TL_LANG']['UPL']['fe_upload_drop_area'] = 'Zum Hochladen die Datei in dieses Feld ziehen';
+$GLOBALS['TL_LANG']['UPL']['fe_upload_button'] = 'Datei hochladen';
 $GLOBALS['TL_LANG']['UPL']['upload_cancel'] = 'Abbrechen';
 $GLOBALS['TL_LANG']['UPL']['upload_failed_text'] = 'Fehlgeschlagen';
 
@@ -44,9 +44,18 @@ $GLOBALS['TL_LANG']['UPL']['upload_failed_text'] = 'Fehlgeschlagen';
 $GLOBALS['TL_LANG']['UPL']['log_success'] = 'Erfolgreich hochgeladen';
 
 // BE
+$GLOBALS['TL_LANG']['UPL']['be_upload_drop_area'] = 'Zum Hochladen die Datei in dieses Feld ziehen';
+$GLOBALS['TL_LANG']['UPL']['be_upload_button'] = 'Durchsuchen oder Dateien via Drag & Drop hier ablegen';
+$GLOBALS['TL_LANG']['UPL']['be_upload_file'] = array('Datei-Upload', 'Durchsuchen Sie Ihren Computer und wählen Sie die Dateien, die Sie auf den Server übertragen möchten oder legen Sie die Dateien via Drag&Drop (nur Firefox und Chrome) auf der Schaltfläche ab.');
+
 $GLOBALS['TL_LANG']['UPL']['overwriteFile'] = 'Datei überschreiben';
 $GLOBALS['TL_LANG']['UPL']['useSuffix'] = 'Suffix setzen';
 $GLOBALS['TL_LANG']['UPL']['useTimeStamp'] = 'Zeitstempel setzen';
+
+// Uploader
+$GLOBALS['TL_LANG']['UPL']['default'] = 'Standard';
+$GLOBALS['TL_LANG']['UPL']['fancyUpload'] = 'FancyUpload';
+$GLOBALS['TL_LANG']['UPL']['valumsFileUploader'] = 'valumsFileUploader';
 
 /**
  * Error
@@ -56,6 +65,7 @@ $GLOBALS['TL_LANG']['ERR']['val_size_error'] = '"{file} ist zu groß, die maxima
 $GLOBALS['TL_LANG']['ERR']['val_min_size_error'] = '"{file} ist zu klein, die minimal erlaubte Dateigröße ist {minSizeLimit}."';
 $GLOBALS['TL_LANG']['ERR']['val_empty_error'] = '"{file} ist leer, bitte wählen Sie diese Datei nicht mehr aus."';
 $GLOBALS['TL_LANG']['ERR']['val_on_leave'] = '"Die Daten werden hochgeladen, wenn Sie die Seite jetzt verlassen wird der Prozess abgebrochen."';
+$GLOBALS['TL_LANG']['ERR']['val_be_noscript'] = 'Bitte aktivieren Sie Javascript um den Uploader zu nutzen<br />oder wählen Sie in Ihren <a href="%s" title="Benutzereinstellungen">Benutzereinstellungen</a> den Standard-Uploader aus.';
 
 // Logger
 $GLOBALS['TL_LANG']['ERR']['val_log_no_file'] = 'Konnte Datei nicht erstellen';

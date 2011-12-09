@@ -26,7 +26,6 @@
  * @license    GNU/GPL 2
  * @filesource
  */
- 
 /**
  * Palettes
  */
@@ -43,9 +42,9 @@ $GLOBALS['TL_DCA']['tl_form_field']['subpalettes']['valumsStoreFile'] = 'uploadF
  */
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['valumsStoreFile'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['storeFile'],
-    'exclude' => true,
+    'exclude' => TRUE,
     'inputType' => 'checkbox',
-    'eval' => array('submitOnChange' => true)
+    'eval' => array('submitOnChange' => TRUE)
 );
 
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['doNotOverwriteExt'] = array(

@@ -30,20 +30,36 @@
 /**
  * Form fields
  */
-$GLOBALS['TL_FFL']['valumsFileUploader'] = 'valumsFileUploader';
+$GLOBALS['TL_FFL']['valumsFileUploader'] = 'valumsFeFileUpload';
 
 /**
  * Hook
  */
-$GLOBALS['TL_HOOKS']['validateFormField'][] = array('valumsValidateFormField', 'validateFormField');
-$GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('valumsFileUploader', 'checkExtensions');
+$GLOBALS['TL_HOOKS']['validateFormField'][] = array('valumsFileUploader', 'validateFormField');
+$GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('valumsHelper', 'checkExtensions');
+$GLOBALS['TL_HOOKS']['executePreActions'][] = array('valumsBeFileUpload', 'generateAjax');
 
 /**
  * Config
  */
-$GLOBALS['valumsFileUploader'] = array(
-    'TMP_FOLDER' => 'system/tmp',
-    'AJAX_UPLOADER_JS' => 'plugins/ajax-upload/js/ajaxupload.js',
-    'AJAX_UPLOADER_CSS' => 'plugins/ajax-upload/css/ajaxupload.css'
+$GLOBALS['UPLOADER'] = array(
+    'valumsFileUploader' => array(
+        'UPLOADER_JS' => 'plugins/ajax-upload/js/ajaxupload.js',
+        'UPLOADER_CSS' => 'plugins/ajax-upload/css/ajaxupload.css|screen',        
+        'BE' => array(
+            'ACTION' => 'system/modules/valumsFileUploader/valumsAjaxRequest.php',
+            'CSS' => 'system/modules/valumsFileUploader/html/valumsFileUploader.css|screen',
+            'TEMPLATE' => 'be_valums',
+            'DATA' => array(
+                'debug' => "'false'"
+            )
+        ),
+        'FE' => array(
+            'ACTION' => 'ajax.php',
+            'TMP_FOLDER' => 'system/tmp',
+            'DEBUG' => "'false'"
+        )
+    )
 );
+
 ?>

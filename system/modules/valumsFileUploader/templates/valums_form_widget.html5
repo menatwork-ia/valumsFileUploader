@@ -13,19 +13,19 @@
         var uploader = new qq.FileUploader({
             element: document.getElementById('file-uploader-<?php echo $this->strId; ?>'),
             // path to server-side upload script
-            action: <?php echo $this->action; ?>,
+            action: '<?php echo $this->action; ?>',
             // additional data to send, name-value pairs
-            params: {},
+            params: {<?php echo $this->params; ?>},
             // validation    
             // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
-            allowedExtensions: [<?php echo $this->getExtensions(); ?>],        
+            allowedExtensions: [<?php echo $this->helper->getStrExt($this->extensions); ?>],        
             // set to true to output server response to console
             debug: <?php echo $this->debug; ?>,
             sizeLimit: <?php echo ($this->maxfilelength) ? $this->maxfilelength : '""'; ?>,
             // Template wrapper for all items
             template: '<div class="qq-uploader">' + 
-                '<div class="qq-upload-drop-area"><span><?php echo $GLOBALS['TL_LANG']['UPL']['upload_drop_area']; ?></span></div>' +
-                '<div class="qq-upload-button"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_button']; ?></div>' +
+                '<div class="qq-upload-drop-area"><span><?php echo $GLOBALS['TL_LANG']['UPL']['fe_upload_drop_area']; ?></span></div>' +
+                '<div class="qq-upload-button"><?php echo $GLOBALS['TL_LANG']['UPL']['fe_upload_button']; ?></div>' +
                 '<ul class="qq-upload-list"></ul>' + 
                 '</div>',
             // Template for one item in file list
@@ -46,7 +46,5 @@
             }
         });        
     }
-    // in your app create uploader as soon as the DOM is ready
-    // don't wait for the window to load  
     window.onload = createUploader;
 </script>

@@ -26,244 +26,186 @@
  * @license    GNU/GPL 2 
  * @filesource
  */
-class valumsFileUploader extends FormFileUpload implements uploadable
+class valumsFileUploader extends Backend
 {
 
     /**
-     * Template
-     * @var string
+     * First form field
+     * @var array 
      */
-    protected $strTemplate = 'valums_form_widget';
+    protected $firstFf = array();
 
     /**
-     * Initialize the object and set configurations
-     * @param array
-     * @throws Exception
+     * Last Form field
+     * @var array
      */
-    public function __construct($arrAttributes = FALSE)
+    protected $lastFf = array();
+
+    /**
+     * Form fiel error
+     * @var bool
+     */
+    protected $hasError = FALSE;
+
+    /**
+     * Form id
+     * @var int 
+     */
+    protected $intFormId = NULL;
+
+    /**
+     * Load database object
+     */
+    protected function __construct()
     {
-        parent::__construct($arrAttributes);
-
-        $this->action = "'ajax.php?action=ffl&id=" . $this->strId . "'";
-        $this->debug = ($GLOBALS['valumsFileUploader']['DEBUG'] ? 'true' : 'false');
-
-        $this->loadLanguageFile('default');
+        parent::__construct();
+        $this->import('valumsHelper', 'helper');
     }
 
     /**
-     * Add specific attributes and Store config for ajax upload.
-     * @param string
-     * @param mixed
-     */
-    public function __set($strKey, $varValue)
-    {
-        if ($strKey == 'id')
-        {
-            $_SESSION['AJAX-FFL'][$varValue] = array('type' => 'valumsFileUploader');
-        }
-        $_SESSION['AJAX-FFL'][$this->strId][$strKey] = $varValue;
-        parent::__set($strKey, $varValue);
-    }
-
-    /**
-     * Validate input and set value.
-     * If JavaScript is disabled call parent
-     */
-    public function validate()
-    {
-        if ($this->mandatory)
-        {
-            if ((!$_SESSION['VALUM_FILES'] || !count($_SESSION['VALUM_FILES'])) && (!isset($_FILES[$this->strName]) || empty($_FILES[$this->strName]['name'])))
-            {
-                $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
-            }
-
-            $this->mandatory = false;
-        }
-
-        // Call parent validate() to upload files without javascript.
-        return parent::validate();
-    }
-
-    /**
-     * Generate the widget and return it as string
-     * @return string
-     */
-    public function generate()
-    {
-        // Include ValumsFileUploader scripts
-        $GLOBALS['TL_JAVASCRIPT'][] = $GLOBALS['valumsFileUploader']['AJAX_UPLOADER_JS'];
-        $GLOBALS['TL_CSS'][] = $GLOBALS['valumsFileUploader']['AJAX_UPLOADER_CSS'];
-
-        $return = sprintf('
-            <div id="file-uploader-%s" class="%s">       
-                <noscript>          
-                    <input type="file" name="%s" id="ctrl_%s" class="upload%s"
-                </noscript>         
-            </div>', $this->strId, $this->strClass, $this->strName, $this->strId, (strlen($this->strClass) ? ' ' . $this->strClass : '')
-        );
-
-        $tmpReturn = '';
-
-        // Check for uploaded files for this formField
-        if ($_SESSION['VALUM_FILES'])
-        {
-            foreach ($_SESSION['VALUM_FILES'] as $arrFile)
-            {
-                if ($arrFile['formFieldId'] == $this->id)
-                {
-                    $tmpReturn .= '<li class=" qq-upload-success">
-                            <span class="qq-upload-file">' . $arrFile['name'] . '</span>
-                            <span class="qq-upload-size" style="display: inline;">' . number_format(($arrFile['size'] / 1024) / 1024, 1, '.', ',') . 'MB</span>
-                            <span class="qq-upload-failed-text">' . $arrFile['error'] . '</span>
-                        </li>';
-                }
-            }
-        }
-
-        // Add already uploaded files
-        if ($tmpReturn != '')
-        {
-            $return .= '<ul class="qq-upload-list">';
-            $return .= $tmpReturn;
-            $return .= '</ul>
-                </div>';
-        }
-
-        return $return . $this->addSubmit();
-    }
-
-    /**
-     * Get the file information, checked specific values and save the file temporary 
+     * Get the file information, checked specific values and save the file
      * @return array
      */
     public function generateAjax()
-    {
-        $objFile = new valumsFile();
+    {        
+        if ($_SESSION['VALUM_CONFIG']) $arrConf = $_SESSION['VALUM_CONFIG'];
+
+        $objFile = new valumsFile($arrConf['uploadFolder']);
         $strLogPos = __CLASS__ . " " . __FUNCTION__ . "()";
 
         // Check if file could not create
         if ($objFile->error)
         {
-            $this->setJsonEncode('ERR', 'val_no_file', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_no_file']));
+            $this->helper->setJsonEncode('ERR', 'val_no_file', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_no_file']));
         }
 
         // Check if folder is writeable
-        if (!is_writable($objFile->uploadFolder))
+        if (!is_writable(TL_ROOT . '/' . $objFile->uploadFolder))
         {
-            $this->setJsonEncode('ERR', 'val_not_writeable', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_not_writeable']));
+            $this->helper->setJsonEncode('ERR', 'val_not_writeable', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_not_writeable']));
         }
 
         // Check for empty file
         if ($objFile->size == 0)
         {
-            $this->setJsonEncode('ERR', 'val_file_size_zero', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_file_size_zero']));
+            $this->helper->setJsonEncode('ERR', 'val_file_size_zero', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_file_size_zero']));
         }
 
         // Check file size 
-        if ($this->maxfilelength > 0 && $objFile->size > $this->maxfilelength)
+        if ($maxFileLength > 0 && $objFile->size > $maxFileLength)
         {
-            $this->setJsonEncode('ERR', 'val_max_size', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_max_size'], array($this->getSizeLimit()))));
+            $this->helper->setJsonEncode('ERR', 'val_max_size', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_max_size'], array($this->getReadableSize($maxFileLength)))));
         }
 
         // Check file type
-        if (!in_array(strtolower($objFile->getPathInfo('extension')), $this->getExtensions('array')))
+        if (!in_array(strtolower($objFile->getPathInfo('extension')), $this->helper->getArrExt($arrConf['extension'])))
         {
-            $this->setJsonEncode('ERR', 'val_wrong_type', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_type'], array($objFile->getPathInfo('extension'), $this->getExtensions()))));
+            $this->helper->setJsonEncode('ERR', 'val_wrong_type', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_type'], array($objFile->getPathInfo('extension'), $arrConf['extension']))));
         }
 
         // Check if save was successful
-        if (!$objFile->save($this->doNotOverwriteExt))
+        if (!$objFile->save($arrConf['doNotOverwrite']))
         {
-            $this->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));
+            $this->helper->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));
         }
 
-        $objFile->writeFileToSession(array('formFieldId' => $this->Input->get('id'), 'formId' => $this->pid));
+        $arrSpecialSession = array();
 
-        $this->setJsonEncode('UPL', 'log_success', array($objFile->newName, $objFile->uploadFolder), $strLogPos, array("success" => TRUE, "filename" => $objFile->newName));
+        if (is_array($arrConf['specialSessionAttr']))
+        {
+            $arrSpecialSession = $arrConf['specialSessionAttr'];
+        }
+
+        $objFile->writeFileToSession($arrSpecialSession);
+
+        $this->helper->setJsonEncode('UPL', 'log_success', array($objFile->newName, $objFile->uploadFolder), $strLogPos, array("success" => TRUE, "filename" => $objFile->newName));
     }
 
     /**
-     *
-     * @param type $type
-     * @param type $strMessage
-     * @param type $arrLog
-     * @param type $strLogPos
-     * @param type $arrJson 
+     * Get all specific information to the given form id and save them
+     * @param type $strFormId 
      */
-    private function setJsonEncode($type, $strMessage, $arrLog, $strLogPos, $arrJson)
+    public function createForm($strFormId)
     {
-        $this->log(vsprintf($GLOBALS['TL_LANG'][$type][$message], $arrLog), $strLogPos, ($type == 'ERR') ? TL_ERROR : TL_FILES);
-        echo json_encode($arrJson);
-        exit;
+        $this->intFormId = preg_replace("/[^0-9]/", '', $strFormId);
+        $objDb = $this->Database->prepare("SELECT a.id FROM tl_form_field a, tl_form b WHERE b.id = %s AND a.pid = b.id AND a.invisible = '' ORDER BY a.sorting")->execute($this->intFormId);
+        $form = $objDb->fetchAllAssoc();
+        $this->firstFf = $form[0];
+        $this->lastButOneFf = $form[count($form) - 2];
+        $this->lastFf = $form[count($form) - 1];
     }
 
     /**
-     * Get the configured file extensions and return them specified by the param as array or as string
-     * @param string $type 'array' : 'string'
-     * @return mixed 
+     * Check if some given form field has an error. 
+     * If not move the temporary files in SESSON to the right upload folder
+     * @param object $objWidget Form fiels object
+     * @param string $strFormId Form id
+     * @param array $arrData Form data
+     * @return object
      */
-    public function getExtensions($type = 'string')
+    public function validateFormField($objWidget, $strFormId, $arrData)
     {
-        $uploadTypes = trimsplit(',', $this->extensions);
+        if ($this->intFormId == NULL)
+        {
+            $this->createForm($strFormId);
+        }
 
-        if (count($uploadTypes))
+        if ($objWidget->hasErrors() == TRUE)
         {
-            if ($type == 'array')
-            {
-                return $uploadTypes;
-            }
-            return "'" . implode("', '", $uploadTypes) . "'";
+            $this->hasError = TRUE;
         }
-        else
+
+        if ($this->lastFf['id'] == $objWidget->id && !$this->hasError)
         {
-            if ($type == 'array')
-            {
-                return array();
-            }
-            return '';
+            // Move the temporary files to the right location
+            $this->moveUploadedFiles($this->intFormId);
         }
+
+        return $objWidget;
     }
 
     /**
-     * Check the required extensions and files
-     * 
-     * @param string $strContent
-     * @param string $strTemplate
-     * @return string
+     * Moves temporary files in SESSION to final location and renew SESSION data.
      */
-    public function checkExtensions($strContent, $strTemplate)
+    public function moveUploadedFiles($intFormId)
     {
-        if ($strTemplate == 'be_main')
+        $this->import('Database');
+        if ($_SESSION['VALUM_FILES'])
         {
-            if (!is_array($_SESSION["TL_INFO"]))
+            foreach ($_SESSION['VALUM_FILES'] AS $key => $file)
             {
-                $_SESSION["TL_INFO"] = array();
-            }
-
-            // required files
-            $arrRequiredFiles = array(
-                'ajax-upload' => 'plugins/ajax-upload/js/ajaxupload.js'
-            );
-
-            // check for required files
-            foreach ($arrRequiredFiles as $key => $val)
-            {
-                if (!file_exists(TL_ROOT . '/' . $val))
+                if ($file['formId'] == $intFormId)
                 {
-                    $_SESSION["TL_INFO"] = array_merge($_SESSION["TL_INFO"], array($val => 'Please install the required file/extension <strong>' . $key . '</strong>'));
-                }
-                else
-                {
-                    if (is_array($_SESSION["TL_INFO"]) && key_exists($val, $_SESSION["TL_INFO"]))
+                    $objDb = $this->Database->prepare("SELECT * FROM tl_form_field WHERE id=?")->limit(1)->execute($file['formFieldId']);
+                    if ($objDb->valumsStoreFile)
                     {
-                        unset($_SESSION["TL_INFO"][$val]);
+                        $uploadFolder = $objDb->uploadFolder;
+
+                        // Overwrite upload folder with user home directory
+                        if ($objDb->useHomeDir && FE_USER_LOGGED_IN)
+                        {
+                            $this->import('FrontendUser', 'User');
+                            if ($this->User->assignDir && $this->User->homeDir && is_dir(TL_ROOT . '/' . $this->User->homeDir))
+                            {
+                                $uploadFolder = $this->User->homeDir;
+                            }
+                        }
+
+                        $objFile = new valumsFile($uploadFolder, 'SESSION', $file);
+                        if (!$objFile->error)
+                        {
+                            // Store the file if the upload folder exists
+                            if (strlen($objFile->uploadFolder) && is_dir(TL_ROOT . '/' . $objFile->uploadFolder))
+                            {
+                                $objFile->move($objDb->doNotOverwriteExt, 'FILES');
+                                $this->log('File "' . $objFile->name . '" uploaded successfully', __CLASS__ . ' ' . __FUNCTION__ . '()', TL_FILES);
+                            }
+                        }
                     }
                 }
             }
         }
-
-        return $strContent;
+        unset($_SESSION['VALUM_FILES']);
     }
 
 }

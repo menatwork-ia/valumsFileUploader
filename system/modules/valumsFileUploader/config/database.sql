@@ -14,7 +14,7 @@
 CREATE TABLE `tl_form_field` (
     `maxfilelength` int(10) unsigned NOT NULL default '0',
     `doNotOverwriteExt` varchar(32) NOT NULL default '',
-    `valumsStoreFile` char(1) NOT NULL default ''
+    `valumsStoreFile` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
@@ -22,5 +22,7 @@ CREATE TABLE `tl_form_field` (
 -- 
 
 CREATE TABLE `tl_user` (
-  `valumsFileUploader` char(1) NOT NULL default ''
+    `uploader` varchar(128) NOT NULL default '',
+    `doNotOverwrite` char(1) NOT NULL default '',
+    `doNotOverwriteType` varchar(128) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

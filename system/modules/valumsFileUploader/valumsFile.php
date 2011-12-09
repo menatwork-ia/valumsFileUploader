@@ -42,7 +42,7 @@ class valumsFile
      * @param array
      * @throws Exception
      */
-    public function __construct($type = FALSE, $arrValues = FALSE)
+    public function __construct($uploadFolder, $type = FALSE, $arrValues = FALSE)
     {
         $this->objInput = Input::getInstance();
         $this->objFiles = Files::getInstance();
@@ -56,7 +56,7 @@ class valumsFile
             $this->insertAjaxValues();
         }
 
-        $this->uploadFolder = $GLOBALS['valumsFileUploader']['TMP_FOLDER'];
+        $this->uploadFolder = $uploadFolder;
         $this->timestamp = time();
         $this->newName = $this->getPathInfo('filename') . '.' . $this->getPathInfo('extension');
     }
