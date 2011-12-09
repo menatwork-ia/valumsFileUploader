@@ -33,7 +33,7 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
      * Template
      * @var string
      */
-    protected $strTemplate = 'valums_form_widget';
+    protected $strTemplate = 'form_valums';
 
     /**
      * Initialize the object and set configurations
@@ -151,7 +151,7 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
      * Call the real generateAjax in valumsFileUploader
      */
     public function generateAjax()
-    {       
+    {     
         $this->main->generateAjax();
     }    
 
