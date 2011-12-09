@@ -1,5 +1,4 @@
-<?php
-if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -27,6 +26,7 @@ if (!defined('TL_ROOT')) die('You can not access this file directly!');
  * @license    GNU/GPL 2 
  * @filesource
  */
+
 require 'DC_Folder.php';
 
 class DC_Upload extends DC_Folder
