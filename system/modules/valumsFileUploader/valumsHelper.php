@@ -83,7 +83,7 @@ class valumsHelper extends Backend
 
             // required files
             $arrRequiredFiles = array(
-                'ajax-upload' => $GLOBALS['UPLOADER']['valumsFileUpload']['UPLOADER_JS']
+                'ajax-upload' => $GLOBALS['UPLOADER']['valumsFileUploader']['UPLOADER_JS']
             );
 
             // check for required files
