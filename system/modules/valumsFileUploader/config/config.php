@@ -55,7 +55,7 @@ $GLOBALS['UPLOADER'] = array(
             'CSS' => 'system/modules/valumsFileUploader/html/valumsFileUploader.css|screen',
             'TEMPLATE' => 'be_valums',
             'DATA' => array(
-                'debug' => "'false'"
+                'debug' => FALSE
             )
         ),
         'FE' => array(

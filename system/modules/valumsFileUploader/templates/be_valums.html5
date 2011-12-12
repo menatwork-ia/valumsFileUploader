@@ -22,7 +22,7 @@
             // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
             allowedExtensions: ['<?php echo implode("','", $this->uploadTypes); ?>'],        
             // set to true to output server response to console
-            debug: <?php echo $this->debug; ?>,
+            debug: <?php echo ($this->debug) ? "'true'" : "'false'"; ?>,
             sizeLimit: <?php echo ($this->maxFileSize) ? $this->maxFileSize : '""'; ?>,
             // Template wrapper for all items
             template: '<div class="qq-uploader">' + 
