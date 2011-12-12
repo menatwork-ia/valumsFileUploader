@@ -26,7 +26,6 @@
  * @license    GNU/GPL 2 
  * @filesource
  */
-
 /**
  * Form fields
  */
@@ -37,7 +36,12 @@ $GLOBALS['TL_FFL']['valumsFileUploader'] = 'valumsFeFileUpload';
  */
 $GLOBALS['TL_HOOKS']['validateFormField'][] = array('valumsFileUploader', 'validateFormField');
 $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('valumsHelper', 'checkExtensions');
-$GLOBALS['TL_HOOKS']['executePreActions'][] = array('valumsBeFileUpload', 'generateAjax');
+
+if (TL_MODE == 'BE')
+{
+    $GLOBALS['TL_HOOKS']['executePreActions'][] = array('valumsBeFileUpload', 'generateAjax');
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('valumsHelper', 'setUser');
+}
 
 /**
  * Config
@@ -61,5 +65,4 @@ $GLOBALS['UPLOADER'] = array(
         )
     )
 );
-
 ?>

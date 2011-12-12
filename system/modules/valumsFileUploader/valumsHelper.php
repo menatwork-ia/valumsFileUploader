@@ -105,6 +105,19 @@ class valumsHelper extends Backend
 
         return $strContent;
     }
+    
+    /**
+     * Set the GET-Param for the user id so the subpalette can work
+     * @param string
+     */
+    public function setUser($strTable)
+    {
+            if ($strTable == 'tl_user' && $this->Input->get('do') == 'login')
+            {
+                    $this->import('BackendUser', 'User');
+                    $this->Input->setGet('id', $this->User->id);
+            }
+    }      
 
 }
 

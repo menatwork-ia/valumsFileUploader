@@ -67,13 +67,7 @@ class valumsFileUploader extends Backend
      * @return array
      */
     public function generateAjax()
-    {        
-        if($this->Input->get("action") != "valumsFileUploader" 
-                && ($this->Input->get("action") == "ffl" && $this->Input->get("type") != "valumsFileUploader"))
-        {     
-            return;
-        }
-        
+    {                
         if ($_SESSION['VALUM_CONFIG']) $arrConf = $_SESSION['VALUM_CONFIG'];
 
         $objFile = new valumsFile($arrConf['uploadFolder']);

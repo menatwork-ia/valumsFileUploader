@@ -41,10 +41,13 @@ class valumsBeFileUpload extends Backend
     /**
      * Call the real generateAjax in valumsFileUploader
      */
-    public function generateAjax()
-    {       
-        $this->main->generateAjax();
-    } 
+    public function generateAjax($strAction)
+    {
+        if ($strAction == 'valumsFileUploader')
+        {
+            $this->main->generateAjax();
+        }
+    }
 
 }
 
