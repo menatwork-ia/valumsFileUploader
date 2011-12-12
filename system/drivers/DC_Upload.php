@@ -43,12 +43,24 @@ class DC_Upload extends DC_Folder
         $this->import('BackendUser', 'User');
         $uploader = $this->User->uploader;        
         
-        $arrUploader = $GLOBALS['UPLOADER'][$uploader];
+        if(array_key_exists($uploader, $GLOBALS['UPLOADER']))
+        {
+            $arrUploader = $GLOBALS['UPLOADER'][$uploader];
+        }
+        else
+        {       
+            if (!is_array($_SESSION['TL_ERROR']))
+            {
+                $_SESSION['TL_ERROR'] = array();
+            }
+
+            $_SESSION['TL_ERROR'][] = sprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_config'], $uploader, $this->Environment->scriptName . '?do=login');
+        }
 
         // Add uploader css and js
         $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_CSS'];
         $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_JS'];
-        if($arrUploader['BE']['CSS'])
+        if ($arrUploader['BE']['CSS'])
         {
             $GLOBALS['TL_CSS'][] = $arrUploader['BE']['CSS'];
         }
@@ -62,11 +74,16 @@ class DC_Upload extends DC_Folder
         $objTemplate->paramAction = $uploader; 
         $objTemplate->maxFileSize = $GLOBALS['TL_CONFIG']['maxFileSize'];
         $objTemplate->noJsBeLink = $this->Environment->scriptName . '?do=login';
+        $objTemplate->debug = FALSE;
         
-        foreach($arrUploader['BE']['DATA'] AS $k => $v)
+        if(is_array($arrUploader['BE']['DATA']))
         {
-            $objTemplate->$k = $v;
-        }       
+            foreach($arrUploader['BE']['DATA'] AS $k => $v)
+            {
+                $objTemplate->$k = $v;
+            }               
+        }
+            
         
         // Set config for valumsFileUploader
         $_SESSION['VALUM_CONFIG'] = array(
