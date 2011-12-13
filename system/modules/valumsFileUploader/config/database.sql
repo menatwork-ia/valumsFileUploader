@@ -23,6 +23,6 @@ CREATE TABLE `tl_form_field` (
 
 CREATE TABLE `tl_user` (
     `uploader` varchar(128) NOT NULL default 'default',
-    `doNotOverwrite` char(1) NOT NULL default '',
-    `doNotOverwriteType` varchar(128) NOT NULL default 'useSuffix',
+    `do_not_overwrite` char(1) NOT NULL default '',
+    `do_not_overwrite_type` varchar(128) NOT NULL default 'useSuffix',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

@@ -34,21 +34,21 @@ foreach ($GLOBALS['TL_DCA']['tl_user']['palettes'] as $key => $row)
 {
     if ($key == '__selector__') continue;
     if (!stristr($row, 'fancyUpload,')) continue;
-    $GLOBALS['TL_DCA']['tl_user']['palettes'][$key] = str_replace('oldBeTheme;', 'oldBeTheme;{upload_legend},uploader,doNotOverwrite;', str_replace('fancyUpload,', '', $GLOBALS['TL_DCA']['tl_user']['palettes'][$key]));;
+    $GLOBALS['TL_DCA']['tl_user']['palettes'][$key] = str_replace('oldBeTheme;', 'oldBeTheme;{upload_legend},uploader,do_not_overwrite;', str_replace('fancyUpload,', '', $GLOBALS['TL_DCA']['tl_user']['palettes'][$key]));;
 }
 
-$GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'doNotOverwrite';
+$GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'do_not_overwrite';
 
 /**
  * Subpalettes
  */
-$GLOBALS['TL_DCA']['tl_user']['subpalettes']['doNotOverwrite'] = 'doNotOverwriteType';
+$GLOBALS['TL_DCA']['tl_user']['subpalettes']['do_not_overwrite'] = 'do_not_overwrite_type';
 
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_user']['fields']['doNotOverwrite'] = array(
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['doNotOverwrite'],
+$GLOBALS['TL_DCA']['tl_user']['fields']['do_not_overwrite'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_user']['do_not_overwrite'],
     'exclude' => TRUE,
     'inputType' => 'checkbox',
     'eval' => array('submitOnChange' => TRUE, 'tl_class' => 'w50 m12'),
@@ -63,8 +63,8 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['uploader'] = array(
     'eval' => array('tl_class' => 'w50', 'mandatory' => TRUE, 'includeBlankOption' => FALSE),
 );
 
-$GLOBALS['TL_DCA']['tl_user']['fields']['doNotOverwriteType'] = array(
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['doNotOverwriteType'],
+$GLOBALS['TL_DCA']['tl_user']['fields']['do_not_overwrite_type'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_user']['do_not_overwrite_type'],
     'exclude' => TRUE,
     'inputType' => 'select',
     'options' => array('useSuffix', 'useTimeStamp'),

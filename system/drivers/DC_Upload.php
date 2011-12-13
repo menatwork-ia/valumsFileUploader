@@ -101,9 +101,9 @@ class DC_Upload extends DC_Folder
             'doNotOverwrite' => ''
         );
         
-        if($this->User->doNotOverwrite)
+        if($this->User->do_not_overwrite)
         {
-            $_SESSION['VALUM_CONFIG']['doNotOverwrite'] = $this->User->doNotOverwriteType;
+            $_SESSION['VALUM_CONFIG']['doNotOverwrite'] = $this->User->do_not_overwrite_type;
         }
         
         $strReturn = '
