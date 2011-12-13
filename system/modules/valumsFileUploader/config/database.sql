@@ -12,9 +12,9 @@
 -- 
 
 CREATE TABLE `tl_form_field` (
-    `maxfilelength` int(10) unsigned NOT NULL default '0',
-    `doNotOverwriteExt` varchar(32) NOT NULL default '',
-    `valumsStoreFile` char(1) NOT NULL default '',
+    `val_max_file_length` int(10) unsigned NOT NULL default '0',
+    `val_do_not_overwrite` varchar(32) NOT NULL default '',
+    `val_store_file` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 

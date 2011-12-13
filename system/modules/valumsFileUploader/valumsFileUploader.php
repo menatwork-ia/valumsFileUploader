@@ -92,9 +92,9 @@ class valumsFileUploader extends Backend
         }
 
         // Check file size 
-        if ($maxFileLength > 0 && $objFile->size > $maxFileLength)
+        if ($arrConf['maxFileLength'] > 0 && $objFile->size > $arrConf['maxFileLength'])
         {
-            $this->helper->setJsonEncode('ERR', 'val_max_size', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_max_size'], array($this->getReadableSize($maxFileLength)))));
+            $this->helper->setJsonEncode('ERR', 'val_max_size', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_max_size'], array($this->getReadableSize($arrConf['maxFileLength'])))));
         }
 
         // Check file type
@@ -177,7 +177,7 @@ class valumsFileUploader extends Backend
                 if ($file['formId'] == $intFormId)
                 {
                     $objDb = $this->Database->prepare("SELECT * FROM tl_form_field WHERE id=?")->limit(1)->execute($file['formFieldId']);
-                    if ($objDb->valumsStoreFile)
+                    if ($objDb->val_store_file)
                     {
                         $uploadFolder = $objDb->uploadFolder;
 
@@ -197,7 +197,7 @@ class valumsFileUploader extends Backend
                             // Store the file if the upload folder exists
                             if (strlen($objFile->uploadFolder) && is_dir(TL_ROOT . '/' . $objFile->uploadFolder))
                             {
-                                $objFile->move($objDb->doNotOverwriteExt, 'FILES');
+                                $objFile->move($objDb->val_do_not_overwrite, 'FILES');
                                 $this->log('File "' . $objFile->name . '" uploaded successfully', __CLASS__ . ' ' . __FUNCTION__ . '()', TL_FILES);
                             }
                         }

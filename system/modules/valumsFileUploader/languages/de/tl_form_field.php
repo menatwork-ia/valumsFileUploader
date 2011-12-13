@@ -30,6 +30,6 @@
 /**
  * Text
  */
-$GLOBALS['TL_LANG']['tl_form_field']['doNotOverwriteExt'] = array('Was tun wenn die Datei existiert','');
+$GLOBALS['TL_LANG']['tl_form_field']['val_do_not_overwrite'] = array('Was tun wenn die Datei existiert','');
 
 ?>

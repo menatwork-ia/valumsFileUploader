@@ -29,26 +29,26 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'valumsStoreFile';
-$GLOBALS['TL_DCA']['tl_form_field']['palettes']['valumsFileUploader'] = '{type_legend},type,name,label;{fconfig_legend},mandatory,extensions,maxfilelength;{store_legend:hide},valumsStoreFile;{expert_legend:hide},class,accesskey;{submit_legend},addSubmit';
+$GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'val_store_file';
+$GLOBALS['TL_DCA']['tl_form_field']['palettes']['valumsFileUploader'] = '{type_legend},type,name,label;{fconfig_legend},mandatory,extensions,val_max_file_length;{store_legend:hide},val_store_file;{expert_legend:hide},class,accesskey;{submit_legend},addSubmit';
 
 /**
  * Subpalettes
  */
-$GLOBALS['TL_DCA']['tl_form_field']['subpalettes']['valumsStoreFile'] = 'uploadFolder,useHomeDir,doNotOverwriteExt';
+$GLOBALS['TL_DCA']['tl_form_field']['subpalettes']['val_store_file'] = 'uploadFolder,useHomeDir,val_do_not_overwrite';
 
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_form_field']['fields']['valumsStoreFile'] = array(
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_store_file'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['storeFile'],
     'exclude' => TRUE,
     'inputType' => 'checkbox',
     'eval' => array('submitOnChange' => TRUE)
 );
 
-$GLOBALS['TL_DCA']['tl_form_field']['fields']['doNotOverwriteExt'] = array(
-    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['doNotOverwriteExt'],
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_do_not_overwrite'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['val_do_not_overwrite'],
     'exclude' => TRUE,
     'inputType' => 'select',
     'options' => array('overwriteFile', 'useSuffix', 'useTimeStamp'),
@@ -56,7 +56,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['doNotOverwriteExt'] = array(
     'eval' => array('tl_class' => 'w50', 'mandatory' => TRUE, 'includeBlankOption' => FALSE)
 );
 
-$GLOBALS['TL_DCA']['tl_form_field']['fields']['maxfilelength'] = array(
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_max_file_length'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['maxlength'],
     'exclude' => TRUE,
     'inputType' => 'text',

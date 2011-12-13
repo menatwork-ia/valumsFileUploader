@@ -54,9 +54,9 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
         
         $_SESSION['VALUM_CONFIG'] = array(
             'uploadFolder' => $GLOBALS['UPLOADER']['valumsFileUploader']['FE']['TMP_FOLDER'],
-            'maxFileLength' => $this->maxfilelength,
+            'maxFileLength' => $this->val_max_file_length,
             'extension' => $this->extensions,
-            'doNotOverwrite' => $this->doNotOverwriteExt,
+            'doNotOverwrite' => $this->val_do_not_overwrite,
             'specialSessionAttr' => array(
                 'formFieldId' => $this->Input->get('id'), 
                 'formId' => $this->pid
