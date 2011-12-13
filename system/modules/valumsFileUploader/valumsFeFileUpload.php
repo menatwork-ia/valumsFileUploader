@@ -46,7 +46,7 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
 
         $this->action = $GLOBALS['UPLOADER']['valumsFileUploader']['FE']['ACTION'];
         $this->params = "action: 'ffl', id: '" . $this->strId . "'";
-        $this->debug = $GLOBALS['UPLOADER']['valumsFileUploader']['FE']['DEBUG'];
+        $this->debug = $this->val_uploader_debug;
         
         $this->loadLanguageFile('default');
         $this->import('valumsHelper', 'helper');

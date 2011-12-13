@@ -15,6 +15,7 @@ CREATE TABLE `tl_form_field` (
     `val_max_file_length` int(10) unsigned NOT NULL default '0',
     `val_do_not_overwrite` varchar(32) NOT NULL default '',
     `val_store_file` char(1) NOT NULL default '',
+    `val_uploader_debug` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 

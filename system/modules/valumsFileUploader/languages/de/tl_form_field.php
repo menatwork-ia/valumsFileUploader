@@ -31,5 +31,6 @@
  * Text
  */
 $GLOBALS['TL_LANG']['tl_form_field']['val_do_not_overwrite'] = array('Was tun wenn die Datei existiert','');
+$GLOBALS['TL_LANG']['tl_form_field']['val_uploader_debug'] = array('Debug aktivieren', 'Wählen Sie diese Option wenn Sie den Debugmodus des Uploaders aktivieren wollen');
 
 ?>

@@ -20,7 +20,7 @@
             // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
             allowedExtensions: [<?php echo $this->helper->getStrExt($this->extensions); ?>],        
             // set to true to output server response to console
-            //debug: <?php echo $this->debug; ?>,
+            debug: <?php echo ($this->debug) ? "'true'" : "'false'"; ?>,
             sizeLimit: <?php echo ($this->val_max_file_length) ? $this->val_max_file_length : '""'; ?>,
             // Template wrapper for all items
             template: '<div class="qq-uploader">' + 

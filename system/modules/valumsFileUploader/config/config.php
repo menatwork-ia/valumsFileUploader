@@ -58,8 +58,7 @@ $GLOBALS['UPLOADER'] = array(
         ),
         'FE' => array(
             'ACTION' => 'ajax.php',
-            'TMP_FOLDER' => 'system/tmp',
-            'DEBUG' => "'false'"
+            'TMP_FOLDER' => 'system/tmp'
         )
     )
 );
