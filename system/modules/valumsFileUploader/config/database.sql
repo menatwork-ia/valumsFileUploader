@@ -25,4 +25,5 @@ CREATE TABLE `tl_user` (
     `uploader` varchar(128) NOT NULL default 'default',
     `do_not_overwrite` char(1) NOT NULL default '',
     `do_not_overwrite_type` varchar(128) NOT NULL default 'useSuffix',
+    `uploader_debug` char(1) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

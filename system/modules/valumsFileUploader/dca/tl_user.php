@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'do_not_overwrite'
 /**
  * Subpalettes
  */
-$GLOBALS['TL_DCA']['tl_user']['subpalettes']['do_not_overwrite'] = 'do_not_overwrite_type';
+$GLOBALS['TL_DCA']['tl_user']['subpalettes']['do_not_overwrite'] = 'do_not_overwrite_type, uploader_debug';
 
 /**
  * Fields
@@ -69,7 +69,14 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['do_not_overwrite_type'] = array(
     'inputType' => 'select',
     'options' => array('useSuffix', 'useTimeStamp'),
     'reference' => &$GLOBALS['TL_LANG']['UPL'],
-    'eval' => array('tl_class' => 'clr', 'mandatory' => TRUE, 'includeBlankOption' => FALSE),
+    'eval' => array('tl_class' => 'clr w50', 'mandatory' => TRUE, 'includeBlankOption' => FALSE),
+);
+
+$GLOBALS['TL_DCA']['tl_user']['fields']['uploader_debug'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_user']['uploader_debug'],
+    'exclude' => TRUE,
+    'inputType' => 'checkbox',
+    'eval' => array('tl_class' => 'w50 m12'),
 );
 
 ?>

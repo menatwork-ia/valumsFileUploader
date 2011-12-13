@@ -38,5 +38,6 @@ $GLOBALS['TL_LANG']['tl_user']['upload_legend'] = 'Uploader';
 $GLOBALS['TL_LANG']['tl_user']['do_not_overwrite'] = array('Dateien nicht überschreiben', 'Wählen Sie diese Option wenn Sie die Dateien nicht überschreiben wollen.');
 $GLOBALS['TL_LANG']['tl_user']['uploader'] = array('Script auswählen', 'Bitte wählen Sie hier ein Uploadscript aus.');
 $GLOBALS['TL_LANG']['tl_user']['do_not_overwrite_type'] = array('Was ist zu tun wenn die Datei bereits existiert', 'Hier können Sie auswählen was passiert wenn die Datei bereits existiert.');
+$GLOBALS['TL_LANG']['tl_user']['uploader_debug'] = array('Debug aktivieren', 'Wählen Sie diese Option wenn Sie den Debugmodus des Uploaders aktivieren wollen');
 
 ?>

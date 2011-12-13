@@ -54,9 +54,7 @@ $GLOBALS['UPLOADER'] = array(
             'ACTION' => 'system/modules/valumsFileUploader/valumsAjaxRequest.php',
             'CSS' => 'system/modules/valumsFileUploader/html/valumsFileUploader.css|screen',
             'TEMPLATE' => 'be_valums',
-            'DATA' => array(
-                'debug' => FALSE
-            )
+            'DATA' => array()
         ),
         'FE' => array(
             'ACTION' => 'ajax.php',

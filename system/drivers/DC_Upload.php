@@ -82,7 +82,7 @@ class DC_Upload extends DC_Folder
         $objTemplate->paramAction = $uploader; 
         $objTemplate->maxFileSize = $GLOBALS['TL_CONFIG']['maxFileSize'];
         $objTemplate->noJsBeLink = $this->Environment->scriptName . '?do=login';
-        $objTemplate->debug = FALSE;
+        $objTemplate->debug = $this->User->uploader_debug;
         
         if(is_array($arrUploader['BE']['DATA']))
         {
