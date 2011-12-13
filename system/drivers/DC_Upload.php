@@ -40,6 +40,14 @@ class DC_Upload extends DC_Folder
     {     
         $strFolder = $this->Input->get('pid', true);
         
+        // Empty clipboard
+        if (!$blnIsAjax)
+        {
+                $arrClipboard = $this->Session->get('CLIPBOARD');
+                $arrClipboard[$this->strTable] = array();
+                $this->Session->set('CLIPBOARD', $arrClipboard);
+        }        
+        
         $this->import('BackendUser', 'User');
         $uploader = $this->User->uploader;        
         
