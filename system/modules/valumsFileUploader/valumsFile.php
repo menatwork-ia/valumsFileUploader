@@ -27,7 +27,7 @@ if (!defined('TL_ROOT')) die('You can not access this file directly!');
  * @license    GNU/GPL 2 
  * @filesource
  */
-class valumsFile
+class valumsFile extends Controller
 {
 
     /**
@@ -258,6 +258,47 @@ class valumsFile
     }
 
     /**
+     * Check if the uploaded image have the right dimensions and resize it if
+     * not.
+     * @param type $path Path to image
+     * @param type $newFile Image name
+     */
+    public function resize($path, $newFile)
+    {
+        $blnExceeds = false;
+        $blnResized = false;
+
+        // Resize image if necessary
+        if (($arrImageSize = @getimagesize($path . $newFile)) !== false)
+        {
+            // Image is too big
+            if ($arrImageSize[0] > $GLOBALS['TL_CONFIG']['gdMaxImgWidth'] || $arrImageSize[1] > $GLOBALS['TL_CONFIG']['gdMaxImgHeight'])
+            {
+                $blnExceeds = true;
+            }
+            else
+            {
+                // Image exceeds maximum image width
+                if ($arrImageSize[0] > $GLOBALS['TL_CONFIG']['imageWidth'])
+                {
+                    $blnResized = true;
+                    $this->resizeImage($newFile, $GLOBALS['TL_CONFIG']['imageWidth'], 0);
+
+                    // Recalculate image size
+                    $arrImageSize = @getimagesize($path . $newFile);
+                }
+
+                // Image exceeds maximum image height
+                if ($arrImageSize[1] > $GLOBALS['TL_CONFIG']['imageHeight'])
+                {
+                    $blnResized = true;
+                    $this->resizeImage($newFile, 0, $GLOBALS['TL_CONFIG']['imageHeight']);
+                }
+            }
+        }
+    }
+
+    /**
      * Check if 'doNotOverwrite' is empty or a spezific methode is set and rewrite the file name. 
      * Then move the temporary file to the upload folder 
      * @param string $doNotOverwrite Setting from the backend config 
@@ -273,9 +314,12 @@ class valumsFile
         {
             $this->newName = $this->orgName . '_' . $this->timestamp . '.' . $this->getNewPathInfo('extension');
         }
-        
-        $this->objFiles->rename($this->tmp_name, $this->uploadFolder . '/' . $this->newName);
-        $this->writeFileToSession(array('uploaded' => TRUE), TRUE, $strSessionName);
+
+        if($this->objFiles->rename($this->tmp_name, $this->uploadFolder . '/' . $this->newName))
+        {
+            //$this->resizeImage($this->uploadFolder . '/' . $this->newName);
+            $this->writeFileToSession(array('uploaded' => TRUE), TRUE, $strSessionName);
+        }
     }
 
     /**
@@ -309,7 +353,7 @@ class valumsFile
 
             if ($realSize != $this->size)
             {
-                return false;
+                return FALSE;
             }
 
             $target = fopen(TL_ROOT . '/' . $this->newPath, "w");
@@ -318,7 +362,6 @@ class valumsFile
             fclose($target);
 
             unset($_FILES['qqfile'][$this->name]);
-            return true;
         }
 
         if ($this->methode == 'ffl')
@@ -327,8 +370,10 @@ class valumsFile
             {
                 return FALSE;
             }
-            return TRUE;
         }
+        
+        //$this->resize(TL_ROOT . '/', $this->newPath);
+        return TRUE;
     }
 
 }
