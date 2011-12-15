@@ -66,8 +66,24 @@ class DC_Upload extends DC_Folder
         }
 
         // Add uploader css and js
-        $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_CSS'];
-        $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_JS'];
+        if (version_compare(VERSION . '.' . BUILD, '2.10.0', '<'))
+        {
+            $GLOBALS['TL_CSS'][] = $arrUploader['UPLOADER_CSS'];
+        }
+        else
+        {
+            $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_CSS'];
+        }
+        
+        if (version_compare(VERSION . '.' . BUILD, '2.10.0', '<'))
+        {
+            $GLOBALS['TL_JAVASCRIPT'][] = $arrUploader['UPLOADER_JS'];
+        }
+        else
+        {
+            $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_JS'];
+        }
+        
         if ($arrUploader['BE']['CSS'])
         {
             $GLOBALS['TL_CSS'][] = $arrUploader['BE']['CSS'];
