@@ -5,7 +5,7 @@
     </tr>
 <?php else: ?>
     <?php echo $this->generateLabel(); ?> 
-    <?php echo $this->generateWithError(); ?><br>
+    <?php echo $this->generateWithError(); ?><br />
 <?php endif; ?>
     
 <script type="text/javascript">
@@ -25,18 +25,18 @@
             sizeLimit: <?php echo ($this->val_max_file_length) ? $this->val_max_file_length : '""'; ?>,
             // Template wrapper for all items
             template: '<div class="qq-uploader">' + 
-                '<div class="qq-upload-drop-area"><span><?php echo $GLOBALS['TL_LANG']['UPL']['upload_drop_area']; ?></span></div>' +
-                '<div class="qq-upload-button"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_button']; ?></div>' +
-                '<ul class="qq-upload-list"></ul>' + 
-                '</div>',
+                '<div class="qq-upload-drop-area"><span><?php echo $GLOBALS['TL_LANG']['UPL']['fe_upload_drop_area']; ?><\/span><\/div>' +
+                '<div class="qq-upload-button"><?php echo $GLOBALS['TL_LANG']['UPL']['fe_upload_button']; ?><\/div>' +
+                '<ul class="qq-upload-list"><\/ul>' + 
+                '<\/div>',
             // Template for one item in file list
             fileTemplate: '<li>' +
-                '<span class="qq-upload-file"></span>' +
-                '<span class="qq-upload-spinner"></span>' +
-                '<span class="qq-upload-size"></span>' +
-                '<a class="qq-upload-cancel" href="#"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_cancel']; ?></a>' +
-                '<span class="qq-upload-failed-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?></span>' +
-                '</li>',
+                '<span class="qq-upload-file"><\/span>' +
+                '<span class="qq-upload-spinner"><\/span>' +
+                '<span class="qq-upload-size"><\/span>' +
+                '<a class="qq-upload-cancel" href="#"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_cancel']; ?><\/a>' +
+                '<span class="qq-upload-failed-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?><\/span>' +
+                '<\/li>',
             // Error messages
             messages: {
                 typeError: <?php echo $GLOBALS['TL_LANG']['ERR']['val_type_error']; ?>,

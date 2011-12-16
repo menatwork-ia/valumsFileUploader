@@ -112,7 +112,7 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
         $return = sprintf('
             <div id="file-uploader-%s" class="%s">       
                 <noscript>          
-                    <input type="file" name="%s" id="ctrl_%s" class="upload%s"
+                    <div><input type="file" name="%s" id="ctrl_%s" class="upload%s" /></div>
                 </noscript>         
             </div>', $this->strId, $this->strClass, $this->strName, $this->strId, (strlen($this->strClass) ? ' ' . $this->strClass : '')
         );

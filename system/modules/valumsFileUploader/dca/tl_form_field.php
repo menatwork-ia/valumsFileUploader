@@ -31,6 +31,7 @@
  */
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'val_store_file';
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['valumsFileUploader'] = '{type_legend},type,name,label;{fconfig_legend},mandatory,extensions,val_max_file_length;{store_legend:hide},val_store_file;{expert_legend:hide},class,accesskey,val_uploader_debug;{submit_legend},addSubmit';
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['useHomeDir']['eval']['tl_class'] .= ' m12';
 
 /**
  * Subpalettes
