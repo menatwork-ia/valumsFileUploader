@@ -94,11 +94,12 @@ class valumsFile extends Controller
      */
     private function insertAjaxValues()
     {
+       
+        
         if (strlen($this->objInput->get('qqfile')))
         {
             $this->name = $this->objInput->get('qqfile');
-            $headers = apache_request_headers();
-            $this->size = (int) $headers['Content-Length'];
+            $this->size = (int) $_SERVER['CONTENT_LENGTH'];
             $this->tmpFile = tmpfile();
             $this->methode = 'xhr';
             $this->error = FALSE;
