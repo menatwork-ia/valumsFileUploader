@@ -32,5 +32,7 @@
  */
 $GLOBALS['TL_LANG']['tl_form_field']['val_do_not_overwrite'] = array('What do when file exists','Please select one of the options.');
 $GLOBALS['TL_LANG']['tl_form_field']['val_uploader_debug'] = array('Enable debug', 'Please select this option if you want to enable the debug mode from the uploader');
+$GLOBALS['TL_LANG']['tl_form_field']['val_init_text'] = array('Uploader Text', 'Here you can enter another text for the upload field.');
+$GLOBALS['TL_LANG']['tl_form_field']['val_drop_text'] = array('Drag\'n\'Drop Text', 'Here you can enter another text for the drag\'n\'drop field.');
 
 ?>

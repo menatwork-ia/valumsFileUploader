@@ -25,8 +25,8 @@
             sizeLimit: <?php echo ($this->val_max_file_length) ? $this->val_max_file_length : '""'; ?>,
             // Template wrapper for all items
             template: '<div class="qq-uploader">' + 
-                '<div class="qq-upload-drop-area"><span><?php echo $GLOBALS['TL_LANG']['UPL']['fe_upload_drop_area']; ?><\/span><\/div>' +
-                '<div class="qq-upload-button"><?php echo $GLOBALS['TL_LANG']['UPL']['fe_upload_button']; ?><\/div>' +
+                '<div class="qq-upload-drop-area"><span><?php echo (strlen($this->val_drop_text) != 0) ? $this->val_drop_text : $GLOBALS['TL_LANG']['UPL']['fe_upload_drop_area']; ?><\/span><\/div>' +
+                '<div class="qq-upload-button"><?php echo (strlen($this->val_init_text) != 0) ? $this->val_init_text :  $GLOBALS['TL_LANG']['UPL']['fe_upload_button']; ?><\/div>' +
                 '<ul class="qq-upload-list"><\/ul>' + 
                 '<\/div>',
             // Template for one item in file list

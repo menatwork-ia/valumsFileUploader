@@ -30,7 +30,7 @@
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'][] = 'val_store_file';
-$GLOBALS['TL_DCA']['tl_form_field']['palettes']['valumsFileUploader'] = '{type_legend},type,name,label;{fconfig_legend},mandatory,extensions,val_max_file_length;{store_legend:hide},val_store_file;{expert_legend:hide},class,accesskey,val_uploader_debug;{submit_legend},addSubmit';
+$GLOBALS['TL_DCA']['tl_form_field']['palettes']['valumsFileUploader'] = '{type_legend},type,name,label;{fconfig_legend},mandatory,extensions,val_max_file_length,val_init_text,val_drop_text;{store_legend:hide},val_store_file;{expert_legend:hide},class,accesskey,val_uploader_debug;{submit_legend},addSubmit';
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['useHomeDir']['eval']['tl_class'] .= ' m12';
 
 /**
@@ -70,4 +70,20 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_uploader_debug'] = array(
     'inputType' => 'checkbox',
     'eval' => array('tl_class' => 'clr w50')
 );
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_init_text'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['val_init_text'],
+    'exclude' => TRUE,
+    'inputType' => 'text',
+    'eval' => array('tl_class' => 'w50')
+);
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_drop_text'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['val_drop_text'],
+    'exclude' => TRUE,
+    'inputType' => 'text',
+    'eval' => array('tl_class' => 'w50')
+);
+
+
 ?>

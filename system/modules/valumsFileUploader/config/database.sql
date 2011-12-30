@@ -16,6 +16,8 @@ CREATE TABLE `tl_form_field` (
     `val_do_not_overwrite` varchar(32) NOT NULL default '',
     `val_store_file` char(1) NOT NULL default '',
     `val_uploader_debug` char(1) NOT NULL default '',
+    `val_init_text` text NULL,
+    `val_drop_text` text NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
