@@ -27,7 +27,7 @@
  * @filesource
  */
 
-require 'DC_Folder.php';
+require_once TL_ROOT . '/system/drivers/DC_Folder.php';
 
 class DC_Upload extends DC_Folder
 {
@@ -106,8 +106,7 @@ class DC_Upload extends DC_Folder
             {
                 $objTemplate->$k = $v;
             }               
-        }
-            
+        } 
         
         // Set config for valumsFileUploader
         $_SESSION['VALUM_CONFIG'] = array(
