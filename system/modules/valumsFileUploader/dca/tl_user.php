@@ -49,14 +49,12 @@ $GLOBALS['TL_DCA']['tl_user']['subpalettes']['do_not_overwrite'] = 'do_not_overw
  */
 $GLOBALS['TL_DCA']['tl_user']['fields']['do_not_overwrite'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_user']['do_not_overwrite'],
-    'exclude' => TRUE,
     'inputType' => 'checkbox',
     'eval' => array('submitOnChange' => TRUE, 'tl_class' => 'w50 m12'),
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['uploader'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_user']['uploader'],
-    'exclude' => TRUE,
     'inputType' => 'select',
     'options' => array('default', 'fancyUpload', 'valumsFileUploader'),
     'reference' => &$GLOBALS['TL_LANG']['UPL'],
@@ -65,7 +63,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['uploader'] = array(
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['do_not_overwrite_type'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_user']['do_not_overwrite_type'],
-    'exclude' => TRUE,
     'inputType' => 'select',
     'options' => array('useSuffix', 'useTimeStamp'),
     'reference' => &$GLOBALS['TL_LANG']['UPL'],
@@ -74,7 +71,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['do_not_overwrite_type'] = array(
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['uploader_debug'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_user']['uploader_debug'],
-    'exclude' => TRUE,
     'inputType' => 'checkbox',
     'eval' => array('tl_class' => 'w50 m12'),
 );
