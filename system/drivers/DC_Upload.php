@@ -49,7 +49,8 @@ class DC_Upload extends DC_Folder
         }        
         
         $this->import('BackendUser', 'User');
-        $uploader = $this->User->uploader;        
+        $uploader = $this->User->uploader;  
+        $imageSize = deserialize($this->User->val_image_size);
         
         if(array_key_exists($uploader, $GLOBALS['UPLOADER']))
         {
@@ -113,12 +114,18 @@ class DC_Upload extends DC_Folder
             'uploadFolder' => $strFolder,
             'maxFileLength' => $GLOBALS['TL_CONFIG']['maxFileSize'],
             'extension' => $GLOBALS['TL_CONFIG']['uploadTypes'],
-            'doNotOverwrite' => ''
+            'doNotOverwrite' => '',
+            'resizeResolution' => $this->User->resize_resolution,
         );
         
         if($this->User->do_not_overwrite)
         {
             $_SESSION['VALUM_CONFIG']['doNotOverwrite'] = $this->User->do_not_overwrite_type;
+        }
+                
+        if(is_array($imageSize) && $imageSize[0] != '' && $imageSize[1] != '')
+        {
+            $_SESSION['VALUM_CONFIG']['imageSize'] = $imageSize;
         }
         
         $strReturn = '
