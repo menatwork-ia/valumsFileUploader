@@ -18,6 +18,8 @@ CREATE TABLE `tl_form_field` (
     `val_uploader_debug` char(1) NOT NULL default '',
     `val_init_text` text NULL,
     `val_drop_text` text NULL,
+    `resize_resolution` char(1) NOT NULL default '',
+    `val_image_size` varchar(64) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- 
@@ -29,4 +31,6 @@ CREATE TABLE `tl_user` (
     `do_not_overwrite` char(1) NOT NULL default '',
     `do_not_overwrite_type` varchar(128) NOT NULL default 'useSuffix',
     `uploader_debug` char(1) NOT NULL default '',
+    `resize_resolution` char(1) NOT NULL default '',
+    `val_image_size` varchar(64) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

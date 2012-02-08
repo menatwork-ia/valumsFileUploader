@@ -26,29 +26,37 @@
  * @license    GNU/GPL 2 
  * @filesource
  */
+
+/**
+ * Class valumsFileUploader
+ */
 class valumsFileUploader extends Backend
 {
 
     /**
      * First form field
+     * 
      * @var array 
      */
     protected $firstFf = array();
 
     /**
      * Last Form field
+     * 
      * @var array
      */
     protected $lastFf = array();
 
     /**
      * Form fiel error
+     * 
      * @var bool
      */
     protected $hasError = FALSE;
 
     /**
      * Form id
+     * 
      * @var int 
      */
     protected $intFormId = NULL;
@@ -64,13 +72,15 @@ class valumsFileUploader extends Backend
 
     /**
      * Get the file information, checked specific values and save the file
+     * 
      * @return array
      */
     public function generateAjax()
-    {                
-        if ($_SESSION['VALUM_CONFIG']) $arrConf = $_SESSION['VALUM_CONFIG'];
+    {
+        if ($_SESSION['VALUM_CONFIG'])
+            $arrConf = $_SESSION['VALUM_CONFIG'];
 
-        $objFile = new valumsFile($arrConf['uploadFolder']);
+        $objFile   = new valumsFile($arrConf['uploadFolder']);
         $strLogPos = __CLASS__ . " " . __FUNCTION__ . "()";
 
         // Check if file could not create
@@ -109,6 +119,19 @@ class valumsFileUploader extends Backend
             $this->helper->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));
         }
 
+        //Check and resize resolution
+        if ($arrConf['resizeResolution'])
+        {
+            if (is_array($arrConf['imageSize']))
+            {
+                $objFile->resize($objFile->uploadFolder . '/' . $objFile->newName, $arrConf['imageSize']);
+            }
+            else
+            {
+                $objFile->resize($objFile->uploadFolder . '/' . $objFile->newName);
+            }
+        }
+
         $arrSpecialSession = array();
 
         if (is_array($arrConf['specialSessionAttr']))
@@ -123,13 +146,14 @@ class valumsFileUploader extends Backend
 
     /**
      * Get all specific information to the given form id and save them
+     * 
      * @param type $strFormId 
      */
     public function createForm($strFormId)
     {
         $this->intFormId = preg_replace("/[^0-9]/", '', $strFormId);
         $objDb = $this->Database->prepare("SELECT a.id FROM tl_form_field a, tl_form b WHERE b.id = %s AND a.pid = b.id AND a.invisible = '' ORDER BY a.sorting")->execute($this->intFormId);
-        $form = $objDb->fetchAllAssoc();
+        $form  = $objDb->fetchAllAssoc();
         $this->firstFf = $form[0];
         $this->lastButOneFf = $form[count($form) - 2];
         $this->lastFf = $form[count($form) - 1];
@@ -138,6 +162,7 @@ class valumsFileUploader extends Backend
     /**
      * Check if some given form field has an error. 
      * If not move the temporary files in SESSON to the right upload folder
+     * 
      * @param object $objWidget Form fiels object
      * @param string $strFormId Form id
      * @param array $arrData Form data

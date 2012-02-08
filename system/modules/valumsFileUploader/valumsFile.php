@@ -1,5 +1,4 @@
-<?php
-if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -27,11 +26,16 @@ if (!defined('TL_ROOT')) die('You can not access this file directly!');
  * @license    GNU/GPL 2 
  * @filesource
  */
+
+/**
+ * Class valumsFile
+ */
 class valumsFile extends Controller
 {
 
     /**
      * Storage for the overload file information 
+     * 
      * @var array 
      */
     private $file = array();
@@ -39,6 +43,7 @@ class valumsFile extends Controller
 
     /**
      * Initialize the object
+     * 
      * @param array
      * @throws Exception
      */
@@ -62,7 +67,8 @@ class valumsFile extends Controller
     }
 
     /**
-     * Create the file information from the given array. 
+     * Create the file information from the given array.
+     *  
      * @param array $arrValues 
      */
     private function insertSessionValues($arrValues)
@@ -94,8 +100,8 @@ class valumsFile extends Controller
      */
     private function insertAjaxValues()
     {
-       
-        
+
+
         if (strlen($this->objInput->get('qqfile')))
         {
             $this->name = $this->objInput->get('qqfile');
@@ -121,6 +127,7 @@ class valumsFile extends Controller
 
     /**
      * Set a parameter
+     * 
      * @param string $strKey
      * @param mixed $varValue
      * @throws Exception
@@ -140,6 +147,7 @@ class valumsFile extends Controller
 
     /**
      * Return a parameter
+     * 
      * @return string
      * @throws Exception
      */
@@ -162,6 +170,7 @@ class valumsFile extends Controller
 
     /**
      * Return pathinfo from given param
+     * 
      * @param type $path
      * @return type 
      */
@@ -172,12 +181,13 @@ class valumsFile extends Controller
 
     /**
      * Return original pathinfo or spezific one like 'filename' or 'extension' which can filtert by the param. 
+     * 
      * @param type $spezific
      * @return mixed 
      */
     public function getPathInfo($spezific = FALSE)
     {
-        $info = $this->getCreatedPathInfo($this->path);
+        $info             = $this->getCreatedPathInfo($this->path);
         $info['filename'] = utf8_romanize($info['filename']);
         if ($spezific && isset($info[$spezific]))
         {
@@ -188,12 +198,13 @@ class valumsFile extends Controller
 
     /**
      * Return new pathinfo or spezific one like 'filename' or 'extension' which can filtert by the param. 
+     * 
      * @param type $spezific
      * @return mixed 
      */
     public function getNewPathInfo($spezific = FALSE)
     {
-        $info = $this->getCreatedPathInfo($this->newPath);
+        $info             = $this->getCreatedPathInfo($this->newPath);
         $info['filename'] = utf8_romanize($info['filename']);
         if ($spezific && isset($info[$spezific]))
         {
@@ -207,17 +218,17 @@ class valumsFile extends Controller
      */
     private function doNotOverwrite()
     {
-        $offset = 1;
-        $arrAll = scan(TL_ROOT . '/' . $this->uploadFolder);
+        $offset   = 1;
+        $arrAll   = scan(TL_ROOT . '/' . $this->uploadFolder);
         $arrFiles = preg_grep('/^' . preg_quote($this->getNewPathInfo('filename'), '/') . '.*\.' . preg_quote($this->getNewPathInfo('extension'), '/') . '/', $arrAll);
 
         foreach ($arrFiles as $strFile)
         {
             if (preg_match('/__[0-9]+\.' . preg_quote($this->getNewPathInfo('extension'), '/') . '$/', $strFile))
             {
-                $strFile = str_replace('.' . $this->getNewPathInfo('extension'), '', $strFile);
+                $strFile  = str_replace('.' . $this->getNewPathInfo('extension'), '', $strFile);
                 $intValue = intval(substr($strFile, (strrpos($strFile, '_') + 1)));
-                $offset = max($offset, $intValue);
+                $offset   = max($offset, $intValue);
             }
         }
 
@@ -227,12 +238,13 @@ class valumsFile extends Controller
     /**
      * Write the current file information to the SESSION. 
      * Additional arguments can be given and if the tmp_name should be full path or not
+     * 
      * @param array $arrArgument Default is empty array. Need key for SESSION key
      * @param bool $boolCompletePath Default is FALSE
      */
     public function writeFileToSession($arrArgument = array(), $boolCompletePath = FALSE, $strSessionName = 'VALUM_FILES')
     {
-        $name = $this->getNewPathInfo('filename') . '.' . $this->getNewPathInfo('extension');
+        $name                             = $this->getNewPathInfo('filename') . '.' . $this->getNewPathInfo('extension');
         $_SESSION[$strSessionName][$name] = array
             (
             'name' => $this->newName,
@@ -261,16 +273,17 @@ class valumsFile extends Controller
     /**
      * Check if the uploaded image have the right dimensions and resize it if
      * not.
-     * @param type $path Path to image
-     * @param type $newFile Image name
+     * 
+     * @param string $newFile
+     * @param array $arrDissolution
      */
-    public function resize($path, $newFile)
+    public function resize($newFile, $arrResizeResolution = FALSE)
     {
         $blnExceeds = false;
         $blnResized = false;
 
         // Resize image if necessary
-        if (($arrImageSize = @getimagesize($path . $newFile)) !== false)
+        if (($arrImageSize = @getimagesize(TL_ROOT . '/' . $newFile)) !== false)
         {
             // Image is too big
             if ($arrImageSize[0] > $GLOBALS['TL_CONFIG']['gdMaxImgWidth'] || $arrImageSize[1] > $GLOBALS['TL_CONFIG']['gdMaxImgHeight'])
@@ -279,21 +292,32 @@ class valumsFile extends Controller
             }
             else
             {
+                if (is_array($arrResizeResolution))
+                {
+                    $intImageWidth = $arrResizeResolution[0];
+                    $intImageHeigh = $arrResizeResolution[1];
+                }
+                else
+                {
+                    $intImageWidth = $GLOBALS['TL_CONFIG']['imageWidth'];
+                    $intImageHeigh = $GLOBALS['TL_CONFIG']['imageHeight'];
+                }
+
                 // Image exceeds maximum image width
-                if ($arrImageSize[0] > $GLOBALS['TL_CONFIG']['imageWidth'])
+                if ($arrImageSize[0] > $intImageWidth)
                 {
                     $blnResized = true;
-                    $this->resizeImage($newFile, $GLOBALS['TL_CONFIG']['imageWidth'], 0);
+                    $this->resizeImage($newFile, $intImageWidth, 0);
 
                     // Recalculate image size
-                    $arrImageSize = @getimagesize($path . $newFile);
+                    $arrImageSize = @getimagesize(TL_ROOT . '/' . $newFile);
                 }
 
                 // Image exceeds maximum image height
-                if ($arrImageSize[1] > $GLOBALS['TL_CONFIG']['imageHeight'])
+                if ($arrImageSize[1] > $intImageHeigh)
                 {
                     $blnResized = true;
-                    $this->resizeImage($newFile, 0, $GLOBALS['TL_CONFIG']['imageHeight']);
+                    $this->resizeImage($newFile, 0, $intImageHeigh);
                 }
             }
         }
@@ -302,6 +326,7 @@ class valumsFile extends Controller
     /**
      * Check if 'doNotOverwrite' is empty or a spezific methode is set and rewrite the file name. 
      * Then move the temporary file to the upload folder 
+     * 
      * @param string $doNotOverwrite Setting from the backend config 
      */
     public function move($doNotOverwrite, $strSessionName)
@@ -316,7 +341,7 @@ class valumsFile extends Controller
             $this->newName = $this->orgName . '_' . $this->timestamp . '.' . $this->getNewPathInfo('extension');
         }
 
-        if($this->objFiles->rename($this->tmp_name, $this->uploadFolder . '/' . $this->newName))
+        if ($this->objFiles->rename($this->tmp_name, $this->uploadFolder . '/' . $this->newName))
         {
             //$this->resizeImage($this->uploadFolder . '/' . $this->newName);
             $this->writeFileToSession(array('uploaded' => TRUE), TRUE, $strSessionName);
@@ -326,6 +351,7 @@ class valumsFile extends Controller
     /**
      * Check if 'doNotOverwrite' is empty or a spezific methode is set and rewrite the file name. 
      * Then save the temporary file in his specific methode (xhr or ffl)
+     * 
      * @param string $doNotOverwrite
      * @return bool 
      */
@@ -348,7 +374,7 @@ class valumsFile extends Controller
 
         if ($this->methode == 'xhr')
         {
-            $input = fopen("php://input", "r");
+            $input    = fopen("php://input", "r");
             $realSize = stream_copy_to_stream($input, $this->tmpFile);
             fclose($input);
 
@@ -372,8 +398,7 @@ class valumsFile extends Controller
                 return FALSE;
             }
         }
-        
-        //$this->resize(TL_ROOT . '/', $this->newPath);
+
         return TRUE;
     }
 

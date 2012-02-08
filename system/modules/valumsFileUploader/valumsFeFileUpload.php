@@ -26,6 +26,10 @@
  * @license    GNU/GPL 2 
  * @filesource
  */
+
+/**
+ * Class valumsFeFileUpload
+ */
 class valumsFeFileUpload extends FormFileUpload implements uploadable
 {
 
@@ -47,21 +51,28 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
         $this->action = $GLOBALS['UPLOADER']['valumsFileUploader']['FE']['ACTION'];
         $this->params = "action: 'ffl', id: '" . $this->strId . "'";
         $this->debug = $this->val_uploader_debug;
-        
+
         $this->loadLanguageFile('default');
         $this->import('valumsHelper', 'helper');
         $this->import('valumsFileUploader', 'main');
-        
+
         $_SESSION['VALUM_CONFIG'] = array(
             'uploadFolder' => $GLOBALS['UPLOADER']['valumsFileUploader']['FE']['TMP_FOLDER'],
             'maxFileLength' => $this->val_max_file_length,
             'extension' => $this->extensions,
             'doNotOverwrite' => $this->val_do_not_overwrite,
+            'resizeResolution' => $this->resize_resolution,
             'specialSessionAttr' => array(
-                'formFieldId' => $this->Input->get('id'), 
+                'formFieldId' => $this->Input->get('id'),
                 'formId' => $this->pid
-            )       
+            )
         );
+
+        $imageSize = deserialize($this->val_image_size);
+        if (is_array($imageSize) && $imageSize[0] != '' && $imageSize[1] != '')
+        {
+            $_SESSION['VALUM_CONFIG']['imageSize'] = $imageSize;
+        }
     }
 
     /**
@@ -107,7 +118,7 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
     {
         // Include ValumsFileUploader scripts
         $GLOBALS['TL_JAVASCRIPT'][] = $GLOBALS['UPLOADER']['valumsFileUploader']['UPLOADER_JS'];
-        $GLOBALS['TL_CSS'][] = $GLOBALS['UPLOADER']['valumsFileUploader']['UPLOADER_CSS'];
+        $GLOBALS['TL_CSS'][]        = $GLOBALS['UPLOADER']['valumsFileUploader']['UPLOADER_CSS'];
 
         $return = sprintf('
             <div id="file-uploader-%s" class="%s">       
@@ -146,14 +157,14 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
 
         return $return . $this->addSubmit();
     }
-    
+
     /**
      * Call the real generateAjax in valumsFileUploader
      */
     public function generateAjax()
-    {     
+    {
         $this->main->generateAjax();
-    }    
+    }
 
 }
 

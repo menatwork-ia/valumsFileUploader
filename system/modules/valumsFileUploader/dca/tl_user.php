@@ -32,17 +32,25 @@
  */
 foreach ($GLOBALS['TL_DCA']['tl_user']['palettes'] as $key => $row)
 {
-    if ($key == '__selector__') continue;
-    if (!stristr($row, 'fancyUpload,')) continue;
-    $GLOBALS['TL_DCA']['tl_user']['palettes'][$key] = str_replace('oldBeTheme;', 'oldBeTheme;{upload_legend},uploader,do_not_overwrite;', str_replace('fancyUpload,', '', $GLOBALS['TL_DCA']['tl_user']['palettes'][$key]));;
-}
+    if ($key == '__selector__')
+    {
+        $GLOBALS['TL_DCA']['tl_user']['palettes'][$key] = array_merge($GLOBALS['TL_DCA']['tl_user']['palettes'][$key], array('do_not_overwrite', 'resize_resolution'));
+        continue;
+    }
 
-$GLOBALS['TL_DCA']['tl_user']['palettes']['__selector__'][] = 'do_not_overwrite';
+    if (!stristr($row, 'fancyUpload,'))
+    {
+        continue;
+    }
+
+    $GLOBALS['TL_DCA']['tl_user']['palettes'][$key] = str_replace('oldBeTheme;', 'oldBeTheme;{upload_legend},uploader,do_not_overwrite, uploader_debug, resize_resolution;', str_replace('fancyUpload,', '', $GLOBALS['TL_DCA']['tl_user']['palettes'][$key]));
+}
 
 /**
  * Subpalettes
  */
-$GLOBALS['TL_DCA']['tl_user']['subpalettes']['do_not_overwrite'] = 'do_not_overwrite_type, uploader_debug';
+$GLOBALS['TL_DCA']['tl_user']['subpalettes']['do_not_overwrite']  = 'do_not_overwrite_type';
+$GLOBALS['TL_DCA']['tl_user']['subpalettes']['resize_resolution'] = 'val_image_size';
 
 /**
  * Fields
@@ -72,7 +80,19 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['do_not_overwrite_type'] = array(
 $GLOBALS['TL_DCA']['tl_user']['fields']['uploader_debug'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_user']['uploader_debug'],
     'inputType' => 'checkbox',
-    'eval' => array('tl_class' => 'w50 m12'),
+    'eval' => array('tl_class' => 'clr'),
 );
 
+$GLOBALS['TL_DCA']['tl_user']['fields']['resize_resolution'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_user']['resize_resolution'],
+    'inputType' => 'checkbox',
+    'eval' => array('submitOnChange' => TRUE)
+);
+
+$GLOBALS['TL_DCA']['tl_user']['fields']['val_image_size'] = array
+    (
+    'label' => &$GLOBALS['TL_LANG']['tl_user']['val_image_size'],
+    'inputType' => 'text',
+    'eval' => array('multiple' => true, 'size' => 2, 'rgxp' => 'digit', 'nospace' => true, 'tl_class' => 'clr')
+);
 ?>

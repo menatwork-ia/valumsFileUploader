@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contao Open Source CMS
  * Copyright (C) 2005-2010 Leo Feyer
@@ -37,7 +38,7 @@ define('TL_MODE', 'BE');
 // Allow do bypass the token check if a known token is passed in
 if (isset($_GET['bypassToken']) && ((is_array($_SESSION['REQUEST_TOKEN'][TL_MODE]) && in_array($_POST['REQUEST_TOKEN'], $_SESSION['REQUEST_TOKEN'][TL_MODE])) || $_SESSION['REQUEST_TOKEN'][TL_MODE] == $_POST['REQUEST_TOKEN']))
 {
-	define('BYPASS_TOKEN_CHECK', true);
+    define('BYPASS_TOKEN_CHECK', true);
 }
 
 require_once('../../initialize.php');
@@ -75,7 +76,7 @@ class valumsAjaxRequest extends Backend
      * Run controller
      */
     public function run()
-    {        
+    {
         if ($_POST['action'] && $this->Environment->isAjaxRequest)
         {
             $this->objAjax = new Ajax($this->Input->post('action'));

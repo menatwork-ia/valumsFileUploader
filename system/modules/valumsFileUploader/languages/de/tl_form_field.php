@@ -1,4 +1,7 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php
+
+if (!defined('TL_ROOT'))
+    die('You can not access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -34,5 +37,6 @@ $GLOBALS['TL_LANG']['tl_form_field']['val_do_not_overwrite'] = array('Was tun we
 $GLOBALS['TL_LANG']['tl_form_field']['val_uploader_debug'] = array('Debug aktivieren', 'Wählen Sie diese Option wenn Sie den Debugmodus des Uploaders aktivieren wollen');
 $GLOBALS['TL_LANG']['tl_form_field']['val_init_text'] = array('Uploader Text', 'Hier können Sie einen anderen Text für das Upload Feld eingeben.');
 $GLOBALS['TL_LANG']['tl_form_field']['val_drop_text'] = array('Drag\'n\'Drop Text', 'Hier können Sie einen anderen Text für das Drag\'n\'Drop Feld eingeben.');
-
+$GLOBALS['TL_LANG']['tl_form_field']['resize_resolution'] = array('Bilder skalieren', 'Wählen Sie diese Option, um Bilder beim Upload zu skalieren.');
+$GLOBALS['TL_LANG']['tl_form_field']['val_image_size'] = array('Bildbreite und Bildhöhe', 'Hier können Sie die Abmessungen des Bildes in px festlegen.');
 ?>

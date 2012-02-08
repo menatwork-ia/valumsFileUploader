@@ -26,6 +26,10 @@
  * @license    GNU/GPL 2 
  * @filesource
  */
+
+/**
+ * Class valumsHelper
+ */
 class valumsHelper extends Backend
 {
 
@@ -50,10 +54,10 @@ class valumsHelper extends Backend
      * @return string 
      */
     public function getStrExt($extension)
-    {                
+    {
         return "'" . implode("', '", $this->getArrExt($extension)) . "'";
     }
-    
+
     /**
      * Return the given comma separatet extensions as array
      * @param string $extension
@@ -105,19 +109,19 @@ class valumsHelper extends Backend
 
         return $strContent;
     }
-    
+
     /**
      * Set the GET-Param for the user id so the subpalette can work
      * @param string
      */
     public function setUser($strTable)
     {
-            if ($strTable == 'tl_user' && $this->Input->get('do') == 'login')
-            {
-                    $this->import('BackendUser', 'User');
-                    $this->Input->setGet('id', $this->User->id);
-            }
-    }      
+        if ($strTable == 'tl_user' && $this->Input->get('do') == 'login')
+        {
+            $this->import('BackendUser', 'User');
+            $this->Input->setGet('id', $this->User->id);
+        }
+    }
 
 }
 

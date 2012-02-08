@@ -26,6 +26,10 @@
  * @license    GNU/GPL 2 
  * @filesource
  */
+
+/**
+ * Class valumsBeFileUpload
+ */
 class valumsBeFileUpload extends Backend
 {
 
