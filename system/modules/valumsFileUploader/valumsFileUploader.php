@@ -119,17 +119,42 @@ class valumsFileUploader extends Backend
             $this->helper->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));
         }
 
+        $arrJson =  array(
+            'success' => TRUE, 
+            'filename' => $objFile->newName,
+            'resized' => FALSE,
+            'exceeds' => FALSE
+        );
+        
         //Check and resize resolution
         if ($arrConf['resizeResolution'])
         {
             if (is_array($arrConf['imageSize']))
             {
-                $objFile->resize($objFile->uploadFolder . '/' . $objFile->newName, $arrConf['imageSize']);
+                $arrResizeResult = $objFile->resize($objFile->uploadFolder . '/' . $objFile->newName, $arrConf['imageSize']);                
+                $arrTmp['size'] = $arrConf['imageSize'];
             }
             else
             {
-                $objFile->resize($objFile->uploadFolder . '/' . $objFile->newName);
+                $arrResizeResult = $objFile->resize($objFile->uploadFolder . '/' . $objFile->newName);
+                $arrTmp['size'] = array(
+                    $GLOBALS['TL_CONFIG']['imageWidth'],
+                    $GLOBALS['TL_CONFIG']['imageHeight']
+                );
             }
+            
+            // Notify user
+            if ($arrResizeResult['blnExceeds'])
+            {
+                $arrJson['exceeds'] = TRUE;
+                $arrJson['resized_message'] = sprintf($GLOBALS['TL_LANG']['MSC']['fileExceeds'], $objFile->newName);             
+            }
+            elseif ($arrResizeResult['blnResized'])
+            {
+                $arrJson['resized'] = TRUE;
+                $arrJson['resized_message'] = sprintf($GLOBALS['TL_LANG']['MSC']['fileResized'], $objFile->newName);
+            }
+            
         }
 
         $arrSpecialSession = array();
@@ -141,7 +166,7 @@ class valumsFileUploader extends Backend
 
         $objFile->writeFileToSession($arrSpecialSession);
 
-        $this->helper->setJsonEncode('UPL', 'log_success', array($objFile->newName, $objFile->uploadFolder), $strLogPos, array("success" => TRUE, "filename" => $objFile->newName));
+        $this->helper->setJsonEncode('UPL', 'log_success', array($objFile->newName, $objFile->uploadFolder), $strLogPos, $arrJson);
     }
 
     /**

@@ -321,6 +321,11 @@ class valumsFile extends Controller
                 }
             }
         }
+        
+        return array(
+            'blnExceeds' => $blnExceeds,
+            'blnResized' => $blnResized
+        );
     }
 
     /**

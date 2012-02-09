@@ -9,8 +9,8 @@
 </div>
 
 <script type="text/javascript">
-    function createUploader(){  
-        var uploader = new qq.FileUploader({
+    function createUploader(){        
+        var uploader = new qq.FileUploader({            
             element: document.getElementById('file-uploader'),
             // path to server-side upload script
             action: '<?php echo $this->action; ?>',            
@@ -45,8 +45,25 @@
                 minSizeError: <?php echo $GLOBALS['TL_LANG']['ERR']['val_min_size_error']; ?>,
                 emptyError: <?php echo $GLOBALS['TL_LANG']['ERR']['val_empty_error']; ?>,
                 onLeave: <?php echo $GLOBALS['TL_LANG']['ERR']['val_on_leave']; ?>          
+            },
+
+            onComplete: function(id, fileName, responseJSON){  
+                if(responseJSON.success && responseJSON.resized || responseJSON.success && responseJSON.exceeds)
+                {
+                    var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
+                        
+                    var div = new Element('div', {
+                        id: 'valums_resized',
+                        html: responseJSON.resized_message
+                    });
+                        
+                    div.inject(qqUploadListChilds[0][id], 'bottom');                        
+                }
             }
-        });        
+        });
+
     }
+    
     window.onload = createUploader;
+    
 </script>
