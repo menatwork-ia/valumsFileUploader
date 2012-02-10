@@ -38,5 +38,5 @@ $GLOBALS['TL_LANG']['tl_form_field']['val_uploader_debug'] = array('Debug aktivi
 $GLOBALS['TL_LANG']['tl_form_field']['val_init_text'] = array('Uploader Text', 'Hier können Sie einen anderen Text für das Upload Feld eingeben.');
 $GLOBALS['TL_LANG']['tl_form_field']['val_drop_text'] = array('Drag\'n\'Drop Text', 'Hier können Sie einen anderen Text für das Drag\'n\'Drop Feld eingeben.');
 $GLOBALS['TL_LANG']['tl_form_field']['resize_resolution'] = array('Bilder skalieren', 'Wählen Sie diese Option, um Bilder beim Upload zu skalieren.');
-$GLOBALS['TL_LANG']['tl_form_field']['val_image_size'] = array('Bildbreite und Bildhöhe', 'Hier können Sie die Abmessungen des Bildes in px festlegen.');
+$GLOBALS['TL_LANG']['tl_form_field']['val_image_size'] = array('Bildbreite und Bildhöhe', 'Durch die Eingabe dieser Felder werden die globalen Einstellungen überschrieben.');
 ?>

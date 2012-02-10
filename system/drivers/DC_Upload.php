@@ -36,28 +36,29 @@ class DC_Upload extends DC_Folder
      * Generate the ajax uploader
      * @param boolean
      */
-    public function move($blnIsAjax=false)
-    {     
+    public function move($blnIsAjax = false)
+    {
+        $objHelper = new valumsHelper();
         $strFolder = $this->Input->get('pid', true);
-        
+
         // Empty clipboard
         if (!$blnIsAjax)
         {
-                $arrClipboard = $this->Session->get('CLIPBOARD');
-                $arrClipboard[$this->strTable] = array();
-                $this->Session->set('CLIPBOARD', $arrClipboard);
-        }        
-        
+            $arrClipboard = $this->Session->get('CLIPBOARD');
+            $arrClipboard[$this->strTable] = array();
+            $this->Session->set('CLIPBOARD', $arrClipboard);
+        }
+
         $this->import('BackendUser', 'User');
-        $uploader = $this->User->uploader;  
+        $uploader  = $this->User->uploader;
         $imageSize = deserialize($this->User->val_image_size);
-        
-        if(array_key_exists($uploader, $GLOBALS['UPLOADER']))
+
+        if (array_key_exists($uploader, $GLOBALS['UPLOADER']))
         {
             $arrUploader = $GLOBALS['UPLOADER'][$uploader];
         }
         else
-        {       
+        {
             if (!is_array($_SESSION['TL_ERROR']))
             {
                 $_SESSION['TL_ERROR'] = array();
@@ -66,68 +67,25 @@ class DC_Upload extends DC_Folder
             $_SESSION['TL_ERROR'][] = sprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_config'], $uploader, $this->Environment->scriptName . '?do=login');
         }
 
-        // Add uploader css and js
-        if (version_compare(VERSION . '.' . BUILD, '2.10.0', '<'))
-        {
-            $GLOBALS['TL_CSS'][] = $arrUploader['UPLOADER_CSS'];
-        }
-        else
-        {
-            $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_CSS'];
-        }
-        
-        if (version_compare(VERSION . '.' . BUILD, '2.10.0', '<'))
-        {
-            $GLOBALS['TL_JAVASCRIPT'][] = $arrUploader['UPLOADER_JS'];
-        }
-        else
-        {
-            $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_JS'];
-        }
-        
-        if ($arrUploader['BE']['CSS'])
-        {
-            $GLOBALS['TL_CSS'][] = $arrUploader['BE']['CSS'];
-        }
-
-        // Create uploader template
-        $objTemplate = new BackendTemplate($arrUploader['BE']['TEMPLATE']);
-
-        // Add upload types and key
-        $objTemplate->uploadTypes = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['uploadTypes']));
-        $objTemplate->action = $arrUploader['BE']['ACTION'];
-        $objTemplate->paramAction = $uploader; 
-        $objTemplate->maxFileSize = $GLOBALS['TL_CONFIG']['maxFileSize'];
-        $objTemplate->noJsBeLink = $this->Environment->scriptName . '?do=login';
-        $objTemplate->debug = $this->User->uploader_debug;
-        
-        if(is_array($arrUploader['BE']['DATA']))
-        {
-            foreach($arrUploader['BE']['DATA'] AS $k => $v)
-            {
-                $objTemplate->$k = $v;
-            }               
-        } 
-        
-        // Set config for valumsFileUploader
-        $_SESSION['VALUM_CONFIG'] = array(
-            'uploadFolder' => $strFolder,
-            'maxFileLength' => $GLOBALS['TL_CONFIG']['maxFileSize'],
-            'extension' => $GLOBALS['TL_CONFIG']['uploadTypes'],
-            'doNotOverwrite' => '',
-            'resizeResolution' => $this->User->resize_resolution,
+        $arrAttributes = array(
+            'path' => $strFolder,
+            'template' => $arrUploader['BE']['TEMPLATE'],
+            'action' => $arrUploader['BE']['ACTION'],
+            'paramAction' => $uploader,
+            'debug' => $this->User->uploader_debug,
+            'doNotOverwrite' => $this->User->do_not_overwrite_type,
+            'resize' => $imageSize,
+            'tl_help' => TRUE
         );
-        
-        if($this->User->do_not_overwrite)
+
+        if (is_array($arrUploader['BE']['DATA']))
         {
-            $_SESSION['VALUM_CONFIG']['doNotOverwrite'] = $this->User->do_not_overwrite_type;
+            foreach ($arrUploader['BE']['DATA'] AS $k => $v)
+            {
+                $arrAttributes[$k] = $v;
+            }
         }
-                
-        if(is_array($imageSize) && $imageSize[0] != '' && $imageSize[1] != '')
-        {
-            $_SESSION['VALUM_CONFIG']['imageSize'] = $imageSize;
-        }
-        
+
         $strReturn = '
             <div id="tl_buttons">
                 <a href="' . $this->getReferer(true) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '" accesskey="b" onclick="Backend.getScrollOffset();">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
@@ -135,10 +93,10 @@ class DC_Upload extends DC_Folder
 
             <h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_files']['uploadFF'], basename($strFolder)) . '</h2>
             ' . $this->getMessages();
-        
-        $strReturn .=  $objTemplate->parse();
-        
-        // Display uploader
+
+        $uploadWidget = new valumsBeFileUpload($arrAttributes);
+        $strReturn .= $uploadWidget->parse();
+
         return $strReturn;
     }
 

@@ -30,6 +30,7 @@
  * Form fields
  */
 $GLOBALS['TL_FFL']['valumsFileUploader'] = 'valumsFeFileUpload';
+$GLOBALS['BE_FFL']['valumsFileUploader'] = 'valumsBeFileUpload';
 
 /**
  * Hook
@@ -54,6 +55,7 @@ $GLOBALS['UPLOADER'] = array(
             'ACTION' => 'system/modules/valumsFileUploader/valumsAjaxRequest.php',
             'CSS' => 'system/modules/valumsFileUploader/html/valumsFileUploader.css|screen',
             'TEMPLATE' => 'be_valums',
+            'TMP_FOLDER' => 'system/tmp',
             'DATA' => array()
         ),
         'FE' => array(

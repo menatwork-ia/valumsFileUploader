@@ -34,6 +34,14 @@ class valumsHelper extends Backend
 {
 
     /**
+     * Initialize the object
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
      *
      * @param type $type
      * @param type $strMessage
@@ -60,6 +68,7 @@ class valumsHelper extends Backend
 
     /**
      * Return the given comma separatet extensions as array
+     * 
      * @param string $extension
      * @return array 
      */
@@ -112,6 +121,7 @@ class valumsHelper extends Backend
 
     /**
      * Set the GET-Param for the user id so the subpalette can work
+     * 
      * @param string
      */
     public function setUser($strTable)
@@ -120,6 +130,37 @@ class valumsHelper extends Backend
         {
             $this->import('BackendUser', 'User');
             $this->Input->setGet('id', $this->User->id);
+        }
+    }
+
+    /**
+     * Add uploader css and js 
+     * 
+     * @param array uploader
+     */
+    public static function setBeHeaderData($arrUploader)
+    {
+        if (version_compare(VERSION . '.' . BUILD, '2.10.0', '<'))
+        {
+            $GLOBALS['TL_CSS'][] = $arrUploader['UPLOADER_CSS'];
+        }
+        else
+        {
+            $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_CSS'];
+        }
+
+        if (version_compare(VERSION . '.' . BUILD, '2.10.0', '<'))
+        {
+            $GLOBALS['TL_JAVASCRIPT'][] = $arrUploader['UPLOADER_JS'];
+        }
+        else
+        {
+            $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_JS'];
+        }
+
+        if ($arrUploader['BE']['CSS'])
+        {
+            $GLOBALS['TL_CSS'][] = $arrUploader['BE']['CSS'];
         }
     }
 

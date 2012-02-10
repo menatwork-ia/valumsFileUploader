@@ -64,7 +64,7 @@ class valumsFileUploader extends Backend
     /**
      * Load database object
      */
-    protected function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->import('valumsHelper', 'helper');
