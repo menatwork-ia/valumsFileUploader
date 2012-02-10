@@ -75,10 +75,8 @@ class valumsBeFileUpload extends Widget
     {
         $this->setDefaultValues();
         $this->setSessionData();
-        FB::log($_SESSION['VALUM_CONFIG']['uploadFolder']);        
         
         return parent::parse($arrAttributes);
-        FB::log($_SESSION['VALUM_CONFIG']['uploadFolder']);
     }
 
     /**
