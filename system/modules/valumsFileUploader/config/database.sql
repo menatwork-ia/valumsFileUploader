@@ -27,7 +27,7 @@ CREATE TABLE `tl_form_field` (
 -- 
 
 CREATE TABLE `tl_user` (
-    `uploader` varchar(128) NOT NULL default 'default',
+    `uploader` varchar(32) NOT NULL default '',
     `do_not_overwrite` char(1) NOT NULL default '',
     `do_not_overwrite_type` varchar(128) NOT NULL default 'useSuffix',
     `uploader_debug` char(1) NOT NULL default '',

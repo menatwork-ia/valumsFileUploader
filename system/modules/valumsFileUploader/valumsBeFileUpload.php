@@ -45,6 +45,7 @@ class valumsBeFileUpload extends Widget
      */
     protected $objHelper;
     protected $objUploader;
+    protected $objBeUser;
 
     /**
      * Initialize the object and set configurations
@@ -58,7 +59,8 @@ class valumsBeFileUpload extends Widget
         $this->objHelper = new valumsHelper();
         $this->objHelper->setBeHeaderData($GLOBALS['UPLOADER']['valumsFileUploader']);
 
-        $this->objUploader = new valumsFileUploader();        
+        $this->objUploader = new valumsFileUploader();
+        $this->objBeUser = BackendUser::getInstance();
     }
 
     public function generate()
@@ -75,6 +77,8 @@ class valumsBeFileUpload extends Widget
     {
         $this->setDefaultValues();
         $this->setSessionData();
+        
+        FB::log($_SESSION['VALUM_CONFIG']);
         
         return parent::parse($arrAttributes);
     }
@@ -103,6 +107,17 @@ class valumsBeFileUpload extends Widget
      */
     protected function setDefaultValues()
     {
+        $this->action = 'system/modules/valumsFileUploader/valumsAjaxRequest.php';
+        $this->paramAction = 'valumsFileUploader';
+        
+        if($this->Input->get('do') == 'files')
+        {
+            $this->path = $this->Input->get('pid');
+            $this->debug = $this->objBeUser->uploader_debug;
+            $this->doNotOverwrite = $this->objBeUser->do_not_overwrite_type;
+            $this->resize = deserialize($this->objBeUser->val_image_size);
+        }
+        
         $this->maxFileSize = (($this->maxFileSize) ? $this->maxFileSize : $GLOBALS['TL_CONFIG']['maxFileSize']);
 
         if ($this->overwrite != NULL)
@@ -110,9 +125,9 @@ class valumsBeFileUpload extends Widget
             $this->doNotOverwrite = $this->overwrite;
         }
 
-        if ($this->path == NULL)
+        if ($this->path == NULL )
         {
-            $this->path = $GLOBALS['UPLOADER']['valumsFileUploader']['BE']['TMP_FOLDER'];
+            $this->path = $GLOBALS['UPLOADER']['valumsFileUploader']['tmp_folder'];
         }
 
         if ($this->extensions == NULL)
@@ -120,16 +135,6 @@ class valumsBeFileUpload extends Widget
             $this->extensions = strtolower($GLOBALS['TL_CONFIG']['uploadTypes']);
         }
         $this->uploadTypes = $this->objHelper->getStrExt($this->extensions);
-
-        if ($this->action == NULL)
-        {
-            $this->action = $GLOBALS['UPLOADER']['valumsFileUploader']['BE']['ACTION'];
-        }
-
-        if ($this->paramAction == NULL)
-        {
-            $this->paramAction = 'valumsFileUploader';
-        }
 
         if ($this->name != $this->label)
         {
@@ -148,6 +153,21 @@ class valumsBeFileUpload extends Widget
         {
             $this->objUploader->generateAjax();
         }
+    }
+    
+    public function uploadTo($strFolder, $strType)
+    {
+        return array();
+    }
+    
+    public function hasError()
+    {
+        return TRUE;
+    }
+    
+    public function generateMarkup()
+    {
+        return $this->parse();
     }
 
 }
