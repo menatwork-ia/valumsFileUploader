@@ -134,33 +134,34 @@ class valumsHelper extends Backend
     }
 
     /**
-     * Add uploader css and js 
+     * Add uploader css and js
      * 
      * @param array uploader
      */
-    public static function setBeHeaderData($arrUploader)
+    public static function setHeaderData()
     {
-        if (version_compare(VERSION . '.' . BUILD, '2.10.0', '<'))
+        if (version_compare(VERSION, '2.10', '<'))
         {
-            $GLOBALS['TL_CSS'][] = $arrUploader['UPLOADER_CSS'];
+            $GLOBALS['TL_CSS'][] = 'plugins/ajax-upload/css/ajaxupload.css';
         }
         else
         {
-            $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_CSS'];
+            $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/ajax-upload/css/ajaxupload.css';
         }
 
-        if (version_compare(VERSION . '.' . BUILD, '2.10.0', '<'))
+        if (version_compare(VERSION, '2.10', '<'))
         {
-            $GLOBALS['TL_JAVASCRIPT'][] = $arrUploader['UPLOADER_JS'];
+            $GLOBALS['TL_JAVASCRIPT'][] = 'plugins/ajax-upload/js/ajaxupload.js';
         }
         else
         {
-            $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . $arrUploader['UPLOADER_JS'];
+            $GLOBALS['TL_JAVASCRIPT'][] = TL_PLUGINS_URL . 'plugins/ajax-upload/js/ajaxupload.js';
         }
 
-        if ($arrUploader['BE']['CSS'])
+        if (TL_MODE == 'BE' && Input::getInstance()->get('do') != 'form')
         {
-            $GLOBALS['TL_CSS'][] = $arrUploader['BE']['CSS'];
+            $GLOBALS['TL_CSS'][] = 'system/modules/valumsFileUploader/html/css/valumsFileUploader.css';
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/valumsFileUploader/html/js/valumsFileUploader.js';
         }
     }
 

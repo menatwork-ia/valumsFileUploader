@@ -16,10 +16,10 @@
             // path to server-side upload script
             action: '<?php echo $this->action; ?>',
             // additional data to send, name-value pairs
-            params: {<?php echo $this->params; ?>, type:'valumsFileUploader'},
+            params: <?php echo $this->params; ?>,
             // validation    
             // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
-            allowedExtensions: [<?php echo $this->helper->getStrExt($this->extensions); ?>],        
+            allowedExtensions: [<?php echo $this->objHelper->getStrExt($this->extensions); ?>],        
             // set to true to output server response to console
             debug: <?php echo ($this->debug) ? "'true'" : "'false'"; ?>,
             sizeLimit: <?php echo ($this->val_max_file_length) ? $this->val_max_file_length : '""'; ?>,

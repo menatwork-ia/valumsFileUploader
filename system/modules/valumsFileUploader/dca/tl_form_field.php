@@ -99,4 +99,5 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_image_size'] = array
     'inputType' => 'text',
     'eval' => array('multiple' => true, 'size' => 2, 'rgxp' => 'digit', 'nospace' => true)
 );
+
 ?>

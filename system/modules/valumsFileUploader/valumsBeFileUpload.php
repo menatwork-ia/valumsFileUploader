@@ -50,14 +50,13 @@ class valumsBeFileUpload extends Widget
     /**
      * Initialize the object and set configurations
      * @param array
-     * @throws Exception
      */
     public function __construct($arrAttributes = FALSE)
     {
         parent::__construct($arrAttributes);
 
         $this->objHelper = new valumsHelper();
-        $this->objHelper->setBeHeaderData($GLOBALS['UPLOADER']['valumsFileUploader']);
+        $this->objHelper->setHeaderData();
 
         $this->objUploader = new valumsFileUploader();
         $this->objBeUser = BackendUser::getInstance();
@@ -77,8 +76,6 @@ class valumsBeFileUpload extends Widget
     {
         $this->setDefaultValues();
         $this->setSessionData();
-        
-        FB::log($_SESSION['VALUM_CONFIG']);
         
         return parent::parse($arrAttributes);
     }
@@ -109,9 +106,11 @@ class valumsBeFileUpload extends Widget
     {
         $this->action = 'system/modules/valumsFileUploader/valumsAjaxRequest.php';
         $this->paramAction = 'valumsFileUploader';
+        $this->doFiels = FALSE;
         
         if($this->Input->get('do') == 'files')
         {
+            $this->doFiles = TRUE;
             $this->path = $this->Input->get('pid');
             $this->debug = $this->objBeUser->uploader_debug;
             $this->doNotOverwrite = $this->objBeUser->do_not_overwrite_type;
@@ -119,7 +118,7 @@ class valumsBeFileUpload extends Widget
         }
         
         $this->maxFileSize = (($this->maxFileSize) ? $this->maxFileSize : $GLOBALS['TL_CONFIG']['maxFileSize']);
-
+        
         if ($this->overwrite != NULL)
         {
             $this->doNotOverwrite = $this->overwrite;
@@ -127,7 +126,7 @@ class valumsBeFileUpload extends Widget
 
         if ($this->path == NULL )
         {
-            $this->path = $GLOBALS['UPLOADER']['valumsFileUploader']['tmp_folder'];
+            $this->path = 'system/tmp';
         }
 
         if ($this->extensions == NULL)
@@ -162,7 +161,12 @@ class valumsBeFileUpload extends Widget
     
     public function hasError()
     {
-        return TRUE;
+        return FALSE;
+    }
+    
+    public function hasResized()
+    {
+        return FALSE;
     }
     
     public function generateMarkup()

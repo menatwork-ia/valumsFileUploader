@@ -44,24 +44,4 @@ if (TL_MODE == 'BE')
     $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('valumsHelper', 'setUser');
 }
 
-/**
- * Config
- */
-$GLOBALS['UPLOADER'] = array(
-    'valumsFileUploader' => array(
-        'UPLOADER_JS' => 'plugins/ajax-upload/js/ajaxupload.js',
-        'UPLOADER_CSS' => 'plugins/ajax-upload/css/ajaxupload.css|screen',
-        'BE' => array(
-            'ACTION' => 'system/modules/valumsFileUploader/valumsAjaxRequest.php',
-            'CSS' => 'system/modules/valumsFileUploader/html/valumsFileUploader.css|screen',
-            'TEMPLATE' => 'be_valums',
-            'TMP_FOLDER' => 'system/tmp',
-            'DATA' => array()
-        ),
-        'FE' => array(
-            'ACTION' => 'ajax.php',
-            'TMP_FOLDER' => 'system/tmp'
-        )
-    )
-);
 ?>

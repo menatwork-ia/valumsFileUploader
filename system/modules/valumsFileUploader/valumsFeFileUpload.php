@@ -40,39 +40,24 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
     protected $strTemplate = 'form_valums';
 
     /**
+     * Objects
+     * @var type 
+     */
+    protected $objHelper;
+    protected $objUploader;
+
+    /**
      * Initialize the object and set configurations
      * @param array
-     * @throws Exception
      */
     public function __construct($arrAttributes = FALSE)
     {
         parent::__construct($arrAttributes);
 
-        $this->action = $GLOBALS['UPLOADER']['valumsFileUploader']['FE']['ACTION'];
-        $this->params = "action: 'ffl', id: '" . $this->strId . "'";
-        $this->debug = $this->val_uploader_debug;
+        $this->objHelper = new valumsHelper();
+        $this->objHelper->setHeaderData();
 
-        $this->loadLanguageFile('default');
-        $this->import('valumsHelper', 'helper');
-        $this->import('valumsFileUploader', 'main');
-
-        $_SESSION['VALUM_CONFIG'] = array(
-            'uploadFolder' => $GLOBALS['UPLOADER']['valumsFileUploader']['FE']['TMP_FOLDER'],
-            'maxFileLength' => $this->val_max_file_length,
-            'extension' => $this->extensions,
-            'doNotOverwrite' => $this->val_do_not_overwrite,
-            'resizeResolution' => $this->resize_resolution,
-            'specialSessionAttr' => array(
-                'formFieldId' => $this->Input->get('id'),
-                'formId' => $this->pid
-            )
-        );
-
-        $imageSize = deserialize($this->val_image_size);
-        if (is_array($imageSize) && $imageSize[0] != '' && $imageSize[1] != '')
-        {
-            $_SESSION['VALUM_CONFIG']['imageSize'] = $imageSize;
-        }
+        $this->objUploader = new valumsFileUploader();
     }
 
     /**
@@ -116,10 +101,6 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
      */
     public function generate()
     {
-        // Include ValumsFileUploader scripts
-        $GLOBALS['TL_JAVASCRIPT'][] = $GLOBALS['UPLOADER']['valumsFileUploader']['UPLOADER_JS'];
-        $GLOBALS['TL_CSS'][]        = $GLOBALS['UPLOADER']['valumsFileUploader']['UPLOADER_CSS'];
-
         $return = sprintf('
             <div id="file-uploader-%s" class="%s">       
                 <noscript>          
@@ -159,11 +140,59 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
     }
 
     /**
+     * Parse the template file and return it as string
+     * @param array
+     * @return string
+     */
+    public function parse($arrAttributes = false)
+    {
+        $this->setDefaultValues();
+        $this->setSessionData();
+
+        return parent::parse($arrAttributes);
+    }
+
+    /**
+     * Set all necessary session information
+     */
+    protected function setSessionData()
+    {
+        $_SESSION['VALUM_CONFIG'] = array(
+            'uploadFolder' => 'system/tmp',
+            'maxFileLength' => $this->val_max_file_length,
+            'extension' => $this->extensions,
+            'doNotOverwrite' => $this->val_do_not_overwrite,
+            'resizeResolution' => (($this->resize_resolution) ? TRUE : FALSE)
+        );
+
+        $imageSize = deserialize($this->val_image_size);
+        if (is_array($imageSize) && $imageSize[0] != '' && $imageSize[1] != '')
+        {
+            $_SESSION['VALUM_CONFIG']['imageSize'] = $imageSize;
+        }
+    }
+
+    /**
+     * Set all values that are necessary
+     */
+    protected function setDefaultValues()
+    {
+        $this->action = 'ajax.php';
+        $this->params = "{action: 'ffl', id: '" . $this->strId . "', type:'valumsFileUploader'}";
+        $this->debug = $this->val_uploader_debug;
+    }
+
+    /**
      * Call the real generateAjax in valumsFileUploader
      */
     public function generateAjax()
     {
-        $this->main->generateAjax();
+        $_SESSION['VALUM_CONFIG']['specialSessionAttr'] = array(
+            'formFieldId' => $this->Input->get('id'),
+            'formId' => $this->pid
+        );
+
+        $this->objUploader->generateAjax();
     }
 
 }

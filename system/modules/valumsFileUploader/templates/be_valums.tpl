@@ -1,11 +1,14 @@
-<div id="tl_soverview">
+<?php if(version_compare(VERSION, '2.11', '<') && $this->doFiles): ?>
+    <div id="tl_soverview">
+<?php endif; ?>
+
+<?php if(!$this->doFiles || version_compare(VERSION, '2.11', '<')): ?>
     <h3><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_file']['0']; ?></h3>
-    <div class="backend" id="file-uploader">       
-        <noscript>          
-        <p><?php echo sprintf($GLOBALS['TL_LANG']['ERR']['val_be_noscript'], $this->noJsBeLink); ?></p>
-        </noscript>
-    </div>
-    <p class="tl_help tl_tip"><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_file']['1']; ?></p>
+<?php endif; ?>
+<div class="backend" id="file-uploader">       
+    <noscript>          
+    <p><?php echo sprintf($GLOBALS['TL_LANG']['ERR']['val_be_noscript'], $this->noJsBeLink); ?></p>
+    </noscript>
 </div>
 
 <script type="text/javascript">
@@ -20,14 +23,14 @@
                 bypassToken: '1'
             },
             // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
-            allowedExtensions: ['<?php echo implode("','", $this->uploadTypes); ?>'],        
+            allowedExtensions: [<?php echo $this->uploadTypes; ?>],        
             // set to true to output server response to console
             debug: <?php echo ($this->debug) ? "'true'" : "'false'"; ?>,
             sizeLimit: <?php echo ($this->maxFileSize) ? $this->maxFileSize : '""'; ?>,
             // Template wrapper for all items
             template: '<div class="qq-uploader">' + 
-                '<div class="qq-upload-drop-area"><span><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_drop_area']; ?><\/span><\/div>' +
-                '<div class="qq-upload-button"><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_button']; ?><\/div>' +
+                '<div class="qq-upload-drop-area"><span><?php echo (strlen($this->dropTextLabel) != 0) ? $this->dropTextLabel : $GLOBALS['TL_LANG']['UPL']['be_upload_drop_area']; ?><\/span><\/div>' +
+                '<div class="qq-upload-button"><?php echo (strlen($this->dropButtonLabel) != 0) ? $this->dropButtonLabel : $GLOBALS['TL_LANG']['UPL']['be_upload_button']; ?><\/div>' +
                 '<ul class="qq-upload-list"><\/ul>' + 
                 '</div>',            
             // Template for one item in file list
@@ -67,3 +70,11 @@
     window.onload = createUploader;
     
 </script>
+
+<?php if(!$this->doFiles && $this->description == NULL || version_compare(VERSION, '2.11', '<') && $this->doFiles && $this->description == NULL): ?>
+    <p class="tl_help tl_tip"><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_file']['1']; ?></p>
+<?php endif; ?>
+
+<?php if(version_compare(VERSION, '2.11', '<') && $this->doFiles): ?>
+    </div>
+<?php endif; ?>

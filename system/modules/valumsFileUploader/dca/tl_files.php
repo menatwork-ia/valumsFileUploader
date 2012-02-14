@@ -27,8 +27,12 @@ if (!defined('TL_ROOT')) die('You cannot access this file directly!');
  * @license    GNU/GPL 2
  * @filesource
  */
-$GLOBALS['TL_DCA']['tl_files']['config']['dataContainer'] = tl_files_ext::getDataContainer();
-$GLOBALS['TL_DCA']['tl_files']['config']['uploadScript'] = tl_files_ext::getUploadScript();
+
+if(version_compare(VERSION, '2.11', '<'))
+{
+    $GLOBALS['TL_DCA']['tl_files']['config']['dataContainer'] = tl_files_ext::getDataContainer();
+    $GLOBALS['TL_DCA']['tl_files']['config']['uploadScript'] = tl_files_ext::getUploadScript();
+}    
 
 class tl_files_ext
 {
