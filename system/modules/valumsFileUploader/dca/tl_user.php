@@ -133,11 +133,16 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['val_image_size'] = array
 );
 
 /**
- * 
+ * Class UserExt 
  */
-class tl_user_ext extends tl_user
+class UserExt extends tl_user
 {
 
+    /**
+     * Return TRUE if the valumsFileUploader is set otherwise FALSE
+     * 
+     * @return boolean 
+     */
     public static function checkPalettes()
     {
         $objBeUser = BackendUser::getInstance();

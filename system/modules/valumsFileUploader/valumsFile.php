@@ -28,9 +28,9 @@
  */
 
 /**
- * Class valumsFile
+ * Class ValumsFile
  */
-class valumsFile extends Controller
+class ValumsFile extends Controller
 {
 
     /**

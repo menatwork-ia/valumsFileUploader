@@ -28,9 +28,9 @@
  */
 
 /**
- * Class valumsBeFileUpload
+ * Class ValumsBeFileUpload
  */
-class valumsBeFileUpload extends Widget
+class ValumsBeFileUpload extends Widget
 {
 
     /**
@@ -49,16 +49,17 @@ class valumsBeFileUpload extends Widget
 
     /**
      * Initialize the object and set configurations
+     * 
      * @param array
      */
     public function __construct($arrAttributes = FALSE)
     {
         parent::__construct($arrAttributes);
 
-        $this->objHelper = new valumsHelper();
+        $this->objHelper = new ValumsHelper();
         $this->objHelper->setHeaderData();
 
-        $this->objUploader = new valumsFileUploader();
+        $this->objUploader = new ValumsFileUploader();
         $this->objBeUser = BackendUser::getInstance();
     }
 
@@ -69,6 +70,7 @@ class valumsBeFileUpload extends Widget
 
     /**
      * Parse the template file and return it as string
+     * 
      * @param array
      * @return string
      */
@@ -100,7 +102,7 @@ class valumsBeFileUpload extends Widget
     }
 
     /**
-     * Set all values that are necessary
+     * Set all necessary values
      */
     protected function setDefaultValues()
     {
@@ -145,6 +147,8 @@ class valumsBeFileUpload extends Widget
 
     /**
      * Call the real generateAjax in valumsFileUploader
+     * 
+     * @param string $strAction 
      */
     public function generateAjax($strAction)
     {
@@ -154,21 +158,43 @@ class valumsBeFileUpload extends Widget
         }
     }
     
+    /**
+     * Necessary function for DC_Folder
+     * 
+     * @param string $strFolder
+     * @param string $strType
+     * @return array 
+     */
     public function uploadTo($strFolder, $strType)
     {
         return array();
     }
     
+    /**
+     * Necessary function for DC_Folder
+     * 
+     * @return boolean
+     */
     public function hasError()
     {
         return FALSE;
     }
     
+    /**
+     * Necessary function for DC_Folder
+     * 
+     * @return boolean 
+     */
     public function hasResized()
     {
         return FALSE;
     }
     
+    /**
+     * Parse the widget and return it as string
+     * 
+     * @return string
+     */
     public function generateMarkup()
     {
         return $this->parse();

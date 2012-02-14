@@ -28,9 +28,9 @@
  */
 
 /**
- * Class valumsHelper
+ * Class ValumsHelper
  */
-class valumsHelper extends Backend
+class ValumsHelper extends Backend
 {
 
     /**
@@ -42,12 +42,13 @@ class valumsHelper extends Backend
     }
 
     /**
-     *
-     * @param type $type
-     * @param type $strMessage
-     * @param type $arrLog
-     * @param type $strLogPos
-     * @param type $arrJson 
+     * Set the json encode with the given params
+     * 
+     * @param string $type
+     * @param string $strMessage
+     * @param array $arrLog
+     * @param string $strLogPos
+     * @param array $arrJson 
      */
     public function setJsonEncode($type, $strMessage, $arrLog, $strLogPos, $arrJson)
     {
@@ -58,6 +59,7 @@ class valumsHelper extends Backend
 
     /**
      * Return the given comma separatet extensions as string
+     * 
      * @param string $extension
      * @return string 
      */

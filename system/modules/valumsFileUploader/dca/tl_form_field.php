@@ -32,7 +32,6 @@
  */
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'], array('resize_resolution', 'val_store_file'));
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['valumsFileUploader'] = '{type_legend},type,name,label;{fconfig_legend},mandatory,extensions,val_max_file_length,val_init_text,val_drop_text;{store_legend:hide},val_store_file,resize_resolution;{expert_legend:hide},class,accesskey,val_uploader_debug;{submit_legend},addSubmit';
-$GLOBALS['TL_DCA']['tl_form_field']['fields']['useHomeDir']['eval']['tl_class'] .= ' m12';
 
 /**
  * Subpalettes
@@ -43,6 +42,8 @@ $GLOBALS['TL_DCA']['tl_form_field']['subpalettes']['resize_resolution'] = 'val_i
 /**
  * Fields
  */
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['useHomeDir']['eval']['tl_class'] .= ' m12';
+
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_store_file'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['storeFile'],
     'exclude' => TRUE,

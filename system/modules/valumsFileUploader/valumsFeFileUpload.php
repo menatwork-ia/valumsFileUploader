@@ -28,19 +28,21 @@
  */
 
 /**
- * Class valumsFeFileUpload
+ * Class ValumsFeFileUpload
  */
-class valumsFeFileUpload extends FormFileUpload implements uploadable
+class ValumsFeFileUpload extends FormFileUpload implements uploadable
 {
 
     /**
      * Template
+     * 
      * @var string
      */
     protected $strTemplate = 'form_valums';
 
     /**
      * Objects
+     * 
      * @var type 
      */
     protected $objHelper;
@@ -48,20 +50,22 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
 
     /**
      * Initialize the object and set configurations
+     * 
      * @param array
      */
     public function __construct($arrAttributes = FALSE)
     {
         parent::__construct($arrAttributes);
 
-        $this->objHelper = new valumsHelper();
+        $this->objHelper = new ValumsHelper();
         $this->objHelper->setHeaderData();
 
-        $this->objUploader = new valumsFileUploader();
+        $this->objUploader = new ValumsFileUploader();
     }
 
     /**
      * Add specific attributes and Store config for ajax upload.
+     * 
      * @param string
      * @param mixed
      */
@@ -97,6 +101,7 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
 
     /**
      * Generate the widget and return it as string
+     * 
      * @return string
      */
     public function generate()
@@ -141,6 +146,7 @@ class valumsFeFileUpload extends FormFileUpload implements uploadable
 
     /**
      * Parse the template file and return it as string
+     * 
      * @param array
      * @return string
      */

@@ -43,11 +43,15 @@ if (isset($_GET['bypassToken']) && ((is_array($_SESSION['REQUEST_TOKEN'][TL_MODE
 
 require_once('../../initialize.php');
 
-class valumsAjaxRequest extends Backend
+/**
+ * Class ValumsAjaxRequest
+ */
+class ValumsAjaxRequest extends Backend
 {
 
     /**
      * Current Ajax object
+     * 
      * @var object
      */
     protected $objAjax;
@@ -94,7 +98,7 @@ class valumsAjaxRequest extends Backend
 /**
  * Instantiate controller
  */
-$valumsAjaxRequest = new valumsAjaxRequest();
+$valumsAjaxRequest = new ValumsAjaxRequest();
 $valumsAjaxRequest->run();
 ?>
 

@@ -28,9 +28,9 @@
  */
 
 /**
- * Class valumsFileUploader
+ * Class ValumsFileUploader
  */
-class valumsFileUploader extends Backend
+class ValumsFileUploader extends Backend
 {
 
     /**
@@ -62,12 +62,18 @@ class valumsFileUploader extends Backend
     protected $intFormId = NULL;
 
     /**
-     * Load database object
+     * Objects 
+     */
+    protected $objHelper;
+
+
+    /**
+     * Initialize the object
      */
     public function __construct()
     {
         parent::__construct();
-        $this->import('valumsHelper', 'helper');
+        $this->objHelper = new ValumsHelper();
     }
 
     /**
@@ -80,43 +86,43 @@ class valumsFileUploader extends Backend
         if ($_SESSION['VALUM_CONFIG'])
             $arrConf = $_SESSION['VALUM_CONFIG'];
 
-        $objFile   = new valumsFile($arrConf['uploadFolder']);
+        $objFile   = new ValumsFile($arrConf['uploadFolder']);
         $strLogPos = __CLASS__ . " " . __FUNCTION__ . "()";
 
         // Check if file could not create
         if ($objFile->error)
         {
-            $this->helper->setJsonEncode('ERR', 'val_no_file', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_no_file']));
+            $this->objHelper->setJsonEncode('ERR', 'val_no_file', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_no_file']));
         }
 
         // Check if folder is writeable
         if (!is_writable(TL_ROOT . '/' . $objFile->uploadFolder))
         {
-            $this->helper->setJsonEncode('ERR', 'val_not_writeable', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_not_writeable']));
+            $this->objHelper->setJsonEncode('ERR', 'val_not_writeable', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_not_writeable']));
         }
 
         // Check for empty file
         if ($objFile->size == 0)
         {
-            $this->helper->setJsonEncode('ERR', 'val_file_size_zero', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_file_size_zero']));
+            $this->objHelper->setJsonEncode('ERR', 'val_file_size_zero', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_file_size_zero']));
         }
 
         // Check file size 
         if ($arrConf['maxFileLength'] > 0 && $objFile->size > $arrConf['maxFileLength'])
         {
-            $this->helper->setJsonEncode('ERR', 'val_max_size', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_max_size'], array($this->getReadableSize($arrConf['maxFileLength'])))));
+            $this->objHelper->setJsonEncode('ERR', 'val_max_size', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_max_size'], array($this->getReadableSize($arrConf['maxFileLength'])))));
         }
 
         // Check file type
-        if (!in_array(strtolower($objFile->getPathInfo('extension')), $this->helper->getArrExt($arrConf['extension'])))
+        if (!in_array(strtolower($objFile->getPathInfo('extension')), $this->objHelper->getArrExt($arrConf['extension'])))
         {
-            $this->helper->setJsonEncode('ERR', 'val_wrong_type', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_type'], array($objFile->getPathInfo('extension'), $arrConf['extension']))));
+            $this->objHelper->setJsonEncode('ERR', 'val_wrong_type', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_type'], array($objFile->getPathInfo('extension'), $arrConf['extension']))));
         }
 
         // Check if save was successful
         if (!$objFile->save($arrConf['doNotOverwrite']))
         {
-            $this->helper->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));
+            $this->objHelper->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));
         }
 
         $arrJson =  array(
@@ -166,7 +172,7 @@ class valumsFileUploader extends Backend
 
         $objFile->writeFileToSession($arrSpecialSession);
 
-        $this->helper->setJsonEncode('UPL', 'log_success', array($objFile->newName, $objFile->uploadFolder), $strLogPos, $arrJson);
+        $this->objHelper->setJsonEncode('UPL', 'log_success', array($objFile->newName, $objFile->uploadFolder), $strLogPos, $arrJson);
     }
 
     /**
@@ -216,6 +222,8 @@ class valumsFileUploader extends Backend
 
     /**
      * Moves temporary files in SESSION to final location and renew SESSION data.
+     * 
+     * @param integer $intFormId 
      */
     public function moveUploadedFiles($intFormId)
     {
@@ -241,7 +249,7 @@ class valumsFileUploader extends Backend
                             }
                         }
 
-                        $objFile = new valumsFile($uploadFolder, 'SESSION', $file);
+                        $objFile = new ValumsFile($uploadFolder, 'SESSION', $file);
                         if (!$objFile->error)
                         {
                             // Store the file if the upload folder exists

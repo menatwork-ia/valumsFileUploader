@@ -1,5 +1,4 @@
-<?php
-if (!defined('TL_ROOT')) die('You cannot access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
@@ -28,26 +27,42 @@ if (!defined('TL_ROOT')) die('You cannot access this file directly!');
  * @filesource
  */
 
-if(version_compare(VERSION, '2.11', '<'))
+/**
+ * Config 
+ */
+if (version_compare(VERSION, '2.11', '<'))
 {
-    $GLOBALS['TL_DCA']['tl_files']['config']['dataContainer'] = tl_files_ext::getDataContainer();
-    $GLOBALS['TL_DCA']['tl_files']['config']['uploadScript'] = tl_files_ext::getUploadScript();
-}    
+    $GLOBALS['TL_DCA']['tl_files']['config']['dataContainer'] = FilesExt::getDataContainer();
+    $GLOBALS['TL_DCA']['tl_files']['config']['uploadScript'] = FilesExt::getUploadScript();
+}
 
-class tl_files_ext
+/**
+ * Class FilesExt
+ */
+class FilesExt
 {
 
+    /**
+     * Return the uploader
+     * 
+     * @return string 
+     */
     static private function getUploader()
     {
         $objBeUser = BackendUser::getInstance();
         $GLOBALS['TL_CONFIG']['fancyUpload'] = FALSE;
-        if($objBeUser->uploader == 'fancyUpload')
+        if ($objBeUser->uploader == 'fancyUpload')
         {
             $GLOBALS['TL_CONFIG']['fancyUpload'] = TRUE;
-        }        
+        }
         return $objBeUser->uploader;
     }
 
+    /**
+     * Return the right data container for uploader
+     * 
+     * @return string 
+     */
     static public function getDataContainer()
     {
         if (self::getUploader() == 'fancyUpload' || self::getUploader() == 'default')
@@ -57,6 +72,11 @@ class tl_files_ext
         return 'Upload';
     }
 
+    /**
+     * Return the uploader
+     * 
+     * @return string 
+     */
     static public function getUploadScript()
     {
         if (self::getUploader() == 'default')
