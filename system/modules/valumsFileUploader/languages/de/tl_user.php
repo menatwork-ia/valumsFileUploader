@@ -41,5 +41,7 @@ $GLOBALS['TL_LANG']['tl_user']['do_not_overwrite_type'] = array('Was ist zu tun 
 $GLOBALS['TL_LANG']['tl_user']['uploader_debug'] = array('Debug aktivieren', 'Wählen Sie diese Option wenn Sie den Debugmodus des Uploaders aktivieren wollen');
 $GLOBALS['TL_LANG']['tl_user']['resize_resolution'] = array('Bilder skalieren', 'Wählen Sie diese Option, um Bilder beim Upload zu skalieren.');
 $GLOBALS['TL_LANG']['tl_user']['val_image_size'] = array('Bildbreite und Bildhöhe', 'Durch die Eingabe dieser Felder werden die globalen Einstellungen überschrieben.');
+$GLOBALS['TL_LANG']['tl_user']['details_failure_message'] = array('Detaillierte Fehlermeldung', 'Wählen Sie diese Option, um bei einem fehlerhaften Upload eine detaillierte Meldung auszugeben.');
+$GLOBALS['TL_LANG']['tl_user']['max_file_count'] = array('Maximale Dateiuploads', 'Geben Sie hier die maximale Anzahl an möglichen Dateiuploads ein.');
 
 ?>

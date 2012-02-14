@@ -26,22 +26,23 @@
  * @license    GNU/GPL 2 
  * @filesource
  */
+
 /**
  * Form fields
  */
-$GLOBALS['TL_FFL']['valumsFileUploader'] = 'valumsFeFileUpload';
-$GLOBALS['BE_FFL']['valumsFileUploader'] = 'valumsBeFileUpload';
+$GLOBALS['TL_FFL']['valumsFileUploader'] = 'ValumsFeFileUpload';
+$GLOBALS['BE_FFL']['valumsFileUploader'] = 'ValumsBeFileUpload';
 
 /**
  * Hook
  */
-$GLOBALS['TL_HOOKS']['validateFormField'][] = array('valumsFileUploader', 'validateFormField');
-$GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('valumsHelper', 'checkExtensions');
+$GLOBALS['TL_HOOKS']['validateFormField'][] = array('ValumsFileUploader', 'validateFormField');
+$GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('ValumsHelper', 'checkExtensions');
 
 if (TL_MODE == 'BE')
 {
-    $GLOBALS['TL_HOOKS']['executePreActions'][] = array('valumsBeFileUpload', 'generateAjax');
-    $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('valumsHelper', 'setUser');
+    $GLOBALS['TL_HOOKS']['executePreActions'][] = array('ValumsBeFileUpload', 'generateAjax');
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('ValumsHelper', 'setUser');
 }
 
 ?>

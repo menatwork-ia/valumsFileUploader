@@ -82,49 +82,60 @@ class ValumsFileUploader extends Backend
      * @return array
      */
     public function generateAjax()
-    {
+    { 
+        // Declare log position
+        $strLogPos = __CLASS__ . " " . __FUNCTION__ . "()";
+        
+        // Get config
         if ($_SESSION['VALUM_CONFIG'])
             $arrConf = $_SESSION['VALUM_CONFIG'];
 
+        // Check if maxFileCount is reached
+        if($_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && $_SESSION['VALUM_CONFIG']['fileCount'] == $_SESSION['VALUM_CONFIG']['maxFileCount'])
+        {
+            $this->objHelper->setJsonEncode('ERR', 'val_max_files', array(), $strLogPos, array("success" => FALSE, "reason" => "val_max_files", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_max_files']));
+        }
+        
+        // Create ValumsFile object
         $objFile   = new ValumsFile($arrConf['uploadFolder']);
-        $strLogPos = __CLASS__ . " " . __FUNCTION__ . "()";
-
+        
         // Check if file could not create
         if ($objFile->error)
         {
-            $this->objHelper->setJsonEncode('ERR', 'val_no_file', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_no_file']));
+            $this->objHelper->setJsonEncode('ERR', 'val_no_file', array(), $strLogPos, array("success" => FALSE, "reason" => "val_no_file", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_no_file']));
         }
 
         // Check if folder is writeable
         if (!is_writable(TL_ROOT . '/' . $objFile->uploadFolder))
         {
-            $this->objHelper->setJsonEncode('ERR', 'val_not_writeable', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_not_writeable']));
+            $this->objHelper->setJsonEncode('ERR', 'val_not_writeable', array(), $strLogPos, array("success" => FALSE, "reason" => "val_not_writeable", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_not_writeable']));
         }
 
         // Check for empty file
         if ($objFile->size == 0)
         {
-            $this->objHelper->setJsonEncode('ERR', 'val_file_size_zero', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_file_size_zero']));
+            $this->objHelper->setJsonEncode('ERR', 'val_file_size_zero', array(), $strLogPos, array("success" => FALSE, "reason" => "val_file_size_zero", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_file_size_zero']));
         }
 
         // Check file size 
         if ($arrConf['maxFileLength'] > 0 && $objFile->size > $arrConf['maxFileLength'])
         {
-            $this->objHelper->setJsonEncode('ERR', 'val_max_size', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_max_size'], array($this->getReadableSize($arrConf['maxFileLength'])))));
+            $this->objHelper->setJsonEncode('ERR', 'val_max_size', array(), $strLogPos, array("success" => FALSE, "reason" => "val_max_size", "reasonText" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_max_size'], array($this->getReadableSize($arrConf['maxFileLength'])))));
         }
 
         // Check file type
         if (!in_array(strtolower($objFile->getPathInfo('extension')), $this->objHelper->getArrExt($arrConf['extension'])))
         {
-            $this->objHelper->setJsonEncode('ERR', 'val_wrong_type', array(), $strLogPos, array("success" => FALSE, "reason" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_type'], array($objFile->getPathInfo('extension'), $arrConf['extension']))));
+            $this->objHelper->setJsonEncode('ERR', 'val_wrong_type', array(), $strLogPos, array("success" => FALSE, "reason" => "val_wrong_type", "reasonText" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_type'], array($objFile->getPathInfo('extension'), $arrConf['extension']))));
         }
 
         // Check if save was successful
         if (!$objFile->save($arrConf['doNotOverwrite']))
         {
-            $this->objHelper->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));
+            $this->objHelper->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => "val_save_error", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));
         }
 
+        // Declare json array
         $arrJson =  array(
             'success' => TRUE, 
             'filename' => $objFile->newName,
@@ -163,15 +174,20 @@ class ValumsFileUploader extends Backend
             
         }
 
+        // Add special attributes
         $arrSpecialSession = array();
-
         if (is_array($arrConf['specialSessionAttr']))
         {
             $arrSpecialSession = $arrConf['specialSessionAttr'];
         }
 
+        // Write files to session
         $objFile->writeFileToSession($arrSpecialSession);
 
+        // Increment maxFileCount
+        $_SESSION['VALUM_CONFIG']['fileCount']++;
+        
+        // Set json encoding
         $this->objHelper->setJsonEncode('UPL', 'log_success', array($objFile->newName, $objFile->uploadFolder), $strLogPos, $arrJson);
     }
 

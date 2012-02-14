@@ -52,7 +52,7 @@ class ValumsHelper extends Backend
      */
     public function setJsonEncode($type, $strMessage, $arrLog, $strLogPos, $arrJson)
     {
-        $this->log(vsprintf($GLOBALS['TL_LANG'][$type][$message], $arrLog), $strLogPos, ($type == 'ERR') ? TL_ERROR : TL_FILES);
+        $this->log(vsprintf($GLOBALS['TL_LANG'][$type][$strMessage], $arrLog), $strLogPos, ($type == 'ERR') ? TL_ERROR : TL_FILES);
         echo json_encode($arrJson);
         exit;
     }

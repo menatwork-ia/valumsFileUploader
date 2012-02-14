@@ -56,12 +56,21 @@
                     var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
                         
                     var div = new Element('div', {
-                        id: 'valums_resized',
                         html: responseJSON.resized_message
                     });
                         
                     div.inject(qqUploadListChilds[0][id], 'bottom');                        
                 }
+            
+                <?php if($this->detailsFailureMessage): ?>
+                if(!responseJSON.success)
+                {
+                    var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
+                    var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-failed-text')[0];
+                    elem.set({html:responseJSON.reasonText}); 
+                }
+                <?php endif; ?>
+                
             }
         });
 

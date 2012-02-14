@@ -88,6 +88,8 @@ class ValumsBeFileUpload extends Widget
     protected function setSessionData()
     {
         $_SESSION['VALUM_CONFIG'] = array(
+            'fileCount' => 0,
+            'maxFileCount' => $this->maxFileCount,
             'uploadFolder' => $this->path,
             'maxFileLength' => $this->maxFileSize,
             'extension' => $this->extensions,
@@ -106,12 +108,14 @@ class ValumsBeFileUpload extends Widget
      */
     protected function setDefaultValues()
     {
-        $this->action = 'system/modules/valumsFileUploader/valumsAjaxRequest.php';
+        $this->action = 'system/modules/valumsFileUploader/ValumsAjaxRequest.php';
         $this->paramAction = 'valumsFileUploader';
         $this->doFiels = FALSE;
         
         if($this->Input->get('do') == 'files')
         {
+            $this->detailsFailureMessage = $this->objBeUser->details_failure_message;
+            $this->maxFileCount = $this->objBeUser->max_file_count;
             $this->doFiles = TRUE;
             $this->path = $this->Input->get('pid');
             $this->debug = $this->objBeUser->uploader_debug;

@@ -28,6 +28,8 @@ CREATE TABLE `tl_form_field` (
 
 CREATE TABLE `tl_user` (
     `uploader` varchar(32) NOT NULL default '',
+    `details_failure_message` char(1) NOT NULL default '',
+    `max_file_count` int(2) NOT NULL default '0',
     `do_not_overwrite` char(1) NOT NULL default '',
     `do_not_overwrite_type` varchar(128) NOT NULL default 'useSuffix',
     `uploader_debug` char(1) NOT NULL default '',
