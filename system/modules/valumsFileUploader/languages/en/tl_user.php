@@ -39,8 +39,8 @@ $GLOBALS['TL_LANG']['tl_user']['do_not_overwrite']          = array('Do not over
 $GLOBALS['TL_LANG']['tl_user']['uploader']                  = array('Select uploader', 'Please select your favourite uploader.');
 $GLOBALS['TL_LANG']['tl_user']['do_not_overwrite_type']     = array('What to do if the file already exists', 'Here you can select what happens if the file already exists.');
 $GLOBALS['TL_LANG']['tl_user']['uploader_debug']            = array('Enable debug', 'Please select this option if you want to enable the debug mode from the uploader');
-$GLOBALS['TL_LANG']['tl_user']['resize_resolution']         = array('Bilder skalieren', 'Wählen Sie diese Option, um Bilder beim Upload zu skalieren.');
-$GLOBALS['TL_LANG']['tl_user']['val_image_size']            = array('Bildbreite und Bildhöhe', 'Durch die Eingabe dieser Felder werden die globalen Einstellungen überschrieben.');
+$GLOBALS['TL_LANG']['tl_user']['resize_resolution']         = array('Scale images', 'Select this option to scale images when uploading.');
+$GLOBALS['TL_LANG']['tl_user']['val_image_size']            = array('Image width and height', 'Enter the new height and width of the images. Leave these options blank to use the contao default settings.');
 $GLOBALS['TL_LANG']['tl_user']['details_failure_message']   = array('Detailed error message', 'Select this option to output detailed error messages on failures.');
 $GLOBALS['TL_LANG']['tl_user']['max_file_count']            = array('Maximum file uploads', 'Enter the maximum number of possible file uploads.');
 

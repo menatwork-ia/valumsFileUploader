@@ -95,13 +95,11 @@ class ValumsBeFileUpload extends Widget
             'maxFileLength' => $this->maxFileSize,
             'extension' => $this->extensions,
             'doNotOverwrite' => (($this->doNotOverwrite) ? $this->doNotOverwrite : FALSE),
-            'resizeResolution' => ((is_array($this->resize)) ? TRUE : FALSE),
+            'resizeResolution' => $this->resizeResolution,
+            'imageSize' => $this->imageSize
         );
-
-        if (is_array($this->resize) && $this->resize[0] != '' && $this->resize[1] != '')
-        {
-            $_SESSION['VALUM_CONFIG']['imageSize'] = $this->resize;
-        }
+        
+        FB::log($_SESSION['VALUM_CONFIG']);
     }
 
     /**
@@ -126,9 +124,19 @@ class ValumsBeFileUpload extends Widget
             }
             if($this->objBeUser->resize_resolution == TRUE)
             {
-                $this->resize = deserialize($this->objBeUser->val_image_size);
+                $this->resizeResolution = $this->objBeUser->resize_resolution;
+                $this->imageSize = deserialize($this->objBeUser->val_image_size);
             }
-        }      
+        }
+        
+        if($this->resize != NULL)
+        {
+            $this->resizeResolution = TRUE;
+            if(is_array($this->resize))
+            {
+                $this->imageSize = $this->resize;
+            }
+        }
         
         $this->maxFileSize = (($this->maxFileSize) ? $this->maxFileSize : $GLOBALS['TL_CONFIG']['maxFileSize']);
         

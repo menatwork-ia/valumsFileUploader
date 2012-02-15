@@ -52,8 +52,7 @@
                 onLeave: <?php echo $GLOBALS['TL_LANG']['ERR']['val_on_leave']; ?>          
             },
 
-            onComplete: function(id, fileName, responseJSON){  
-                console.log(responseJSON);
+            onComplete: function(id, fileName, responseJSON){
                 if(responseJSON.success && responseJSON.resized || responseJSON.success && responseJSON.exceeds)
                 {
                     var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();

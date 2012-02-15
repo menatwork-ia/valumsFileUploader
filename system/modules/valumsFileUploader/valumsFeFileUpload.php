@@ -188,7 +188,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
         $this->action = 'ajax.php';
         $this->params = "{action: 'ffl', id: '" . $this->strId . "', type:'valumsFileUploader'}";
         $this->debug = $this->val_uploader_debug;
-        
+        $this->detailsFailureMessage = $this->details_failure_message;
         if($this->maxFileCount != NULL)
         {
             $this->max_file_count = $this->maxFileCount;
