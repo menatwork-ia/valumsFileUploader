@@ -94,8 +94,8 @@ class ValumsBeFileUpload extends Widget
             'uploadFolder' => $this->path,
             'maxFileLength' => $this->maxFileSize,
             'extension' => $this->extensions,
-            'doNotOverwrite' => $this->doNotOverwrite,
-            'resizeResolution' => (($this->resize) ? TRUE : FALSE),
+            'doNotOverwrite' => (($this->doNotOverwrite) ? $this->doNotOverwrite : FALSE),
+            'resizeResolution' => ((is_array($this->resize)) ? TRUE : FALSE),
         );
 
         if (is_array($this->resize) && $this->resize[0] != '' && $this->resize[1] != '')
@@ -120,8 +120,14 @@ class ValumsBeFileUpload extends Widget
             $this->doFiles = TRUE;
             $this->path = $this->Input->get('pid');
             $this->debug = $this->objBeUser->uploader_debug;
-            $this->doNotOverwrite = $this->objBeUser->do_not_overwrite_type;
-            $this->resize = deserialize($this->objBeUser->val_image_size);
+            if($this->objBeUser->do_not_overwrite == TRUE)
+            {
+                $this->doNotOverwrite = $this->objBeUser->do_not_overwrite_type;
+            }
+            if($this->objBeUser->resize_resolution == TRUE)
+            {
+                $this->resize = deserialize($this->objBeUser->val_image_size);
+            }
         }      
         
         $this->maxFileSize = (($this->maxFileSize) ? $this->maxFileSize : $GLOBALS['TL_CONFIG']['maxFileSize']);

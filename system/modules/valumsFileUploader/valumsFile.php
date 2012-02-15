@@ -392,7 +392,6 @@ class ValumsFile extends Controller
             fseek($this->tmpFile, 0, SEEK_SET);
             stream_copy_to_stream($this->tmpFile, $target);
             fclose($target);
-
             unset($_FILES['qqfile'][$this->name]);
         }
 

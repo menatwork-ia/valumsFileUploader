@@ -32,73 +32,104 @@ require_once TL_ROOT . '/system/drivers/DC_Folder.php';
 class DC_Upload extends DC_Folder
 {
 
-    /**
-     * Generate the ajax uploader
-     * @param boolean
-     */
-    public function move($blnIsAjax = false)
-    {
-        $objHelper = new valumsHelper();
-        $strFolder = $this->Input->get('pid', true);
+	/**
+	 * Move one or more local files to the server
+	 * @param boolean
+	 * @return string
+	 */
+	public function move($blnIsAjax=false)
+	{
+		$error = false;
+		$strFolder = $this->Input->get('pid', true);
 
-        // Empty clipboard
-        if (!$blnIsAjax)
-        {
-            $arrClipboard = $this->Session->get('CLIPBOARD');
-            $arrClipboard[$this->strTable] = array();
-            $this->Session->set('CLIPBOARD', $arrClipboard);
-        }
+		if (!file_exists(TL_ROOT . '/' . $strFolder) || !$this->isMounted($strFolder))
+		{
+			$this->log('Folder "'.$strFolder.'" was not mounted or is not a directory', 'DC_Folder move()', TL_ERROR);
+			$this->redirect('contao/main.php?act=error');
+		}
 
-        $this->import('BackendUser', 'User');
-        $uploader  = $this->User->uploader;
-        $imageSize = deserialize($this->User->val_image_size);
+		if (!preg_match('/^'.preg_quote($GLOBALS['TL_CONFIG']['uploadPath'], '/').'/i', $strFolder))
+		{
+			$this->log('Parent folder "'.$strFolder.'" is not within the files directory', 'DC_Folder move()', TL_ERROR);
+			$this->redirect('contao/main.php?act=error');
+		}
 
-        if (array_key_exists($uploader, $GLOBALS['UPLOADER']))
-        {
-            $arrUploader = $GLOBALS['UPLOADER'][$uploader];
-        }
-        else
-        {
-            if (!is_array($_SESSION['TL_ERROR']))
-            {
-                $_SESSION['TL_ERROR'] = array();
-            }
+		// Empty clipboard
+		if (!$blnIsAjax)
+		{
+			$arrClipboard = $this->Session->get('CLIPBOARD');
+			$arrClipboard[$this->strTable] = array();
+			$this->Session->set('CLIPBOARD', $arrClipboard);
+		}
 
-            $_SESSION['TL_ERROR'][] = sprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_config'], $uploader, $this->Environment->scriptName . '?do=login');
-        }
+		// Instantiate the uploader                
+		$this->import('BackendUser', 'User');
+		$class = ($this->User->uploader != '') ? $this->User->uploader : 'FileUpload';
+		$objUploader = new $class();
+               
 
-        $arrAttributes = array(
-            'path' => $strFolder,
-            'template' => $arrUploader['BE']['TEMPLATE'],
-            'action' => $arrUploader['BE']['ACTION'],
-            'paramAction' => $uploader,
-            'debug' => $this->User->uploader_debug,
-            'doNotOverwrite' => $this->User->do_not_overwrite_type,
-            'resize' => $imageSize,
-            'tl_help' => TRUE
-        );
+		// Process the uploaded files
+		if ($this->Input->post('FORM_SUBMIT') == 'tl_upload')
+		{
+			$arrUploaded = $objUploader->uploadTo($strFolder, 'files');
 
-        if (is_array($arrUploader['BE']['DATA']))
-        {
-            foreach ($arrUploader['BE']['DATA'] AS $k => $v)
-            {
-                $arrAttributes[$k] = $v;
-            }
-        }
+			// HOOK: post upload callback
+			if (isset($GLOBALS['TL_HOOKS']['postUpload']) && is_array($GLOBALS['TL_HOOKS']['postUpload']))
+			{
+				foreach ($GLOBALS['TL_HOOKS']['postUpload'] as $callback)
+				{
+					$this->import($callback[0]);
+					$this->$callback[0]->$callback[1]($arrUploaded);
+				}
+			}
 
-        $strReturn = '
-            <div id="tl_buttons">
-                <a href="' . $this->getReferer(true) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '" accesskey="b" onclick="Backend.getScrollOffset();">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
-            </div>
+			// Redirect or reload
+			if (!$objUploader->hasError())
+			{
+				// Do not purge the html folder (see #2898)
 
-            <h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_files']['uploadFF'], basename($strFolder)) . '</h2>
-            ' . $this->getMessages();
+				if ($this->Input->post('uploadNback') && !$objUploader->hasResized())
+				{
+					$this->resetMessages();
+					$this->redirect($this->getReferer());
+				}
 
-        $uploadWidget = new valumsBeFileUpload($arrAttributes);
-        $strReturn .= $uploadWidget->parse();
+				$this->reload();
+			}
+		}
 
-        return $strReturn;
-    }
+		// Display the upload form
+		return '
+<div id="tl_buttons">
+<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>
+
+<h2 class="sub_headline">'.sprintf($GLOBALS['TL_LANG']['tl_files']['uploadFF'], basename($strFolder)).'</h2>
+'.$this->getMessages().'
+<form action="'.ampersand($this->Environment->request, true).'" id="'.$this->strTable.'" class="tl_form" method="post"'.(!empty($this->onsubmit) ? ' onsubmit="'.implode(' ', $this->onsubmit).'"' : '').' enctype="multipart/form-data">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="tl_upload">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">
+<input type="hidden" name="MAX_FILE_SIZE" value="'.$GLOBALS['TL_CONFIG']['maxFileSize'].'">
+
+<div class="tl_tbox">
+  <h3>'.$GLOBALS['TL_LANG'][$this->strTable]['fileupload'][0].'</h3>'.$objUploader->generateMarkup().(isset($GLOBALS['TL_LANG'][$this->strTable]['fileupload'][1]) ? '
+  <p class="tl_help tl_tip">'.$GLOBALS['TL_LANG'][$this->strTable]['fileupload'][1].'</p>' : '').'
+</div>
+
+</div>
+
+<div class="tl_formbody_submit">
+
+<div class="tl_submit_container">
+<input type="submit" name="upload" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['upload']).'"> 
+<input type="submit" name="uploadNback" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['uploadNback']).'">
+</div>
+
+</div>
+
+</form>';
+	}
 
 }
 

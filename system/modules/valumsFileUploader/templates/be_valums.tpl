@@ -1,17 +1,19 @@
-<?php if(version_compare(VERSION, '2.11', '<') && $this->doFiles): ?>
+<?php if(!$this->doFiles): ?>
     <div id="tl_soverview">
 <?php endif; ?>
 
-<?php if(!$this->doFiles || version_compare(VERSION, '2.11', '<')): ?>
+<?php if(!$this->doFiles): ?>     
     <h3><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_file']['0']; ?></h3>
 <?php endif; ?>
 <div class="backend" id="file-uploader">       
     <noscript>          
-    <p><?php echo sprintf($GLOBALS['TL_LANG']['ERR']['val_be_noscript'], $this->noJsBeLink); ?></p>
+        <p><?php echo sprintf($GLOBALS['TL_LANG']['ERR']['val_be_noscript'], $this->noJsBeLink); ?></p>
     </noscript>
 </div>
 
 <script type="text/javascript">
+    /* <![CDATA[ */
+	
     function createUploader(){        
         var uploader = new qq.FileUploader({            
             element: document.getElementById('file-uploader'),
@@ -51,6 +53,7 @@
             },
 
             onComplete: function(id, fileName, responseJSON){  
+                console.log(responseJSON);
                 if(responseJSON.success && responseJSON.resized || responseJSON.success && responseJSON.exceeds)
                 {
                     var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
@@ -75,15 +78,18 @@
         });
 
     }
-    
-    window.onload = createUploader;
-    
+        
+    window.addEvent('domready', function(){
+        window.onload = createUploader;	
+    });
+	
+    /* ]]> */
 </script>
 
-<?php if(!$this->doFiles && $this->description == NULL || version_compare(VERSION, '2.11', '<') && $this->doFiles && $this->description == NULL): ?>
+<?php if(!$this->doFiles && $this->description == NULL): ?>
     <p class="tl_help tl_tip"><?php echo $GLOBALS['TL_LANG']['UPL']['be_upload_file']['1']; ?></p>
 <?php endif; ?>
 
-<?php if(version_compare(VERSION, '2.11', '<') && $this->doFiles): ?>
+<?php if(!$this->doFiles): ?>
     </div>
 <?php endif; ?>

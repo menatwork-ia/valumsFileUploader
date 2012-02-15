@@ -60,7 +60,7 @@ foreach ($GLOBALS['TL_DCA']['tl_user']['palettes'] as $key => $row)
     
     if(UserExt::checkPalettes())
     {
-        $arrPalette = array('{upload_legend},uploader, uploader_debug, details_failure_message, max_file_count, do_not_overwrite, resize_resolution');
+        $arrPalette = array('{upload_legend},uploader, max_file_count, uploader_debug, details_failure_message, do_not_overwrite, resize_resolution');
     }
     else
     {
@@ -99,21 +99,21 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['uploader'] = array(
     'eval' => array('submitOnChange' => TRUE, 'tl_class' => 'w50')
 );
 
+$GLOBALS['TL_DCA']['tl_user']['fields']['max_file_count'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_user']['max_file_count'],
+    'inputType' => 'text',
+    'eval' => array('tl_class' => 'w50')
+);
+
 $GLOBALS['TL_DCA']['tl_user']['fields']['uploader_debug'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_user']['uploader_debug'],
     'inputType' => 'checkbox',
-    'eval' => array('tl_class' => 'w50 m12'),
+    'eval' => array('tl_class' => 'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['details_failure_message'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_user']['details_failure_message'],
     'inputType' => 'checkbox',
-    'eval' => array('tl_class' => 'w50 m12')
-);
-
-$GLOBALS['TL_DCA']['tl_user']['fields']['max_file_count'] = array(
-    'label' => &$GLOBALS['TL_LANG']['tl_user']['max_file_count'],
-    'inputType' => 'text',
     'eval' => array('tl_class' => 'w50')
 );
 

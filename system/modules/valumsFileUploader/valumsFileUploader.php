@@ -82,7 +82,7 @@ class ValumsFileUploader extends Backend
      * @return array
      */
     public function generateAjax()
-    { 
+    {
         // Declare log position
         $strLogPos = __CLASS__ . " " . __FUNCTION__ . "()";
         
@@ -91,7 +91,7 @@ class ValumsFileUploader extends Backend
             $arrConf = $_SESSION['VALUM_CONFIG'];
 
         // Check if maxFileCount is reached
-        if($_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && $_SESSION['VALUM_CONFIG']['fileCount'] >= $_SESSION['VALUM_CONFIG']['maxFileCount'] || count($_SESSION['VALUM_FILES']) >= $_SESSION['VALUM_CONFIG']['maxFileCount'])
+        if($_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && $_SESSION['VALUM_CONFIG']['fileCount'] >= $_SESSION['VALUM_CONFIG']['maxFileCount'] || $_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && count($_SESSION['VALUM_FILES']) >= $_SESSION['VALUM_CONFIG']['maxFileCount'])
         {
             $this->objHelper->setJsonEncode('ERR', 'val_max_files', array(), $strLogPos, array("success" => FALSE, "reason" => "val_max_files", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_max_files']));
         }

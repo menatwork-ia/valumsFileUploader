@@ -10,6 +10,7 @@
     
 <script type="text/javascript">
     /* <![CDATA[ */
+    
     function createUploader(){  
         var uploader = new qq.FileUploader({
             element: document.getElementById('file-uploader-<?php echo $this->strId; ?>'),
@@ -60,6 +61,10 @@
             }
         });        
     }
-    window.onload = createUploader;
+    
+    window.addEvent('domready', function(){
+    	window.onload = createUploader;	
+    });
+    
     /* ]]> */
 </script>

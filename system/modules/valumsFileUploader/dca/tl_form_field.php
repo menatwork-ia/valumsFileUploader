@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'] = array_merge($G
 $arrPalettes = array(
     '{type_legend},type,name,label',
     '{fconfig_legend},mandatory,extensions,val_max_file_length,val_init_text,val_drop_text',
-    '{store_legend:hide},val_store_file,details_failure_message,max_file_count,resize_resolution',
+    '{store_legend:hide},details_failure_message,max_file_count,val_store_file,resize_resolution',
     '{expert_legend:hide},class,accesskey,val_uploader_debug',
     '{submit_legend},addSubmit'
 );
