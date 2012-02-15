@@ -44,6 +44,19 @@
                 minSizeError: <?php echo $GLOBALS['TL_LANG']['ERR']['val_min_size_error']; ?>,
                 emptyError: <?php echo $GLOBALS['TL_LANG']['ERR']['val_empty_error']; ?>,
                 onLeave: <?php echo $GLOBALS['TL_LANG']['ERR']['val_on_leave']; ?>          
+            },
+            
+            onComplete: function(id, fileName, responseJSON){
+                
+                <?php if($this->detailsFailureMessage): ?>
+                if(!responseJSON.success)
+                {
+                    var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
+                    var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-failed-text')[0];
+                    elem.set({html:responseJSON.reasonText}); 
+                }
+                <?php endif; ?>                
+                
             }
         });        
     }

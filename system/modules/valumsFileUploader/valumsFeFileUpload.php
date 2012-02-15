@@ -164,6 +164,8 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
     protected function setSessionData()
     {
         $_SESSION['VALUM_CONFIG'] = array(
+            'fileCount' => 0,
+            'maxFileCount' => $this->max_file_count,            
             'uploadFolder' => 'system/tmp',
             'maxFileLength' => $this->val_max_file_length,
             'extension' => $this->extensions,
@@ -186,6 +188,11 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
         $this->action = 'ajax.php';
         $this->params = "{action: 'ffl', id: '" . $this->strId . "', type:'valumsFileUploader'}";
         $this->debug = $this->val_uploader_debug;
+        
+        if($this->maxFileCount != NULL)
+        {
+            $this->max_file_count = $this->maxFileCount;
+        }
     }
 
     /**

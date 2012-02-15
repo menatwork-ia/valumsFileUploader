@@ -30,14 +30,18 @@
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_user']['upload_legend'] = 'Uploader';
+$GLOBALS['TL_LANG']['tl_user']['upload_legend']             = 'Uploader';
 
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_user']['do_not_overwrite'] = array('Do not overwrite', 'Please select this option if you do not want to overwrite the files.');
-$GLOBALS['TL_LANG']['tl_user']['uploader'] = array('Select uploader', 'Please select your favourite uploader.');
-$GLOBALS['TL_LANG']['tl_user']['do_not_overwrite_type'] = array('What to do if the file already exists', 'Here you can select what happens if the file already exists.');
-$GLOBALS['TL_LANG']['tl_user']['uploader_debug'] = array('Enable debug', 'Please select this option if you want to enable the debug mode from the uploader');
+$GLOBALS['TL_LANG']['tl_user']['do_not_overwrite']          = array('Do not overwrite', 'Please select this option if you do not want to overwrite the files.');
+$GLOBALS['TL_LANG']['tl_user']['uploader']                  = array('Select uploader', 'Please select your favourite uploader.');
+$GLOBALS['TL_LANG']['tl_user']['do_not_overwrite_type']     = array('What to do if the file already exists', 'Here you can select what happens if the file already exists.');
+$GLOBALS['TL_LANG']['tl_user']['uploader_debug']            = array('Enable debug', 'Please select this option if you want to enable the debug mode from the uploader');
+$GLOBALS['TL_LANG']['tl_user']['resize_resolution']         = array('Bilder skalieren', 'Wählen Sie diese Option, um Bilder beim Upload zu skalieren.');
+$GLOBALS['TL_LANG']['tl_user']['val_image_size']            = array('Bildbreite und Bildhöhe', 'Durch die Eingabe dieser Felder werden die globalen Einstellungen überschrieben.');
+$GLOBALS['TL_LANG']['tl_user']['details_failure_message']   = array('Detailed error message', 'Select this option to output detailed error messages on failures.');
+$GLOBALS['TL_LANG']['tl_user']['max_file_count']            = array('Maximum file uploads', 'Enter the maximum number of possible file uploads.');
 
 ?>

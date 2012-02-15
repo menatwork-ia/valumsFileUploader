@@ -31,7 +31,14 @@
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'] = array_merge($GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'], array('resize_resolution', 'val_store_file'));
-$GLOBALS['TL_DCA']['tl_form_field']['palettes']['valumsFileUploader'] = '{type_legend},type,name,label;{fconfig_legend},mandatory,extensions,val_max_file_length,val_init_text,val_drop_text;{store_legend:hide},val_store_file,resize_resolution;{expert_legend:hide},class,accesskey,val_uploader_debug;{submit_legend},addSubmit';
+$arrPalettes = array(
+    '{type_legend},type,name,label',
+    '{fconfig_legend},mandatory,extensions,val_max_file_length,val_init_text,val_drop_text',
+    '{store_legend:hide},val_store_file,details_failure_message,max_file_count,resize_resolution',
+    '{expert_legend:hide},class,accesskey,val_uploader_debug',
+    '{submit_legend},addSubmit'
+);
+$GLOBALS['TL_DCA']['tl_form_field']['palettes']['valumsFileUploader'] = implode(";", $arrPalettes);
 
 /**
  * Subpalettes
@@ -42,36 +49,11 @@ $GLOBALS['TL_DCA']['tl_form_field']['subpalettes']['resize_resolution'] = 'val_i
 /**
  * Fields
  */
-$GLOBALS['TL_DCA']['tl_form_field']['fields']['useHomeDir']['eval']['tl_class'] .= ' m12';
-
-$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_store_file'] = array(
-    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['storeFile'],
-    'exclude' => TRUE,
-    'inputType' => 'checkbox',
-    'eval' => array('submitOnChange' => TRUE)
-);
-
-$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_do_not_overwrite'] = array(
-    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['val_do_not_overwrite'],
-    'exclude' => TRUE,
-    'inputType' => 'select',
-    'options' => array('overwriteFile', 'useSuffix', 'useTimeStamp'),
-    'reference' => &$GLOBALS['TL_LANG']['UPL'],
-    'eval' => array('tl_class' => 'w50', 'mandatory' => TRUE, 'includeBlankOption' => FALSE)
-);
-
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_max_file_length'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['maxlength'],
     'exclude' => TRUE,
     'inputType' => 'text',
     'eval' => array('rgxp' => 'digit', 'tl_class' => 'w50')
-);
-
-$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_uploader_debug'] = array(
-    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['val_uploader_debug'],
-    'exclude' => TRUE,
-    'inputType' => 'checkbox',
-    'eval' => array('tl_class' => 'clr w50')
 );
 
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_init_text'] = array(
@@ -88,10 +70,44 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_drop_text'] = array(
     'eval' => array('tl_class' => 'w50')
 );
 
+// ----------
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_store_file'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['storeFile'],
+    'exclude' => TRUE,
+    'inputType' => 'checkbox',
+    'eval' => array('submitOnChange' => TRUE)
+);
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['useHomeDir']['eval']['tl_class'] .= ' m12';
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_do_not_overwrite'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['val_do_not_overwrite'],
+    'exclude' => TRUE,
+    'inputType' => 'select',
+    'options' => array('overwriteFile', 'useSuffix', 'useTimeStamp'),
+    'reference' => &$GLOBALS['TL_LANG']['UPL'],
+    'eval' => array('tl_class' => 'w50', 'mandatory' => TRUE, 'includeBlankOption' => FALSE)
+);
+
+// ----------
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['details_failure_message'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['details_failure_message'],
+    'inputType' => 'checkbox',
+    'eval' => array('tl_class' => 'w50 m12')
+);
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['max_file_count'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['max_file_count'],
+    'inputType' => 'text',
+    'eval' => array('tl_class' => 'w50')
+);
+
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['resize_resolution'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['resize_resolution'],
     'inputType' => 'checkbox',
-    'eval' => array('submitOnChange' => TRUE)
+    'eval' => array('submitOnChange' => TRUE, 'tl_class' => 'm12 clr')
 );
 
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_image_size'] = array
@@ -99,6 +115,15 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_image_size'] = array
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['val_image_size'],
     'inputType' => 'text',
     'eval' => array('multiple' => true, 'size' => 2, 'rgxp' => 'digit', 'nospace' => true)
+);
+
+// ----------
+
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['val_uploader_debug'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['val_uploader_debug'],
+    'exclude' => TRUE,
+    'inputType' => 'checkbox',
+    'eval' => array('tl_class' => 'clr w50')
 );
 
 ?>

@@ -55,7 +55,11 @@ class ValumsBeFileUpload extends Widget
     public function __construct($arrAttributes = FALSE)
     {
         parent::__construct($arrAttributes);
-
+        if(is_array($_SESSION['VALUM_FILES']))
+        {
+            unset($_SESSION['VALUM_FILES']);
+        }
+        
         $this->objHelper = new ValumsHelper();
         $this->objHelper->setHeaderData();
 
@@ -63,10 +67,7 @@ class ValumsBeFileUpload extends Widget
         $this->objBeUser = BackendUser::getInstance();
     }
 
-    public function generate()
-    {
-        
-    }
+    public function generate() {}
 
     /**
      * Parse the template file and return it as string
@@ -78,7 +79,7 @@ class ValumsBeFileUpload extends Widget
     {
         $this->setDefaultValues();
         $this->setSessionData();
-        
+
         return parent::parse($arrAttributes);
     }
 
@@ -121,7 +122,7 @@ class ValumsBeFileUpload extends Widget
             $this->debug = $this->objBeUser->uploader_debug;
             $this->doNotOverwrite = $this->objBeUser->do_not_overwrite_type;
             $this->resize = deserialize($this->objBeUser->val_image_size);
-        }
+        }      
         
         $this->maxFileSize = (($this->maxFileSize) ? $this->maxFileSize : $GLOBALS['TL_CONFIG']['maxFileSize']);
         
