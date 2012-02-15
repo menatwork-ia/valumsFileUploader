@@ -35,6 +35,7 @@ $GLOBALS['TL_LANG']['tl_user']['upload_legend']             = 'Uploader';
 /**
  * Fields
  */
+$GLOBALS['TL_LANG']['tl_user']['ValumsBeFileUpload']        = 'valumsFileUploader';
 $GLOBALS['TL_LANG']['tl_user']['do_not_overwrite']          = array('Dateien nicht überschreiben', 'Wählen Sie diese Option wenn Sie die Dateien nicht überschreiben wollen.');
 $GLOBALS['TL_LANG']['tl_user']['uploader']                  = array('Script auswählen', 'Bitte wählen Sie hier ein Uploadscript aus.');
 $GLOBALS['TL_LANG']['tl_user']['do_not_overwrite_type']     = array('Was ist zu tun wenn die Datei bereits existiert', 'Hier können Sie auswählen was passiert wenn die Datei bereits existiert.');
