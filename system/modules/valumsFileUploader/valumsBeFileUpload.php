@@ -98,8 +98,6 @@ class ValumsBeFileUpload extends Widget
             'resizeResolution' => $this->resizeResolution,
             'imageSize' => $this->imageSize
         );
-        
-        FB::log($_SESSION['VALUM_CONFIG']);
     }
 
     /**

@@ -54,7 +54,7 @@ class ValumsHelper extends Backend
     {
         $this->log(vsprintf($GLOBALS['TL_LANG'][$type][$strMessage], $arrLog), $strLogPos, ($type == 'ERR') ? TL_ERROR : TL_FILES);
         echo json_encode($arrJson);
-        exit;
+        exit();
     }
 
     /**
