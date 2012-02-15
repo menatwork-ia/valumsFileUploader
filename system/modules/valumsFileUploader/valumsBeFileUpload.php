@@ -123,14 +123,18 @@ class ValumsBeFileUpload extends Widget
             if($this->objBeUser->resize_resolution == TRUE)
             {
                 $this->resizeResolution = $this->objBeUser->resize_resolution;
-                $this->imageSize = deserialize($this->objBeUser->val_image_size);
+                $resize = deserialize($this->objBeUser->val_image_size);
+                if(is_array($resize) && strlen($resize[0]) > 0 && strlen($resize[1]))
+                {
+                    $this->imageSize = $resize;
+                }                
             }
         }
         
         if($this->resize != NULL)
         {
             $this->resizeResolution = TRUE;
-            if(is_array($this->resize))
+            if(is_array($this->resize) && strlen($this->resize[0]) > 0 && strlen($this->resize[1]))
             {
                 $this->imageSize = $this->resize;
             }
