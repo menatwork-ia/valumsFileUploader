@@ -39,7 +39,7 @@
                 '<span class="qq-upload-spinner"><\/span>' +
                 '<span class="qq-upload-size"><\/span>' +
                 '<a class="qq-upload-cancel" href="#"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_cancel']; ?><\/a>' +
-                '<span class="qq-upload-failed-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?><\/span>' +
+                '<span class="qq-upload-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?><\/span>' +
                 '<\/li>',
             // Error messages
             messages: {
@@ -54,16 +54,16 @@
                 if(responseJSON.success && responseJSON.resized || responseJSON.success && responseJSON.exceeds)
                 {
                     var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
-                    var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-failed-text')[0];
-                    elem.set({html:responseJSON.resized_message});                      
+                    var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-text')[0];
+                    elem.set({html:responseJSON.resized_message, class:'qq-upload-success-text'});                      
                 }
             
                 <?php if($this->detailsFailureMessage): ?>
                 if(!responseJSON.success)
                 {
                     var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
-                    var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-failed-text')[0];
-                    elem.set({html:responseJSON.reasonText}); 
+                    var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-text')[0];
+                    elem.set({html:responseJSON.reasonText, class:'qq-upload-failed-text'}); 
                 }
                 <?php endif; ?>
                 
