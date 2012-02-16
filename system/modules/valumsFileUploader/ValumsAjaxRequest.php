@@ -32,15 +32,7 @@
  */
 define('TL_MODE', 'BE');
 
-// Start the session so we can access known request tokens
-@session_start();
-
-// Allow do bypass the token check if a known token is passed in
-if (isset($_GET['bypassToken']) && ((is_array($_SESSION['REQUEST_TOKEN'][TL_MODE]) && in_array($_POST['REQUEST_TOKEN'], $_SESSION['REQUEST_TOKEN'][TL_MODE])) || $_SESSION['REQUEST_TOKEN'][TL_MODE] == $_POST['REQUEST_TOKEN']))
-{
-    define('BYPASS_TOKEN_CHECK', true);
-}
-
+// Initialize the system
 require_once('../../initialize.php');
 
 /**

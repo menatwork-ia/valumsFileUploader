@@ -20,8 +20,7 @@
             action: '<?php echo $this->action; ?>',            
             // additional data to send, name-value pairs
             params: {
-                action: '<?php echo $this->paramAction; ?>',
-                bypassToken: '1'
+                action: '<?php echo $this->paramAction; ?>'
             },
             // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
             allowedExtensions: [<?php echo $this->uploadTypes; ?>],        
