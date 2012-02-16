@@ -54,12 +54,8 @@
                 if(responseJSON.success && responseJSON.resized || responseJSON.success && responseJSON.exceeds)
                 {
                     var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
-                        
-                    var div = new Element('div', {
-                        html: responseJSON.resized_message
-                    });
-                        
-                    div.inject(qqUploadListChilds[0][id], 'bottom');                        
+                    var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-failed-text')[0];
+                    elem.set({html:responseJSON.resized_message});                      
                 }
             
                 <?php if($this->detailsFailureMessage): ?>

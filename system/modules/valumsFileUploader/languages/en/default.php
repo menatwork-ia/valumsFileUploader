@@ -61,7 +61,7 @@ $GLOBALS['TL_LANG']['UPL']['valumsFileUploader']        = 'valumsFileUploader';
  * Error
  */
 $GLOBALS['TL_LANG']['ERR']['val_wrong_config']          = 'The "%s" is not configured in $GLOBALS["UPLOADER"]. Please choose in your <a href="%s" title="User configuration">User configuration</a> another uploader or expand the $GLOBALS["UPLOADER"] configuration with the needed values';
-$GLOBALS['TL_LANG']['ERR']['val_max_files']             = 'You have uploaded the maximum number of files.';
+$GLOBALS['TL_LANG']['ERR']['val_max_files']             = 'Reached the maximum number of uploaded files.';
 $GLOBALS['TL_LANG']['ERR']['val_type_error']            = '"{file} has invalid extension. Only {extensions} are allowed."';
 $GLOBALS['TL_LANG']['ERR']['val_size_error']            = '"{file} is too large, maximum file size is {sizeLimit}."';
 $GLOBALS['TL_LANG']['ERR']['val_min_size_error']        = '"{file} is too small, minimum file size is {minSizeLimit}."';

@@ -4,3 +4,5 @@
 .qq-upload-success { color:#8AB858; }
 .qq-upload-drop-area { min-height:60px; }
 .qq-upload-list { list-style:none; }
+.qq-upload-fail .qq-upload-failed-text { display:block; color:#666966; font-size:11px; }
+#file-uploader.backend { margin-top:10px; }
