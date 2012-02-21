@@ -76,7 +76,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_store_file'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['storeFile'],
     'exclude' => TRUE,
     'inputType' => 'checkbox',
-    'eval' => array('submitOnChange' => TRUE)
+    'eval' => array('tl_class' => 'clr', 'submitOnChange' => TRUE)
 );
 
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['useHomeDir']['eval']['tl_class'] .= ' m12';
