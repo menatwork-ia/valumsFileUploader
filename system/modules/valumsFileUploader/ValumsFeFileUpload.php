@@ -137,8 +137,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
         {
             $return .= '<ul class="qq-upload-list">';
             $return .= $tmpReturn;
-            $return .= '</ul>
-                </div>';
+            $return .= '</ul>';
         }
 
         return $return . $this->addSubmit();
