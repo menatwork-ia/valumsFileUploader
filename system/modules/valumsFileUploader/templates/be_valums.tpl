@@ -52,22 +52,24 @@
             },
 
             onComplete: function(id, fileName, responseJSON){
+                var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
+                var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-text')[0];                
+                
                 if(responseJSON.success && responseJSON.resized || responseJSON.success && responseJSON.exceeds)
                 {
-                    var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
-                    var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-failed-text')[0];
-                    elem.set({html:responseJSON.resized_message});                      
+                    elem.set({html:responseJSON.resized_message, class:'qq-upload-success-text'});                      
+                }
+                else if(responseJSON.success)
+                {
+                    elem.set({html:'', class:'qq-upload-success-text'});                    
                 }
             
                 <?php if($this->detailsFailureMessage): ?>
                 if(!responseJSON.success)
                 {
-                    var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
-                    var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-failed-text')[0];
-                    elem.set({html:responseJSON.reasonText}); 
+                    elem.set({html:responseJSON.reasonText, class:'qq-upload-failed-text'}); 
                 }
                 <?php endif; ?>
-                
             }
         });
 
