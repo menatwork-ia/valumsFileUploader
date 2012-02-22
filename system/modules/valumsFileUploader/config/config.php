@@ -38,6 +38,7 @@ $GLOBALS['BE_FFL']['valumsFileUploader'] = 'ValumsBeFileUpload';
  */
 $GLOBALS['TL_HOOKS']['validateFormField'][] = array('ValumsFileUploader', 'validateFormField');
 $GLOBALS['TL_HOOKS']['parseBackendTemplate'][] = array('ValumsHelper', 'checkExtensions');
+$GLOBALS['TL_HOOKS']['processFormData'][] = array('ValumsFileUploader', 'processFormData');
 
 if (TL_MODE == 'BE')
 {

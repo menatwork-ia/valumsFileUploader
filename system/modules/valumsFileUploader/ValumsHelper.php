@@ -82,6 +82,8 @@ class ValumsHelper extends Backend
     /**
      * Check the required extensions and files
      * 
+     * HOOK: $GLOBALS['TL_HOOKS']['parseBackendTemplate']
+     * 
      * @param string $strContent
      * @param string $strTemplate
      * @return string

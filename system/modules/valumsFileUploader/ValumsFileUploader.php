@@ -210,6 +210,8 @@ class ValumsFileUploader extends Backend
      * Check if some given form field has an error. 
      * If not move the temporary files in SESSON to the right upload folder
      * 
+     * HOOK: $GLOBALS['TL_HOOKS']['validateFormField']
+     * 
      * @param object $objWidget Form fiels object
      * @param string $strFormId Form id
      * @param array $arrData Form data
@@ -281,6 +283,86 @@ class ValumsFileUploader extends Backend
         }
         unset($_SESSION['VALUM_FILES']);
     }
+    
+    /**
+     * Store form values in the database
+     * 
+     * HOOK: $GLOBALS['TL_HOOKS']['processFormData']
+     * 
+     * @param type $arrPost
+     * @param type $arrForm
+     * @param type $arrFiles
+     * @param type $arrLabels 
+     */
+    public function processFormData($arrPost, $arrForm, $arrFiles, $arrLabels)
+    {
+        if ($arrForm['vfu_storeValues'] == 1 && strlen($arrForm['targetTable']))
+        {
+
+            $arrSet = array();
+
+            // Add timestamp
+            if ($this->Database->fieldExists('tstamp', $arrForm['targetTable']))
+            {
+                $arrSet['tstamp'] = time();
+            }
+
+            $objFields = $this->Database
+                    ->prepare("SELECT * FROM tl_form_field WHERE pid=? AND invisible!=1 ORDER BY sorting")
+                    ->execute($arrForm['id']);
+            
+            $arrSubmitted = array();
+            while($objFields->next())
+            {
+                if(isset($arrPost[$objFields->name]))
+                {
+                    $arrSubmitted[$objFields->name] = $arrPost[$objFields->name];
+                }
+            }
+
+            // Fields
+            foreach ($arrSubmitted as $k => $v)
+            {
+                if ($k != 'cc' && $k != 'id')
+                {
+                    $arrSet[$k] = $v;
+                }
+            }
+            
+            $objFormFields = $this->Database
+                    ->prepare("SELECT * FROM `tl_form_field` WHERE pid = ? AND type = ?  AND invisible!=1")
+                    ->limit(1)
+                    ->execute($arrForm['id'], 'valumsFileUploader');
+
+            // Files
+            if (count($_SESSION['FILES']))
+            {
+                foreach ($_SESSION['FILES'] as $k => $v)
+                {
+                    if ($v['uploaded'])
+                    {
+                        if (count($objFormFields))
+                        {
+                            $arrSet[$objFormFields->name][] = str_replace(TL_ROOT . '/', '', $v['tmp_name']);
+                        }
+                        else
+                        {
+                            $arrSet[$k] = str_replace(TL_ROOT . '/', '', $v['tmp_name']);
+                        }
+                    }
+                }
+                if (is_array($arrSet[$objFormFields->name]))
+                {
+                    $arrSet[$objFormFields->name] = serialize($arrSet[$objFormFields->name]);
+                }
+            }
+
+            $this->Database
+                    ->prepare("INSERT INTO `" . $arrForm['targetTable'] . "` %s")
+                    ->set($arrSet)
+                    ->execute();
+        }
+    }    
 
 }
 
