@@ -24,6 +24,8 @@ CREATE TABLE `tl_form_field` (
     `val_image_size` varchar(64) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 -- 
 -- Table `tl_user`
 -- 
@@ -37,4 +39,14 @@ CREATE TABLE `tl_user` (
     `uploader_debug` char(1) NOT NULL default '',
     `resize_resolution` char(1) NOT NULL default '',
     `val_image_size` varchar(64) NOT NULL default '',
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table `tl_form`
+--
+
+CREATE TABLE `tl_form` (
+  `vfu_storeValues` char(1) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
