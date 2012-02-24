@@ -341,7 +341,7 @@ class ValumsFile extends Controller
         {
             $this->doNotOverwrite();
         }
-        elseif ($doNotOverwrite == 'useTimeStamp')
+        elseif ($doNotOverwrite == 'useTimeStamp' && file_exists(TL_ROOT . '/' . $this->newPath))
         {
             $this->newName = $this->orgName . '_' . $this->timestamp . '.' . $this->getNewPathInfo('extension');
         }
@@ -367,7 +367,7 @@ class ValumsFile extends Controller
         {
             $this->doNotOverwrite();
         }
-        elseif ($doNotOverwrite == 'useTimeStamp')
+        elseif ($doNotOverwrite == 'useTimeStamp' && file_exists(TL_ROOT . '/' . $this->newPath))
         {
             $this->newName = $this->getNewPathInfo('filename') . '_' . $this->timestamp . '.' . $this->getNewPathInfo('extension');
         }
