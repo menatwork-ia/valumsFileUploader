@@ -35,7 +35,7 @@
                 '<span class="qq-upload-spinner"><\/span>' +
                 '<span class="qq-upload-size"><\/span>' +
                 '<a class="qq-upload-cancel" href="#"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_cancel']; ?><\/a>' +
-                '<span class="qq-upload-failed-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?><\/span>' +
+                '<span class="qq-upload-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?><\/span>' +
                 '<\/li>',
             // Error messages
             messages: {
@@ -47,7 +47,7 @@
             },
 
             onComplete: function(id, fileName, responseJSON){
-                var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
+                var qqUploadListChilds = $$('#file-uploader-<?php echo $this->strId; ?> .qq-upload-list').getChildren(); 
                 var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-text')[0];                
                 
                 if(responseJSON.success && responseJSON.resized || responseJSON.success && responseJSON.exceeds)

@@ -40,7 +40,7 @@
                 '<span class="qq-upload-spinner"><\/span>' +
                 '<span class="qq-upload-size"><\/span>' +
                 '<a class="qq-upload-cancel" href="#"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_cancel']; ?><\/a>' +
-                '<span class="qq-upload-failed-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?><\/span>' +
+                '<span class="qq-upload-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?><\/span>' +
                 '<\/li>',
             // Error messages
             messages: {
