@@ -58,7 +58,7 @@ foreach ($GLOBALS['TL_DCA']['tl_user']['palettes'] as $key => $row)
     }
 
     
-    if(UserExt::checkPalettes())
+    if(tl_user_vfu::checkPalettes())
     {
         $arrPalette = array('{upload_legend},uploader, max_file_count, uploader_debug, details_failure_message, do_not_overwrite, resize_resolution');
     }
@@ -147,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['val_image_size'] = array
 /**
  * Class UserExt 
  */
-class UserExt extends tl_user
+class tl_user_vfu extends tl_user
 {
 
     /**
