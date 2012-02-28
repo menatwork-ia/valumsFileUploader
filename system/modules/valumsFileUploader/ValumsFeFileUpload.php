@@ -125,7 +125,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
                 {
                     $tmpReturn .= '<li class=" qq-upload-success">
                             <span class="qq-upload-file">' . $arrFile['name'] . '</span>
-                            <span class="qq-upload-size" style="display: inline;">' . number_format(($arrFile['size'] / 1024) / 1024, 1, '.', ',') . 'MB</span>
+                            <span class="qq-upload-size" style="display: inline;">' . $this->objHelper->getFormatedSize($arrFile['size']) . '</span>
                             <span class="qq-upload-failed-text">' . $arrFile['error'] . '</span>
                         </li>';
                 }

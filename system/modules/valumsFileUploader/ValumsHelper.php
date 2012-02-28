@@ -168,6 +168,32 @@ class ValumsHelper extends Backend
             $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/valumsFileUploader/html/js/valumsFileUploader.js';
         }
     }
+    
+    /**
+     * Formated the given bytes in a readable size
+     * 
+     * @param  $bytes
+     * @return string 
+     */
+    public function getFormatedSize($bytes)
+    {        
+        $desc = array('kB', 'MB', 'GB', 'TB', 'PB', 'EB');
+        
+        $i = -1;        
+        do {
+            $bytes = $bytes / 1024;
+            $i++;  
+        } while ($bytes > 99);
+        
+        if($bytes > 0.1)
+        {
+            return round($bytes, 1) . $desc[$i];
+        }
+        else
+        {
+            return 0.1 . $desc[$i];
+        }
+    }    
 
 }
 
