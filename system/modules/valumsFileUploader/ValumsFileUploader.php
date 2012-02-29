@@ -294,7 +294,7 @@ class ValumsFileUploader extends Backend
      * @param type $arrFiles
      * @param type $arrLabels 
      */
-    public function processFormData($arrPost, $arrForm, $arrFiles, $arrLabels)
+    public function processFormData($arrPost, $arrForm, $arrFiles, $arrLabels = array())
     {
         if ($arrForm['vfu_storeValues'] == 1 && strlen($arrForm['targetTable']))
         {
