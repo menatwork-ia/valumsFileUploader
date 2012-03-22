@@ -65,9 +65,14 @@ class ValumsBeFileUpload extends Widget
         $this->objInput = Input::getInstance();        
         $this->objEnvironment = Environment::getInstance();
         
+        if($this->objInput->get('do') != 'files' || !strstr($this->objEnvironment->request, 'contao/files.php'))
+        {
+            $this->strTemplate = 'be_valums_widget';
+        }
+        
         $this->objHelper = new ValumsHelper();
-        $this->objHelper->setHeaderData();
-
+        $this->objHelper->setHeaderData(($this->css) ? array('css' => $this->css) : FALSE);
+        
         $this->objUploader = new ValumsFileUploader();
         $this->objBeUser = BackendUser::getInstance();
     }

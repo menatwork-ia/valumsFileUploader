@@ -142,15 +142,18 @@ class ValumsHelper extends Backend
      * 
      * @param array uploader
      */
-    public static function setHeaderData()
+    public static function setHeaderData($arrAttr = FALSE)
     {
-        if (version_compare(VERSION, '2.10', '<'))
+        if(!isset($arrAttr['css']))
         {
-            $GLOBALS['TL_CSS'][] = 'plugins/ajax-upload/css/ajaxupload.css';
-        }
-        else
-        {
-            $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/ajax-upload/css/ajaxupload.css';
+            if (version_compare(VERSION, '2.10', '<'))
+            {
+                $GLOBALS['TL_CSS'][] = 'plugins/ajax-upload/css/ajaxupload.css';
+            }
+            else
+            {
+                $GLOBALS['TL_CSS'][] = TL_PLUGINS_URL . 'plugins/ajax-upload/css/ajaxupload.css';
+            }
         }
 
         if (version_compare(VERSION, '2.10', '<'))
@@ -164,7 +167,14 @@ class ValumsHelper extends Backend
 
         if (TL_MODE == 'BE' && Input::getInstance()->get('do') != 'form')
         {
-            $GLOBALS['TL_CSS'][] = 'system/modules/valumsFileUploader/html/css/valumsFileUploader.css';
+            if(isset($arrAttr['css']) && strlen($arrAttr['css']) > 0)
+            {
+                $GLOBALS['TL_CSS'][] = $arrAttr['css'];                
+            }
+            else{
+                $GLOBALS['TL_CSS'][] = 'system/modules/valumsFileUploader/html/css/valumsFileUploader.css';
+            }
+                       
             $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/valumsFileUploader/html/js/valumsFileUploader.js';
         }
     }
