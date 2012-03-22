@@ -129,19 +129,23 @@ class ValumsFileUploader extends Backend
             $this->objHelper->setJsonEncode('ERR', 'val_wrong_type', array(), $strLogPos, array("success" => FALSE, "reason" => "val_wrong_type", "reasonText" => vsprintf($GLOBALS['TL_LANG']['ERR']['val_wrong_type'], array($objFile->getPathInfo('extension'), $arrConf['extension']))));
         }
 
-        // Check if save was successful
-        if (!$objFile->save($arrConf['doNotOverwrite']))
-        {
-            $this->objHelper->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => "val_save_error", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));
-        }
-
         // Declare json array
         $arrJson =  array(
-            'success' => TRUE, 
+            'success' => FALSE, 
             'filename' => $objFile->newName,
             'resized' => FALSE,
             'exceeds' => FALSE
-        );
+        );        
+        
+        // Check if save was successful
+        if (!$objFile->save($arrConf['doNotOverwrite']))
+        {
+            $this->objHelper->setJsonEncode('ERR', 'val_save_error', array(), $strLogPos, array("success" => FALSE, "reason" => "val_save_error", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_save_error']));           
+        }
+        else
+        {
+            $arrJson['success'] = TRUE;
+        }
         
         //Check and resize resolution
         if ($arrConf['resizeResolution'])
