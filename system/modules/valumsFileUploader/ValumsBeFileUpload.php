@@ -46,6 +46,8 @@ class ValumsBeFileUpload extends Widget
     protected $objHelper;
     protected $objUploader;
     protected $objBeUser;
+    protected $objInput;
+    protected $objEnvironment;
 
     /**
      * Initialize the object and set configurations
@@ -53,12 +55,15 @@ class ValumsBeFileUpload extends Widget
      * @param array
      */
     public function __construct($arrAttributes = FALSE)
-    {
+    {        
         parent::__construct($arrAttributes);
         if(is_array($_SESSION['VALUM_FILES']))
         {
             unset($_SESSION['VALUM_FILES']);
         }
+     
+        $this->objInput = Input::getInstance();        
+        $this->objEnvironment = Environment::getInstance();
         
         $this->objHelper = new ValumsHelper();
         $this->objHelper->setHeaderData();
@@ -109,12 +114,12 @@ class ValumsBeFileUpload extends Widget
         $this->paramAction = 'valumsFileUploader';
         $this->doFiels = FALSE;
         
-        if($this->Input->get('do') == 'files')
+        if($this->objInput->get('do') == 'files' || strstr($this->objEnvironment->request, 'contao/files.php'))
         {
             $this->detailsFailureMessage = $this->objBeUser->details_failure_message;
             $this->maxFileCount = $this->objBeUser->max_file_count;
             $this->doFiles = TRUE;
-            $this->path = $this->Input->get('pid');
+            $this->path = $this->objInput->get('pid');
             $this->debug = $this->objBeUser->uploader_debug;
             if($this->objBeUser->do_not_overwrite == TRUE)
             {
