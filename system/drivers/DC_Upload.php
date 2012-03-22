@@ -130,6 +130,26 @@ class DC_Upload extends DC_Folder
 
 </form>';
 	}
+        
+	/**
+	 * Reset the message system
+	 */
+	protected function resetMessages()
+	{
+		foreach ($this->getMessageTypes() as $strType)
+		{
+			$_SESSION[$strType] = array();
+		}
+	}
+        
+	/**
+	 * Return all available message types
+	 * @return array
+	 */
+	protected function getMessageTypes()
+	{
+		return array('TL_ERROR', 'TL_CONFIRM', 'TL_NEW', 'TL_INFO', 'TL_RAW');
+	}        
 
 }
 
