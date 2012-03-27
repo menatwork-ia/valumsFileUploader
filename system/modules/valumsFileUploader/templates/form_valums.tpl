@@ -82,7 +82,10 @@
         createUploader(vfu);
         
         // Add delete file functionality to additional file list after reload the page
-        vfu.addDeleteToReloadElem($('vfu_reload'));
+        if($('vfu_reload'))
+        {
+            vfu.addDeleteToReloadElem($('vfu_reload'));
+        }
     });
     
     /* ]]> */    

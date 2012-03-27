@@ -46,4 +46,13 @@ if (TL_MODE == 'BE')
     $GLOBALS['TL_HOOKS']['loadDataContainer'][] = array('ValumsHelper', 'setUser');
 }
 
+/**
+ * Set global gdlib config for all versions lower than 2.10 
+ */
+if(version_compare(VERSION, '2.10', '<'))
+{
+    $GLOBALS['TL_CONFIG']['gdMaxImgWidth']  = 3000;
+    $GLOBALS['TL_CONFIG']['gdMaxImgHeight'] = 3000;
+}
+
 ?>
