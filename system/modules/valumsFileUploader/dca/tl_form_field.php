@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['palettes']['__selector__'] = array_merge($G
 $arrPalettes = array(
     '{type_legend},type,name,label',
     '{fconfig_legend},mandatory,extensions,val_max_file_length,val_init_text,val_drop_text',
-    '{store_legend:hide},details_failure_message,max_file_count,val_store_file,resize_resolution',
+    '{store_legend:hide},details_failure_message,max_file_count,val_store_file,allow_delete,resize_resolution',
     '{expert_legend:hide},class,accesskey,val_uploader_debug',
     '{submit_legend},addSubmit'
 );
@@ -104,17 +104,23 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['max_file_count'] = array(
     'eval' => array('tl_class' => 'w50')
 );
 
+$GLOBALS['TL_DCA']['tl_form_field']['fields']['allow_delete'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_form_field']['allow_delete'],
+    'inputType' => 'checkbox',
+    'eval' => array('tl_class' => 'w50')
+);
+
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['resize_resolution'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['resize_resolution'],
     'inputType' => 'checkbox',
-    'eval' => array('submitOnChange' => TRUE, 'tl_class' => 'm12 clr')
+    'eval' => array('submitOnChange' => TRUE, 'tl_class' => 'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['val_image_size'] = array
     (
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['val_image_size'],
     'inputType' => 'text',
-    'eval' => array('multiple' => true, 'size' => 2, 'rgxp' => 'digit', 'nospace' => true)
+    'eval' => array('multiple' => true, 'size' => 2, 'rgxp' => 'digit', 'nospace' => true, 'tl_class' => 'clr')
 );
 
 // ----------

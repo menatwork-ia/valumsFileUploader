@@ -34,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_form_field']['val_do_not_overwrite']    = array('Was tun
 $GLOBALS['TL_LANG']['tl_form_field']['val_uploader_debug']      = array('Debug aktivieren', 'Wählen Sie diese Option wenn Sie den Debugmodus des Uploaders aktivieren wollen');
 $GLOBALS['TL_LANG']['tl_form_field']['val_init_text']           = array('Uploaderbezeichnung', 'Hier können Sie einen anderen Text für das Upload Feld eingeben.');
 $GLOBALS['TL_LANG']['tl_form_field']['val_drop_text']           = array('Drag\'n\'Drop Bezeichnung', 'Hier können Sie einen anderen Text für das Drag\'n\'Drop Feld eingeben.');
+$GLOBALS['TL_LANG']['tl_form_field']['allow_delete']            = array('Löschen erlauben', 'Wählen Sie diese Option, um dem FE-User die Möglichkeit zu geben hochgeladenen Dateien wieder zu löschen.');
 $GLOBALS['TL_LANG']['tl_form_field']['resize_resolution']       = array('Bilder skalieren', 'Wählen Sie diese Option, um Bilder beim Upload zu skalieren.');
 $GLOBALS['TL_LANG']['tl_form_field']['val_image_size']          = array('Bildbreite und Bildhöhe', 'Durch die Eingabe dieser Felder werden die globalen Einstellungen überschrieben.');
 $GLOBALS['TL_LANG']['tl_form_field']['details_failure_message'] = array('Detaillierte Fehlermeldung', 'Wählen Sie diese Option, um bei einem fehlerhaften Upload eine detaillierte Meldung auszugeben.');

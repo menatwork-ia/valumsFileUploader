@@ -87,6 +87,7 @@ class ValumsFileUploader extends Backend
         {      
             $objFile = new ValumsFile('', 'SESSION', $_SESSION['VALUM_FILES'][$strFileName]);
             unset($_SESSION['VALUM_FILES'][$strFileName]);
+            $_SESSION['VALUM_CONFIG']['fileCount']--;
             if(!$objFile->delete())
             {
                 $this->objHelper->sendJsonEncode(array('deleteSuccess' => FALSE));

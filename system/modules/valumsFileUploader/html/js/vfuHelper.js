@@ -22,7 +22,8 @@ var ValumsFileUploader = new Class(
         fileName : false,
         responseJSON : false,
         currentElem : false,
-        detailsFailureMessage : false
+        detailsFailureMessage : false,
+        allowDelete : false
     },
     
     /**
@@ -86,9 +87,9 @@ var ValumsFileUploader = new Class(
             this.updateSuccessMsg();
         }
         
-        if(this.options.detailsFailureMessage)
+        if(this.options.detailsFailureMessage && !this.options.responseJSON.success)
         {
-           
+           this.updateDetailedFailureMsg();
         }              
     },
     
@@ -108,9 +109,12 @@ var ValumsFileUploader = new Class(
      */
     updateSuccessResizedMsg: function()
     {
-        this.addDeleteButton(this.options.currentElem,
-            this.options.fflId,
-            this.options.responseJSON.filename);
+        if(this.options.allowDelete)
+        {        
+            this.addDeleteButton(this.options.currentElem,
+                this.options.fflId,
+                this.options.responseJSON.filename);
+        }
         
         this.options.currentElem.getElement('span.qq-upload-text').set({
             'html' : this.options.responseJSON.resized_message, 
@@ -123,9 +127,12 @@ var ValumsFileUploader = new Class(
      */
     updateSuccessMsg: function()
     {
-        this.addDeleteButton(this.options.currentElem,
-            this.options.fflId,
-            this.options.responseJSON.filename);
+        if(this.options.allowDelete)
+        {
+            this.addDeleteButton(this.options.currentElem,
+                this.options.fflId,
+                this.options.responseJSON.filename);
+        }
         
         this.options.currentElem.getElement('span.qq-upload-text').set({
             'html' : '', 
@@ -138,8 +145,8 @@ var ValumsFileUploader = new Class(
      * 
      * @param object elem
      * @param integer fflId
-     * @param string fileName
-     */
+     * @param string fileName 
+    */
     addDeleteButton: function(elem, fflId, fileName)
     {
         elem.getElement('a.qq-upload-delete').set({

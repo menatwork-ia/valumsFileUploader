@@ -39,7 +39,7 @@
             
             // Template for one item in file list
             fileTemplate: '<li>' +
-                '<a class="qq-upload-delete" href="#" onclick="return false;"><\/a>' +
+                <?php if($this->allow_delete) echo "'<a class=\"qq-upload-delete\" href=\"#\" onclick=\"return false;\"><\/a>' +"; ?>
                 '<span class="qq-upload-file"><\/span>' +
                 '<span class="qq-upload-spinner"><\/span>' +
                 '<span class="qq-upload-size"><\/span>' +
@@ -74,17 +74,20 @@
         // Create valumsFileUploader object and give them current params
         var vfu = new ValumsFileUploader({
             'fflId' : '<?php echo $this->strId; ?>',
-            'detailsFailureMessage' : <?php echo (($this->detailsFailureMessage) ? 'true' : 'false'); ?>
+            'detailsFailureMessage' : <?php echo (($this->detailsFailureMessage) ? 'true' : 'false'); ?>,
+            'allowDelete' : <?php echo ($this->allow_delete) ? 'true' : 'false'; ?>
         });
         
         // Create ajax-uploader
         createUploader(vfu);
         
+        <?php if($this->allow_delete): ?>
         // Add delete file functionality to additional file list after reload the page
         if($('vfu_reload'))
         {
             vfu.addDeleteToReloadElem($('vfu_reload'));
         }
+        <?php endif; ?>
     });
     
 </script>

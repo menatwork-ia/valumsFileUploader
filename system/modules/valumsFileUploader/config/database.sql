@@ -20,6 +20,7 @@ CREATE TABLE `tl_form_field` (
     `val_uploader_debug` char(1) NOT NULL default '',
     `val_init_text` text NULL,
     `val_drop_text` text NULL,
+    `allow_delete` char(1) NOT NULL default '',
     `resize_resolution` char(1) NOT NULL default '',
     `val_image_size` varchar(64) NOT NULL default '',
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
