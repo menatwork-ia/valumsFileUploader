@@ -53,8 +53,17 @@ class ValumsHelper extends Backend
     public function setJsonEncode($type, $strMessage, $arrLog, $strLogPos, $arrJson)
     {
         $this->log(vsprintf($GLOBALS['TL_LANG'][$type][$strMessage], $arrLog), $strLogPos, ($type == 'ERR') ? TL_ERROR : TL_FILES);
+        $this->sendJsonEncode($arrJson);
+    }
+    
+    /**
+     * Encode the array to json, send it and exit page
+     * @param array $arrJson 
+     */
+    public function sendJsonEncode($arrJson)
+    {
         echo json_encode($arrJson);
-        exit();
+        exit();        
     }
 
     /**
@@ -144,6 +153,8 @@ class ValumsHelper extends Backend
      */
     public static function setHeaderData($arrAttr = FALSE)
     {
+        $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/valumsFileUploader/html/js/vfuHelper.js';
+        
         if(!isset($arrAttr['css']))
         {
             if (version_compare(VERSION, '2.10', '<'))

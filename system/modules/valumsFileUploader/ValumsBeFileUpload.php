@@ -32,7 +32,12 @@
  */
 class ValumsBeFileUpload extends Widget
 {
-
+    /**
+    * Submit user input
+    * @var boolean
+    */
+    protected $blnSubmitInput = true;
+        
     /**
      * Template
      * @var string
@@ -48,6 +53,7 @@ class ValumsBeFileUpload extends Widget
     protected $objBeUser;
     protected $objInput;
     protected $objEnvironment;
+    protected $objDatabase;
 
     /**
      * Initialize the object and set configurations
@@ -57,18 +63,22 @@ class ValumsBeFileUpload extends Widget
     public function __construct($arrAttributes = FALSE)
     {        
         parent::__construct($arrAttributes);
-        if(is_array($_SESSION['VALUM_FILES']))
-        {
-            unset($_SESSION['VALUM_FILES']);
-        }
      
         $this->objInput = Input::getInstance();        
         $this->objEnvironment = Environment::getInstance();
         
-        if($this->objInput->get('do') != 'files' || !strstr($this->objEnvironment->request, 'contao/files.php'))
+        $this->objDatabase = Database::getInstance();
+        
+        if($this->objInput->get('do') != 'files' || strstr($this->objEnvironment->request, 'contao/files.php'))
         {
+            // Specific configurations for backend widget
             $this->strTemplate = 'be_valums_widget';
         }
+        else
+        {
+            // Specific configurations for filemanager
+            $this->removeSessionData();
+        }        
         
         $this->objHelper = new ValumsHelper();
         $this->objHelper->setHeaderData(($this->css) ? array('css' => $this->css) : FALSE);
@@ -76,6 +86,26 @@ class ValumsBeFileUpload extends Widget
         $this->objUploader = new ValumsFileUploader();
         $this->objBeUser = BackendUser::getInstance();
     }
+
+    /**
+     * Validate input and set value.
+     * If JavaScript is disabled call parent
+     */
+    public function validate()
+    {
+        if ($this->mandatory)
+        {
+            if ((!$_SESSION['VALUM_FILES'] || !count($_SESSION['VALUM_FILES'])) && (!isset($_FILES[$this->strName]) || empty($_FILES[$this->strName]['name'])))
+            {
+                $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+            }
+
+            $this->mandatory = false;
+        }
+
+        // Call parent validate() to upload files without javascript.
+        return parent::validate();
+    }    
 
     public function generate() {}
 
@@ -108,6 +138,22 @@ class ValumsBeFileUpload extends Widget
             'resizeResolution' => $this->resizeResolution,
             'imageSize' => $this->imageSize
         );
+    }
+
+    /**
+     * Remove the uploaded files from session 
+     */
+    protected function removeSessionData()
+    {
+        if(is_array($_SESSION['VALUM_FILES']))
+        {
+            unset($_SESSION['VALUM_FILES']);
+        }
+        
+        if(is_array($_SESSION['VALUM_DB_FILES']))
+        {
+            unset($_SESSION['VALUM_DB_FILES']);
+        }
     }
 
     /**
@@ -229,6 +275,65 @@ class ValumsBeFileUpload extends Widget
     public function generateMarkup()
     {
         return $this->parse();
+    }
+    
+    /**
+     * Load callback for backend widget
+     * 
+     * @param mixed $varValue
+     * @param DataContainer $dc 
+     */
+    public function onLoadCallback($varValue, DataContainer $dc)
+    {            
+        $strField = $dc->field;
+        $strDbFiles = $this->objDatabase
+                ->prepare("
+                    SELECT $dc->field FROM `$dc->table`
+                    WHERE id = ?")
+                ->limit(1)
+                ->execute($dc->id);
+
+        
+        $_SESSION['VALUM_DB_FILES'] = ((strlen($strDbFiles->$strField) > 0) ? deserialize($strDbFiles->$strField) : array());
+    }
+    
+    /**
+     * Save callback for backend widget
+     * 
+     * @param mixed $varValue
+     * @param DataContainer $dc 
+     */
+    public function onSaveCallback($varValue, DataContainer $dc)            
+    {        
+        $arrDbFiles = array();
+        if (count($_SESSION['VALUM_DB_FILES']))
+        {
+            $arrDbFiles = $_SESSION['VALUM_DB_FILES'];
+        }        
+        
+        $arrFiles = array();
+        if (count($_SESSION['VALUM_FILES']))
+        {
+            foreach ($_SESSION['VALUM_FILES'] as $k => $v)
+            {
+                $arrFiles[$k] = str_replace(TL_ROOT . '/', '', $v['tmp_name']);                
+            }
+        }        
+        
+        $arrSaveFiles = array_merge($arrDbFiles, $arrFiles);
+        $strFiles = serialize($arrSaveFiles);        
+        
+        if(count($arrSaveFiles) > 0)
+        {
+            $this->objDatabase
+                    ->prepare("
+                        UPDATE `$dc->table` 
+                        SET $dc->field = ?
+                        WHERE id = ?")
+                    ->execute($strFiles, $dc->id);
+        }
+        
+        $this->removeSessionData();
     }
 
 }

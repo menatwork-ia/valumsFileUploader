@@ -77,6 +77,25 @@ class ValumsFileUploader extends Backend
     }
 
     /**
+     * Delete the given file and unset it in session
+     * 
+     * @param string $strFileName 
+     */
+    public function deleteFile($strFileName)
+    {
+        if(isset($_SESSION['VALUM_FILES'][$strFileName]))
+        {      
+            $objFile = new ValumsFile('', 'SESSION', $_SESSION['VALUM_FILES'][$strFileName]);
+            unset($_SESSION['VALUM_FILES'][$strFileName]);
+            if(!$objFile->delete())
+            {
+                $this->objHelper->sendJsonEncode(array('deleteSuccess' => FALSE));
+            }
+            $this->objHelper->sendJsonEncode(array('deleteSuccess' => TRUE));
+        }            
+    }
+    
+    /**
      * Get the file information, checked specific values and save the file
      * 
      * @return array
@@ -131,8 +150,7 @@ class ValumsFileUploader extends Backend
 
         // Declare json array
         $arrJson =  array(
-            'success' => FALSE, 
-            'filename' => $objFile->newName,
+            'success' => FALSE,            
             'resized' => FALSE,
             'exceeds' => FALSE
         );        
@@ -146,6 +164,8 @@ class ValumsFileUploader extends Backend
         {
             $arrJson['success'] = TRUE;
         }
+        
+        $arrJson['filename'] = $objFile->newName;
         
         //Check and resize resolution
         if ($arrConf['resizeResolution'])

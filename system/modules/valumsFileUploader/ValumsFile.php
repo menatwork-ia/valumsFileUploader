@@ -47,7 +47,7 @@ class ValumsFile extends Controller
      * @param array
      * @throws Exception
      */
-    public function __construct($uploadFolder, $type = FALSE, $arrValues = FALSE)
+    public function __construct($uploadFolder = FALSE, $type = FALSE, $arrValues = FALSE)
     {
         $this->objInput = Input::getInstance();
         $this->objFiles = Files::getInstance();
@@ -187,7 +187,7 @@ class ValumsFile extends Controller
      */
     public function getPathInfo($spezific = FALSE)
     {
-        $info             = $this->getCreatedPathInfo($this->path);
+        $info = $this->getCreatedPathInfo($this->path);
         $info['filename'] = utf8_romanize($info['filename']);
         if ($spezific && isset($info[$spezific]))
         {
@@ -204,7 +204,7 @@ class ValumsFile extends Controller
      */
     public function getNewPathInfo($spezific = FALSE)
     {
-        $info             = $this->getCreatedPathInfo($this->newPath);
+        $info = $this->getCreatedPathInfo($this->newPath);
         $info['filename'] = utf8_romanize($info['filename']);
         if ($spezific && isset($info[$spezific]))
         {
@@ -244,7 +244,7 @@ class ValumsFile extends Controller
      */
     public function writeFileToSession($arrArgument = array(), $boolCompletePath = FALSE, $strSessionName = 'VALUM_FILES')
     {
-        $name                             = $this->getNewPathInfo('filename') . '.' . $this->getNewPathInfo('extension');
+        $name = $this->getNewPathInfo('filename') . '.' . $this->getNewPathInfo('extension');
         $_SESSION[$strSessionName][$name] = array
             (
             'name' => $this->newName,
@@ -404,6 +404,11 @@ class ValumsFile extends Controller
         }
 
         return TRUE;
+    }
+    
+    public function delete()
+    {
+        return $this->objFiles->delete($this->tmp_name);
     }
 
 }

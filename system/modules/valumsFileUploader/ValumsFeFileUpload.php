@@ -47,6 +47,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
      */
     protected $objHelper;
     protected $objUploader;
+    protected $objInput;
 
     /**
      * Initialize the object and set configurations
@@ -56,6 +57,8 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
     public function __construct($arrAttributes = FALSE)
     {
         parent::__construct($arrAttributes);
+        
+        $this->objInput = Input::getInstance();
 
         $this->objHelper = new ValumsHelper();
         $this->objHelper->setHeaderData();
@@ -124,6 +127,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
                 if ($arrFile['formFieldId'] == $this->id)
                 {
                     $tmpReturn .= '<li class=" qq-upload-success">
+                            <a class="qq-upload-delete" href="#" onclick="return false;"></a>
                             <span class="qq-upload-file">' . $arrFile['name'] . '</span>
                             <span class="qq-upload-size" style="display: inline;">' . $this->objHelper->getFormatedSize($arrFile['size']) . '</span>
                             <span class="qq-upload-failed-text">' . $arrFile['error'] . '</span>
@@ -135,7 +139,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
         // Add already uploaded files
         if ($tmpReturn != '')
         {
-            $return .= '<ul class="qq-upload-list">';
+            $return .= '<ul id="vfu_reload" class="qq-upload-list">';
             $return .= $tmpReturn;
             $return .= '</ul>';
         }
@@ -198,13 +202,20 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
      * Call the real generateAjax in valumsFileUploader
      */
     public function generateAjax()
-    {
+    {        
         $_SESSION['VALUM_CONFIG']['specialSessionAttr'] = array(
             'formFieldId' => $this->Input->get('id'),
             'formId' => $this->pid
         );
 
-        $this->objUploader->generateAjax();
+        if($this->objInput->get('value') == 'deleteFile')
+        {
+            $this->objUploader->deleteFile($this->objInput->get('file'));
+        }
+        else
+        {
+            $this->objUploader->generateAjax();
+        }
     }
 
 }
