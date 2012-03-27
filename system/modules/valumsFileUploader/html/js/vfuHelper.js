@@ -18,6 +18,7 @@ var ValumsFileUploader = new Class(
      */
     options: {
         fflId : false,
+        fflIdName : false,
         id : false,
         fileName : false,
         responseJSON : false,
@@ -55,8 +56,7 @@ var ValumsFileUploader = new Class(
             this.options.id = id;
         }        
         
-        var tmpId = 'file-uploader-' + this.options.fflId;
-        this.options.currentElem = $(tmpId).getElement('ul.qq-upload-list').getChildren()[this.options.id];        
+        this.options.currentElem = $(this.options.fflIdName).getElement('ul.qq-upload-list').getChildren()[this.options.id];        
     },
     
     /**
@@ -83,8 +83,7 @@ var ValumsFileUploader = new Class(
      * Run
      */
     run: function(){
-        var tmpId = 'file-uploader-' + this.options.fflId;
-        this.options.currentElem = $(tmpId).getElement('ul.qq-upload-list').getChildren()[this.options.id];
+        this.options.currentElem = $(this.options.fflIdName).getElement('ul.qq-upload-list').getChildren()[this.options.id];
 
         this.updateFileName();
         

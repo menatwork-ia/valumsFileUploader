@@ -161,8 +161,10 @@ class ValumsBeFileUpload extends Widget
      */
     protected function setDefaultValues()
     {
+        $this->uploaderId = 'file-uploader';
+        
         $this->action = 'system/modules/valumsFileUploader/ValumsAjaxRequest.php';
-        $this->paramAction = 'valumsFileUploader';
+        $this->params = "{action: 'valumsFileUploader'}";
         $this->doFiels = FALSE;
         
         if($this->objInput->get('do') == 'files' || strstr($this->objEnvironment->request, 'contao/files.php'))
@@ -212,7 +214,6 @@ class ValumsBeFileUpload extends Widget
         {
             $this->extensions = strtolower($GLOBALS['TL_CONFIG']['uploadTypes']);
         }
-        $this->uploadTypes = $this->objHelper->getStrExt($this->extensions);
 
         if ($this->name != $this->label)
         {
@@ -220,6 +221,8 @@ class ValumsBeFileUpload extends Widget
         }
 
         $this->noJsBeLink = $this->Environment->scriptName . '?do=login';
+        
+        $this->pos = 'be';
     }
 
     /**

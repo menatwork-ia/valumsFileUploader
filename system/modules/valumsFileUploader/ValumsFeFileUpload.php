@@ -170,7 +170,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
             'fileCount' => 0,
             'maxFileCount' => $this->max_file_count,            
             'uploadFolder' => 'system/tmp',
-            'maxFileLength' => $this->val_max_file_length,
+            'maxFileLength' => $this->maxFileSize,
             'extension' => $this->extensions,
             'doNotOverwrite' => $this->val_do_not_overwrite,
             'resizeResolution' => (($this->resize_resolution) ? TRUE : FALSE)
@@ -188,6 +188,8 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
      */
     protected function setDefaultValues()
     {
+        $this->uploaderId = 'file-uploader-' . $this->strId;
+        
         $this->action = 'ajax.php';
         $this->params = "{action: 'ffl', id: '" . $this->strId . "', type:'valumsFileUploader'}";
         $this->debug = $this->val_uploader_debug;
@@ -196,6 +198,9 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
         {
             $this->max_file_count = $this->maxFileCount;
         }
+        $this->maxFileSize = $this->val_max_file_length;
+        $this->pos = 'fe';
+        $this->dropTextLabel = $this->val_drop_text;        
     }
 
     /**

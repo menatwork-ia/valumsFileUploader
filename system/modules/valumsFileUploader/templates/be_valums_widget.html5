@@ -9,34 +9,43 @@
 
 <script type="text/javascript">
 
-    function createUploader(){        
-        var uploader = new qq.FileUploader({            
-            element: document.getElementById('file-uploader'),
-            // path to server-side upload script
-            action: '<?php echo $this->action; ?>',            
-            // additional data to send, name-value pairs
-            params: {
-                action: '<?php echo $this->paramAction; ?>'
-            },
-            // ex. ['jpg', 'jpeg', 'png', 'gif'] or []
-            allowedExtensions: [<?php echo $this->uploadTypes; ?>],        
-            // set to true to output server response to console
+    function createUploader(vfu){
+        var uploader = new qq.FileUploader({
+            // Uploader id
+            element: document.getElementById('<?php echo $this->uploaderId; ?>'),
+            
+            // Path to server-side upload script
+            action: '<?php echo $this->action; ?>',
+            
+            // Get params for request
+            params: <?php echo $this->params; ?>,
+
+            // Allowed file extensions
+            allowedExtensions: [<?php echo $this->objHelper->getStrExt($this->extensions); ?>],
+            
+            // Debug mode to show requests console
             debug: <?php echo ($this->debug) ? "true" : "false"; ?>,
+            
+            // Size limit
             sizeLimit: <?php echo ($this->maxFileSize) ? $this->maxFileSize : '""'; ?>,
+            
             // Template wrapper for all items
             template: '<div class="qq-uploader">' + 
-                '<div class="qq-upload-drop-area"><span><?php echo (strlen($this->dropTextLabel) != 0) ? $this->dropTextLabel : $GLOBALS['TL_LANG']['UPL']['be_upload_drop_area']; ?><\/span><\/div>' +
-                '<div class="qq-upload-button"><?php echo (strlen($this->dropButtonLabel) != 0) ? $this->dropButtonLabel : $GLOBALS['TL_LANG']['UPL']['be_upload_button']; ?><\/div>' +
+                '<div class="qq-upload-drop-area"><span><?php echo (strlen($this->dropTextLabel) != 0) ? $this->dropTextLabel : $GLOBALS['TL_LANG']['UPL'][$this->pos . '_upload_drop_area']; ?><\/span><\/div>' +
+                '<div class="qq-upload-button"><?php echo (strlen($this->dropButtonLabel) != 0) ? $this->dropButtonLabel :  $GLOBALS['TL_LANG']['UPL'][$this->pos . '_upload_button']; ?><\/div>' +
                 '<ul class="qq-upload-list"><\/ul>' + 
-                '<\/div>',            
+                '<\/div>',
+            
             // Template for one item in file list
             fileTemplate: '<li>' +
+                <?php if($this->allow_delete) echo "'<a class=\"qq-upload-delete\" href=\"#\" onclick=\"return false;\"><\/a>' +"; ?>
                 '<span class="qq-upload-file"><\/span>' +
                 '<span class="qq-upload-spinner"><\/span>' +
                 '<span class="qq-upload-size"><\/span>' +
                 '<a class="qq-upload-cancel" href="#"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_cancel']; ?><\/a>' +
                 '<span class="qq-upload-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?><\/span>' +
-                '<\/li>',
+                '<\/li>',            
+
             // Error messages
             messages: {
                 typeError: <?php echo $GLOBALS['TL_LANG']['ERR']['val_type_error']; ?>,
@@ -45,43 +54,32 @@
                 emptyError: <?php echo $GLOBALS['TL_LANG']['ERR']['val_empty_error']; ?>,
                 onLeave: <?php echo $GLOBALS['TL_LANG']['ERR']['val_on_leave']; ?>          
             },
-
-            onComplete: function(id, fileName, responseJSON){
-                var qqUploadListChilds = $$('#file-uploader .qq-upload-list').getChildren();
-                var elem = qqUploadListChilds[0][id].getChildren('.qq-upload-text')[0];                
-                
-                if(responseJSON.success && responseJSON.resized || responseJSON.success && responseJSON.exceeds)
-                {
-                    elem.set({
-                        'html' : responseJSON.resized_message, 
-                        'class' : 'qq-upload-success-text'
-                    });                      
-                }
-                else if(responseJSON.success)
-                {
-                    elem.set({
-                        'html' : '', 
-                        'class' : 'qq-upload-success-text'
-                    });                    
-                }
             
-                <?php if($this->detailsFailureMessage): ?>
-                if(!responseJSON.success)
-                {
-                    elem.set({
-                        'html' : responseJSON.reasonText, 
-                        'class': 'qq-upload-failed-text'
-                    }); 
-                }
-                <?php endif; ?>
+            /**
+             * Run valumsFileUploader class on complete
+             */
+            onComplete: function(id, fileName, responseJSON){
+                vfu.setId(id);
+                vfu.setfileName(fileName);
+                vfu.setResponseJSON(responseJSON);
+                
+                vfu.run(id, fileName, responseJSON);
             }
         });
-
     }
     
     window.addEvent('domready', function(){
-        window.onload = createUploader; 
-    });    
+        // Create valumsFileUploader object and give them current params
+        var vfu = new ValumsFileUploader({
+            'fflId' : '<?php echo $this->strId; ?>',
+            'fflIdName' : '<?php echo $this->uploaderId; ?>',            
+            'detailsFailureMessage' : <?php echo (($this->detailsFailureMessage) ? 'true' : 'false'); ?>,
+            'allowDelete' : <?php echo ($this->allow_delete) ? 'true' : 'false'; ?>
+        });
+        
+        // Create ajax-uploader
+        createUploader(vfu);
+    });
     
 </script>
 
