@@ -42,7 +42,18 @@ var ValumsFileUploader = new Class(
      */
     setId: function(id)
     {
-        this.options.id = id;
+        // Convert given param to string
+        id = String.from(id);
+        
+        // Special id handling for IE and Opera
+        if(id.test('qq-upload-handler-iframe'))
+        {
+            this.options.id = id.replace('qq-upload-handler-iframe', '');
+        }
+        else
+        {
+            this.options.id = id;
+        }        
         
         var tmpId = 'file-uploader-' + this.options.fflId;
         this.options.currentElem = $(tmpId).getElement('ul.qq-upload-list').getChildren()[this.options.id];        
@@ -97,8 +108,8 @@ var ValumsFileUploader = new Class(
      * Update the filename from current element in list
      */
     updateFileName: function()
-    {        
-        this.options.currentElem.getElement('span.qq-upload-file').set({
+    {
+        this.options.currentElem.getElement("span.qq-upload-file").set({
             html : this.options.responseJSON.filename
         });     
     },
@@ -117,7 +128,7 @@ var ValumsFileUploader = new Class(
         }
         
         this.options.currentElem.getElement('span.qq-upload-text').set({
-            'html' : this.options.responseJSON.resized_message, 
+            'html' : '<br />' + this.options.responseJSON.resized_message, 
             'class' : 'qq-upload-success-text'
         }); 
     },

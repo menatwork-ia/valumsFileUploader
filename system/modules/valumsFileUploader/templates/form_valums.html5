@@ -60,7 +60,7 @@
              * Run valumsFileUploader class on complete
              */
             onComplete: function(id, fileName, responseJSON){
-                vfu.setId(id)
+                vfu.setId(id);
                 vfu.setfileName(fileName);
                 vfu.setResponseJSON(responseJSON);
                 
