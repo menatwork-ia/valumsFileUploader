@@ -46,7 +46,7 @@ var ValumsFileUploader = new Class(
     setId: function(id)
     {
         // Convert given param to string
-        id = String.from(id);
+        id = id.toString();
         
         // Special id handling for IE and Opera
         if(id.test('qq-upload-handler-iframe'))
