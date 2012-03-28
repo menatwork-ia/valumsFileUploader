@@ -109,15 +109,16 @@ class ValumsFileUploader extends Backend
         // Get config
         if ($_SESSION['VALUM_CONFIG'])
             $arrConf = $_SESSION['VALUM_CONFIG'];
-
-        // Check if maxFileCount is reached
-        if($_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && $_SESSION['VALUM_CONFIG']['fileCount'] >= $_SESSION['VALUM_CONFIG']['maxFileCount'] || $_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && count($_SESSION['VALUM_FILES']) >= $_SESSION['VALUM_CONFIG']['maxFileCount'])
-        {
-            $this->objHelper->setJsonEncode('ERR', 'val_max_files', array(), $strLogPos, array("success" => FALSE, "reason" => "val_max_files", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_max_files']));
-        }
         
         // Create ValumsFile object
         $objFile   = new ValumsFile($arrConf['uploadFolder']);
+        
+        // Check if maxFileCount is reached
+        if($_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && $_SESSION['VALUM_CONFIG']['fileCount'] >= $_SESSION['VALUM_CONFIG']['maxFileCount'] && !$objFile->checkIfIsFileOverwrite($arrConf['doNotOverwrite'])
+                || $_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && count($_SESSION['VALUM_FILES']) >= $_SESSION['VALUM_CONFIG']['maxFileCount'] && !$objFile->checkIfIsFileOverwrite($arrConf['doNotOverwrite']))
+        {
+            $this->objHelper->setJsonEncode('ERR', 'val_max_files', array(), $strLogPos, array("success" => FALSE, "reason" => "val_max_files", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_max_files']));
+        }        
         
         // Check if file could not create
         if ($objFile->error)
@@ -163,7 +164,7 @@ class ValumsFileUploader extends Backend
         }
         else
         {
-            $arrJson['success'] = TRUE;
+            $arrJson['success'] = TRUE;           
         }
         
         $arrJson['filename'] = $objFile->newName;
@@ -209,8 +210,12 @@ class ValumsFileUploader extends Backend
         // Write files to session
         $objFile->writeFileToSession($arrSpecialSession);
 
-        // Increment maxFileCount
-        $_SESSION['VALUM_CONFIG']['fileCount']++;
+        if(!$objFile->boolOverwrittenFile)
+        {
+            $_SESSION['VALUM_CONFIG']['fileCount']++;
+        }
+        $arrJson['overwritten']         = $objFile->boolOverwrittenFile;        
+        $arrJson['overwritten_message'] = sprintf($GLOBALS['TL_LANG']['UPL']['overwritten_message'], $objFile->newName);
         
         // Set json encoding
         $this->objHelper->setJsonEncode('UPL', 'log_success', array($objFile->newName, $objFile->uploadFolder), $strLogPos, $arrJson);

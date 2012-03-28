@@ -138,7 +138,7 @@ class ValumsBeFileUpload extends Widget
             'uploadFolder' => $this->path,
             'maxFileLength' => $this->maxFileSize,
             'extension' => $this->extensions,
-            'doNotOverwrite' => (($this->doNotOverwrite) ? $this->doNotOverwrite : FALSE),
+            'doNotOverwrite' => (($this->doNotOverwrite) ? $this->doNotOverwrite : 'overwriteFile'),
             'resizeResolution' => $this->resizeResolution,
             'imageSize' => $this->imageSize
         );

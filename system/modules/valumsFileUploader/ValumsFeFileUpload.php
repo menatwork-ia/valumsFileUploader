@@ -199,7 +199,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
     protected function setSessionData()
     {
         $_SESSION['VALUM_CONFIG'] = array(
-            'fileCount' => 0,
+            'fileCount' => ((count($_SESSION['VALUM_FILES']) > 0) ? count($_SESSION['VALUM_FILES']) : 0),
             'maxFileCount' => $this->maxFileCount,            
             'uploadFolder' => 'system/tmp',
             'maxFileLength' => $this->maxFileSize,

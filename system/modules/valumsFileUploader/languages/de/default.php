@@ -56,6 +56,7 @@ $GLOBALS['TL_LANG']['UPL']['useTimeStamp']              = 'Zeitstempel setzen';
 $GLOBALS['TL_LANG']['UPL']['default']                   = 'Standard';
 $GLOBALS['TL_LANG']['UPL']['fancyUpload']               = 'FancyUpload';
 $GLOBALS['TL_LANG']['UPL']['valumsFileUploader']        = 'valumsFileUploader';
+$GLOBALS['TL_LANG']['UPL']['overwritten_message']       = 'Die Datei %s wurde erfolgreich überschrieben.';
 
 /**
  * Error

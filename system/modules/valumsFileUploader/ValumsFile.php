@@ -234,6 +234,24 @@ class ValumsFile extends Controller
 
         $this->newName = $this->getNewPathInfo('filename') . '__' . ++$offset . '.' . $this->getNewPathInfo('extension');
     }
+    
+    /**
+     * Check if the current file exists and whould be overwritten
+     * 
+     * @param string $doNotOverwrite
+     * @return boolean 
+     */
+    public function checkIfIsFileOverwrite($doNotOverwrite)
+    {
+        if($doNotOverwrite == 'overwriteFile')
+        {
+            if(file_exists(TL_ROOT . '/' . $this->newPath))
+            {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
 
     /**
      * Write the current file information to the SESSION. 
@@ -370,6 +388,10 @@ class ValumsFile extends Controller
         elseif ($doNotOverwrite == 'useTimeStamp' && file_exists(TL_ROOT . '/' . $this->newPath))
         {
             $this->newName = $this->getNewPathInfo('filename') . '_' . $this->timestamp . '.' . $this->getNewPathInfo('extension');
+        }
+        elseif($doNotOverwrite == 'overwriteFile')
+        {
+            $this->boolOverwrittenFile = $this->checkIfIsFileOverwrite($doNotOverwrite);
         }
 
         if ($this->methode == NULL)

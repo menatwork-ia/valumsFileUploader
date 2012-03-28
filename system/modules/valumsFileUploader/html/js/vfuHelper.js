@@ -87,7 +87,7 @@ var ValumsFileUploader = new Class(
     run: function(){
         this.options.currentElem = $(this.options.fflIdName).getElement('ul.qq-upload-list').getChildren()[this.options.id];
 
-        this.updateFileName();
+        this.updateFileName();                   
         
         if(this.options.responseJSON.success && this.options.responseJSON.resized || 
             this.options.responseJSON.success && this.options.responseJSON.exceeds)
@@ -130,8 +130,11 @@ var ValumsFileUploader = new Class(
                 this.options.actionParam);
         }
         
+        if(this.options.responseJSON.overwritten) this.removeOverwrittenFilesFromList();
+        
         this.options.currentElem.getElement('span.qq-upload-text').set({
-            'html' : '<br />' + this.options.responseJSON.resized_message, 
+            'html' : '<br />' + this.options.responseJSON.resized_message + 
+                ((this.options.responseJSON.overwritten) ? '<br />' + this.options.responseJSON.overwritten_message : ''), 
             'class' : 'qq-upload-success-text'
         }); 
     },
@@ -150,8 +153,11 @@ var ValumsFileUploader = new Class(
                 this.options.actionParam);                
         }
         
+        if(this.options.responseJSON.overwritten) this.removeOverwrittenFilesFromList();
+        
         this.options.currentElem.getElement('span.qq-upload-text').set({
-            'html' : '', 
+            'html' : '' + 
+                ((this.options.responseJSON.overwritten) ? '<br />' + this.options.responseJSON.overwritten_message : ''), 
             'class' : 'qq-upload-success-text'
         });
     },
@@ -214,9 +220,35 @@ var ValumsFileUploader = new Class(
                 this.options.action,
                 this.options.actionParam);
         }.bind(this));
+    },
+    
+    /**
+     * Remove overwritten files from file list
+     */
+    removeOverwrittenFilesFromList: function()
+    {
+        var arrElemLists = [this.options.currentElem.getParent().getChildren().erase(this.options.currentElem)];
+        if(this.options.reloadList)
+        {
+            arrElemLists.push(this.options.reloadList.getChildren());
+        }        
+        
+        arrElemLists.each(function(elemList, index){
+            elemList.each(function(elem, index){
+                if(elem.getChildren().length > 0)
+                {
+                    var strImg = elem.getElement('span.qq-upload-file').textContent;
+                    if(strImg == this.options.currentElem.getElement('span.qq-upload-file').textContent)
+                    {
+                        var childElems = elem.getChildren();
+                        childElems.each(function(el, index){
+                            elem.removeChild(el);
+                        }.bind(elem));
+                        elem.toggle();
+                    }
+                }
+            }.bind(this));
+        }.bind(this));
     }
     
 });
-
-
-
