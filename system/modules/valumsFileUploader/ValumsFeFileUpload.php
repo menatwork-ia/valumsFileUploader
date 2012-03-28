@@ -79,7 +79,39 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
             $_SESSION['AJAX-FFL'][$varValue] = array('type' => 'valumsFileUploader');
         }
         $_SESSION['AJAX-FFL'][$this->strId][$strKey] = $varValue;
-        parent::__set($strKey, $varValue);
+        switch ($strKey)
+        {          
+            case 'val_uploader_debug':
+                $this->debug = $varValue;
+                break;
+            case 'details_failure_message':
+                $this->detailsFailureMessage = $varValue;
+                break;
+            case 'val_max_file_length':
+                $this->maxFileSize = $varValue;
+                break;
+            case 'val_drop_text':
+                $this->dropTextLabel = $varValue;
+                break;
+            case 'max_file_count':                
+                $this->maxFileCount = $varValue;
+                break;            
+            case 'allow_delete':
+                $this->allowDelete = $varValue;
+                break;
+            case 'val_do_not_overwrite':
+                $this->doNotOverwrite = $varValue;
+                break;
+            case 'resize_resolution':
+                $this->resizeResolution = $varValue;
+                break;
+            case 'val_image_size':
+                $this->imageSize = $varValue;
+                break;
+            default:
+                parent::__set($strKey, $varValue);
+                break;
+        }                
     }
 
     /**
@@ -168,15 +200,15 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
     {
         $_SESSION['VALUM_CONFIG'] = array(
             'fileCount' => 0,
-            'maxFileCount' => $this->max_file_count,            
+            'maxFileCount' => $this->maxFileCount,            
             'uploadFolder' => 'system/tmp',
             'maxFileLength' => $this->maxFileSize,
             'extension' => $this->extensions,
-            'doNotOverwrite' => $this->val_do_not_overwrite,
-            'resizeResolution' => (($this->resize_resolution) ? TRUE : FALSE)
+            'doNotOverwrite' => $this->doNotOverwrite,
+            'resizeResolution' => (($this->resizeResolution) ? TRUE : FALSE)
         );
 
-        $imageSize = deserialize($this->val_image_size);
+        $imageSize = deserialize($this->imageSize);
         if (is_array($imageSize) && $imageSize[0] != '' && $imageSize[1] != '')
         {
             $_SESSION['VALUM_CONFIG']['imageSize'] = $imageSize;
@@ -188,23 +220,15 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
      */
     protected function setDefaultValues()
     {
-        $this->uploaderId = 'file-uploader-' . $this->strId;
-        
-        $this->action = 'ajax.php';
-        $this->params = "{action: 'ffl', id: '" . $this->strId . "', type:'valumsFileUploader'}";
-        $this->debug = $this->val_uploader_debug;
-        $this->detailsFailureMessage = $this->details_failure_message;
-        if($this->maxFileCount != NULL)
-        {
-            $this->max_file_count = $this->maxFileCount;
-        }
-        $this->maxFileSize = $this->val_max_file_length;
-        $this->pos = 'fe';
-        $this->dropTextLabel = $this->val_drop_text;        
+        $this->uploaderId   = 'file-uploader-' . $this->strId;        
+        $this->action       = 'ajax.php';
+        $this->actionParam  = 'ffl';
+        $this->params       = "{action: 'ffl', id: '" . $this->strId . "', type:'valumsFileUploader'}";
+        $this->pos          = 'fe';        
     }
 
     /**
-     * Call the real generateAjax in valumsFileUploader
+     * Process ajax request
      */
     public function generateAjax()
     {        

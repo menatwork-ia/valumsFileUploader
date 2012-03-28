@@ -32,12 +32,13 @@
  */
 class ValumsBeFileUpload extends Widget
 {
+
     /**
-    * Submit user input
-    * @var boolean
-    */
+     * Submit user input
+     * @var boolean
+     */
     protected $blnSubmitInput = true;
-        
+
     /**
      * Template
      * @var string
@@ -61,15 +62,15 @@ class ValumsBeFileUpload extends Widget
      * @param array
      */
     public function __construct($arrAttributes = FALSE)
-    {        
+    {
         parent::__construct($arrAttributes);
-     
-        $this->objInput = Input::getInstance();        
+
+        $this->objInput = Input::getInstance();
         $this->objEnvironment = Environment::getInstance();
-        
+
         $this->objDatabase = Database::getInstance();
-        
-        if($this->objInput->get('do') != 'files' || strstr($this->objEnvironment->request, 'contao/files.php'))
+
+        if(!$this->isFileManager())
         {
             // Specific configurations for backend widget
             $this->strTemplate = 'be_valums_widget';
@@ -78,11 +79,11 @@ class ValumsBeFileUpload extends Widget
         {
             // Specific configurations for filemanager
             $this->removeSessionData();
-        }        
-        
+        }
+
         $this->objHelper = new ValumsHelper();
         $this->objHelper->setHeaderData(($this->css) ? array('css' => $this->css) : FALSE);
-        
+
         $this->objUploader = new ValumsFileUploader();
         $this->objBeUser = BackendUser::getInstance();
     }
@@ -105,9 +106,12 @@ class ValumsBeFileUpload extends Widget
 
         // Call parent validate() to upload files without javascript.
         return parent::validate();
-    }    
+    }
 
-    public function generate() {}
+    public function generate()
+    {
+        
+    }
 
     /**
      * Parse the template file and return it as string
@@ -145,12 +149,12 @@ class ValumsBeFileUpload extends Widget
      */
     protected function removeSessionData()
     {
-        if(is_array($_SESSION['VALUM_FILES']))
+        if (is_array($_SESSION['VALUM_FILES']))
         {
             unset($_SESSION['VALUM_FILES']);
         }
-        
-        if(is_array($_SESSION['VALUM_DB_FILES']))
+
+        if (is_array($_SESSION['VALUM_DB_FILES']))
         {
             unset($_SESSION['VALUM_DB_FILES']);
         }
@@ -161,72 +165,77 @@ class ValumsBeFileUpload extends Widget
      */
     protected function setDefaultValues()
     {
-        $this->uploaderId = 'file-uploader';
-        
-        $this->action = 'system/modules/valumsFileUploader/ValumsAjaxRequest.php';
-        $this->params = "{action: 'valumsFileUploader'}";
-        $this->doFiels = FALSE;
-        
-        if($this->objInput->get('do') == 'files' || strstr($this->objEnvironment->request, 'contao/files.php'))
+        $this->uploaderId   = 'file-uploader';
+        $this->action       = 'system/modules/valumsFileUploader/ValumsAjaxRequest.php';
+        $this->actionParam  = 'valumsFileUploader';
+        $this->params       = "{action: 'valumsFileUploader'}";
+        $this->noJsBeLink   = $this->Environment->scriptName . '?do=login';
+        $this->pos          = 'be';
+        $this->maxFileSize  = (($this->maxFileSize) ? $this->maxFileSize : $GLOBALS['TL_CONFIG']['maxFileSize']);
+                
+        if($this->isFileManager())
         {
-            $this->detailsFailureMessage = $this->objBeUser->details_failure_message;
-            $this->maxFileCount = $this->objBeUser->max_file_count;
-            $this->doFiles = TRUE;
-            $this->path = $this->objInput->get('pid');
-            $this->debug = $this->objBeUser->uploader_debug;
-            if($this->objBeUser->do_not_overwrite == TRUE)
+            $this->detailsFailureMessage    = $this->objBeUser->details_failure_message;
+            $this->doFiles                  = TRUE;
+            $this->path                     = $this->objInput->get('pid');
+            $this->debug                    = $this->objBeUser->uploader_debug;
+            $this->allowDelete              = $this->objBeUser->allow_delete;
+            if ($this->objBeUser->do_not_overwrite)
+                $this->doNotOverwrite       = $this->objBeUser->do_not_overwrite_type;
+            if ($this->objBeUser->resize_resolution)
             {
-                $this->doNotOverwrite = $this->objBeUser->do_not_overwrite_type;
-            }
-            if($this->objBeUser->resize_resolution == TRUE)
-            {
-                $this->resizeResolution = $this->objBeUser->resize_resolution;
+                $this->resizeResolution     = $this->objBeUser->resize_resolution;
                 $resize = deserialize($this->objBeUser->val_image_size);
-                if(is_array($resize) && strlen($resize[0]) > 0 && strlen($resize[1]))
-                {
-                    $this->imageSize = $resize;
-                }                
-            }
+                if (is_array($resize) && strlen($resize[0]) > 0 && strlen($resize[1]))
+                    $this->imageSize        = $resize;
+            }            
         }
-        
-        if($this->resize != NULL)
+        else
         {
-            $this->resizeResolution = TRUE;
-            if(is_array($this->resize) && strlen($this->resize[0]) > 0 && strlen($this->resize[1]))
+            $this->doFiles                  = FALSE;                      
+            if (!is_null($this->overwrite)) 
+                $this->doNotOverwrite       = $this->overwrite;
+            if ($this->resize != NULL)
             {
-                $this->imageSize = $this->resize;
-            }
+                $this->resizeResolution = TRUE;
+                if (is_array($this->resize) && strlen($this->resize[0]) > 0 && strlen($this->resize[1]))
+                    $this->imageSize = $this->resize;
+            }         
         }
         
-        $this->maxFileSize = (($this->maxFileSize) ? $this->maxFileSize : $GLOBALS['TL_CONFIG']['maxFileSize']);
-        
-        if ($this->overwrite != NULL)
-        {
-            $this->doNotOverwrite = $this->overwrite;
-        }
-
-        if ($this->path == NULL )
+        if (is_null($this->path)) 
         {
             $this->path = 'system/tmp';
-        }
-
-        if ($this->extensions == NULL)
+        }        
+            
+        if (is_null($this->extensions))
         {
             $this->extensions = strtolower($GLOBALS['TL_CONFIG']['uploadTypes']);
         }
-
+        
         if ($this->name != $this->label)
         {
             $this->dropButtonLabel = $this->label;
         }
-
-        $this->noJsBeLink = $this->Environment->scriptName . '?do=login';
-        
-        $this->pos = 'be';
     }
+    
+    /**
+     * Return true if the current module is in File Manager and false if is 
+     * Be-Widget
+     * 
+     * @return boolean
+     */
+    public function isFileManager()
+    {
+        if($this->objInput->get('do') == 'files' || strstr($this->objEnvironment->request, 'contao/files.php'))
+        {
+            return TRUE;
+        }
+        return FALSE;
+    }    
 
     /**
-     * Call the real generateAjax in valumsFileUploader
+     * Process ajax request
      * 
      * @param string $strAction 
      */
@@ -234,10 +243,17 @@ class ValumsBeFileUpload extends Widget
     {
         if ($strAction == 'valumsFileUploader')
         {
-            $this->objUploader->generateAjax();
+            if($this->objInput->get('value') == 'deleteFile')
+            {
+                $this->objUploader->deleteFile($this->objInput->get('file'));
+            }
+            else
+            {
+                $this->objUploader->generateAjax();
+            }
         }
     }
-    
+
     /**
      * Necessary function for DC_Folder
      * 
@@ -249,7 +265,7 @@ class ValumsBeFileUpload extends Widget
     {
         return array();
     }
-    
+
     /**
      * Necessary function for DC_Folder
      * 
@@ -259,7 +275,7 @@ class ValumsBeFileUpload extends Widget
     {
         return FALSE;
     }
-    
+
     /**
      * Necessary function for DC_Folder
      * 
@@ -269,7 +285,7 @@ class ValumsBeFileUpload extends Widget
     {
         return FALSE;
     }
-    
+
     /**
      * Parse the widget and return it as string
      * 
@@ -279,7 +295,7 @@ class ValumsBeFileUpload extends Widget
     {
         return $this->parse();
     }
-    
+
     /**
      * Load callback for backend widget
      * 
@@ -287,7 +303,7 @@ class ValumsBeFileUpload extends Widget
      * @param DataContainer $dc 
      */
     public function onLoadCallback($varValue, DataContainer $dc)
-    {            
+    {
         $strField = $dc->field;
         $strDbFiles = $this->objDatabase
                 ->prepare("
@@ -296,37 +312,37 @@ class ValumsBeFileUpload extends Widget
                 ->limit(1)
                 ->execute($dc->id);
 
-        
+
         $_SESSION['VALUM_DB_FILES'] = ((strlen($strDbFiles->$strField) > 0) ? deserialize($strDbFiles->$strField) : array());
     }
-    
+
     /**
      * Save callback for backend widget
      * 
      * @param mixed $varValue
      * @param DataContainer $dc 
      */
-    public function onSaveCallback($varValue, DataContainer $dc)            
-    {        
+    public function onSaveCallback($varValue, DataContainer $dc)
+    {
         $arrDbFiles = array();
         if (count($_SESSION['VALUM_DB_FILES']))
         {
             $arrDbFiles = $_SESSION['VALUM_DB_FILES'];
-        }        
-        
+        }
+
         $arrFiles = array();
         if (count($_SESSION['VALUM_FILES']))
         {
             foreach ($_SESSION['VALUM_FILES'] as $k => $v)
             {
-                $arrFiles[$k] = str_replace(TL_ROOT . '/', '', $v['tmp_name']);                
+                $arrFiles[$k] = str_replace(TL_ROOT . '/', '', $v['tmp_name']);
             }
-        }        
-        
+        }
+
         $arrSaveFiles = array_merge($arrDbFiles, $arrFiles);
-        $strFiles = serialize($arrSaveFiles);        
-        
-        if(count($arrSaveFiles) > 0)
+        $strFiles = serialize($arrSaveFiles);
+
+        if (count($arrSaveFiles) > 0)
         {
             $this->objDatabase
                     ->prepare("
@@ -335,7 +351,7 @@ class ValumsBeFileUpload extends Widget
                         WHERE id = ?")
                     ->execute($strFiles, $dc->id);
         }
-        
+
         $this->removeSessionData();
     }
 

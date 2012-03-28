@@ -42,7 +42,7 @@
             
             // Template for one item in file list
             fileTemplate: '<li>' +
-                <?php if($this->allow_delete) echo "'<a class=\"qq-upload-delete\" href=\"#\" onclick=\"return false;\"><\/a>' +"; ?>
+                <?php if($this->allowDelete) echo "'<a class=\"qq-upload-delete\" href=\"#\" onclick=\"return false;\"><\/a>' +"; ?>
                 '<span class="qq-upload-file"><\/span>' +
                 '<span class="qq-upload-spinner"><\/span>' +
                 '<span class="qq-upload-size"><\/span>' +
@@ -75,10 +75,12 @@
     window.addEvent('domready', function(){
         // Create valumsFileUploader object and give them current params
         var vfu = new ValumsFileUploader({
+            'action' : '<?php echo $this->action; ?>',
+            'actionParam' : '<?php echo $this->actionParam; ?>',
             'fflId' : '<?php echo $this->strId; ?>',
             'fflIdName' : '<?php echo $this->uploaderId; ?>',            
             'detailsFailureMessage' : <?php echo (($this->detailsFailureMessage) ? 'true' : 'false'); ?>,
-            'allowDelete' : <?php echo ($this->allow_delete) ? 'true' : 'false'; ?>
+            'allowDelete' : <?php echo ($this->allowDelete) ? 'true' : 'false'; ?>
                     }); 
 
         // Create ajax-uploader

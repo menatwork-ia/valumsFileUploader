@@ -24,7 +24,9 @@ var ValumsFileUploader = new Class(
         responseJSON : false,
         currentElem : false,
         detailsFailureMessage : false,
-        allowDelete : false
+        allowDelete : false,
+        action : false,
+        actionParam : false
     },
     
     /**
@@ -123,7 +125,9 @@ var ValumsFileUploader = new Class(
         {        
             this.addDeleteButton(this.options.currentElem,
                 this.options.fflId,
-                this.options.responseJSON.filename);
+                this.options.responseJSON.filename,
+                this.options.action,
+                this.options.actionParam);
         }
         
         this.options.currentElem.getElement('span.qq-upload-text').set({
@@ -141,7 +145,9 @@ var ValumsFileUploader = new Class(
         {
             this.addDeleteButton(this.options.currentElem,
                 this.options.fflId,
-                this.options.responseJSON.filename);
+                this.options.responseJSON.filename,
+                this.options.action,
+                this.options.actionParam);                
         }
         
         this.options.currentElem.getElement('span.qq-upload-text').set({
@@ -157,7 +163,7 @@ var ValumsFileUploader = new Class(
      * @param integer fflId
      * @param string fileName 
     */
-    addDeleteButton: function(elem, fflId, fileName)
+    addDeleteButton: function(elem, fflId, fileName, action, actionParam)
     {
         elem.getElement('a.qq-upload-delete').set({
             html: 'x ',                    
@@ -165,8 +171,8 @@ var ValumsFileUploader = new Class(
                 click: function(){
                     new Request.JSON({
                         method:'get',
-                        url:'ajax.php',
-                        data: {'action': 'ffl', 'id':fflId, 'type':'valumsFileUploader', 'value':'deleteFile', 'file':fileName},
+                        url: action,
+                        data: {'action': actionParam, 'id':fflId, 'type':'valumsFileUploader', 'value':'deleteFile', 'file':fileName},
                         evalScripts:false,
                         evalResponse:false,
                         onSuccess:function(responseJSON){                    
@@ -204,7 +210,9 @@ var ValumsFileUploader = new Class(
         elem.getChildren().each(function(el, index){
             this.addDeleteButton(el, 
                 this.options.fflId, 
-                el.getElement('span.qq-upload-file').textContent);
+                el.getElement('span.qq-upload-file').textContent,
+                this.options.action,
+                this.options.actionParam);
         }.bind(this));
     }
     

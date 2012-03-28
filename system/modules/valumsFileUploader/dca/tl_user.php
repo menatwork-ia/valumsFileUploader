@@ -60,7 +60,7 @@ foreach ($GLOBALS['TL_DCA']['tl_user']['palettes'] as $key => $row)
     
     if(tl_user_vfu::checkPalettes())
     {
-        $arrPalette = array('{upload_legend},uploader, max_file_count, uploader_debug, details_failure_message, do_not_overwrite, resize_resolution');
+        $arrPalette = array('{upload_legend},uploader, max_file_count, uploader_debug, details_failure_message, do_not_overwrite, allow_delete, resize_resolution');
     }
     else
     {
@@ -129,6 +129,12 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['do_not_overwrite_type'] = array(
     'options' => array('useSuffix', 'useTimeStamp'),
     'reference' => &$GLOBALS['TL_LANG']['UPL'],
     'eval' => array('tl_class' => 'clr w50', 'mandatory' => TRUE, 'includeBlankOption' => FALSE),
+);
+
+$GLOBALS['TL_DCA']['tl_user']['fields']['allow_delete'] = array(
+    'label' => &$GLOBALS['TL_LANG']['tl_user']['allow_delete'],
+    'inputType' => 'checkbox',
+    'eval' => array('tl_class' => 'w50')
 );
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['resize_resolution'] = array(
