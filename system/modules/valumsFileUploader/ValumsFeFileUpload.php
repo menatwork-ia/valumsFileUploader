@@ -139,45 +139,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
      * 
      * @return string
      */
-    public function generate()
-    {
-        $return = sprintf('
-            <div id="file-uploader-%s" class="%s">       
-                <noscript>          
-                    <div><input type="file" name="%s" id="ctrl_%s" class="upload%s" /></div>
-                </noscript>         
-            </div>', $this->strId, $this->strClass, $this->strName, $this->strId, (strlen($this->strClass) ? ' ' . $this->strClass : '')
-        );
-
-        $tmpReturn = '';
-
-        // Check for uploaded files for this formField
-        if ($_SESSION['VALUM_FILES'])
-        {
-            foreach ($_SESSION['VALUM_FILES'] as $arrFile)
-            {
-                if ($arrFile['formFieldId'] == $this->id)
-                {
-                    $tmpReturn .= '<li class=" qq-upload-success">
-                            <a class="qq-upload-delete" href="#" onclick="return false;"></a>
-                            <span class="qq-upload-file">' . $arrFile['name'] . '</span>
-                            <span class="qq-upload-size" style="display: inline;">' . $this->objHelper->getFormatedSize($arrFile['size']) . '</span>
-                            <span class="qq-upload-failed-text">' . $arrFile['error'] . '</span>
-                        </li>';
-                }
-            }
-        }
-
-        // Add already uploaded files
-        if ($tmpReturn != '')
-        {
-            $return .= '<ul id="vfu_reload" class="qq-upload-list">';
-            $return .= $tmpReturn;
-            $return .= '</ul>';
-        }
-
-        return $return . $this->addSubmit();
-    }
+    public function generate(){}
 
     /**
      * Parse the template file and return it as string
@@ -220,11 +182,12 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
      */
     protected function setDefaultValues()
     {
-        $this->uploaderId   = 'file-uploader-' . $this->strId;        
-        $this->action       = 'ajax.php';
-        $this->actionParam  = 'ffl';
-        $this->params       = "{action: 'ffl', id: '" . $this->strId . "', type:'valumsFileUploader'}";
-        $this->pos          = 'fe';        
+        $this->uploaderId       = 'file-uploader-' . $this->strId;        
+        $this->action           = 'ajax.php';
+        $this->actionParam      = 'ffl';
+        $this->params           = "{action: 'ffl', id: '" . $this->strId . "', type:'valumsFileUploader'}";
+        $this->pos              = 'fe';
+        $this->arrSessionFiles  = $_SESSION['VALUM_FILES'];
     }
 
     /**
