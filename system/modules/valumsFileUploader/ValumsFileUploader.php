@@ -65,6 +65,7 @@ class ValumsFileUploader extends Backend
      * Objects 
      */
     protected $objHelper;
+    protected $objSession;
 
 
     /**
@@ -74,6 +75,7 @@ class ValumsFileUploader extends Backend
     {
         parent::__construct();
         $this->objHelper = new ValumsHelper();
+        $this->objSession = Session::getInstance();
     }
 
     /**
@@ -87,7 +89,12 @@ class ValumsFileUploader extends Backend
         {      
             $objFile = new ValumsFile('', 'SESSION', $_SESSION['VALUM_FILES'][$strFileName]);
             unset($_SESSION['VALUM_FILES'][$strFileName]);
-            $_SESSION['VALUM_CONFIG']['fileCount']--;
+            
+            // Decrease filecount in session by one
+            $arrConf = $this->objSession->get('VALUM_CONFIG');
+            $arrConf['fileCount']--;
+            $this->objSession->set('VALUM_CONFIG', $arrConf);
+            
             if(!$objFile->delete())
             {
                 $this->objHelper->sendJsonEncode(array('deleteSuccess' => FALSE));
@@ -107,15 +114,14 @@ class ValumsFileUploader extends Backend
         $strLogPos = __CLASS__ . " " . __FUNCTION__ . "()";
         
         // Get config
-        if ($_SESSION['VALUM_CONFIG'])
-            $arrConf = $_SESSION['VALUM_CONFIG'];
+        $arrConf = $this->objSession->get('VALUM_CONFIG');
         
         // Create ValumsFile object
-        $objFile   = new ValumsFile($arrConf['uploadFolder']);
+        $objFile = new ValumsFile($arrConf['uploadFolder']);
         
         // Check if maxFileCount is reached
-        if($_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && $_SESSION['VALUM_CONFIG']['fileCount'] >= $_SESSION['VALUM_CONFIG']['maxFileCount'] && !$objFile->checkIfIsFileOverwrite($arrConf['doNotOverwrite'])
-                || $_SESSION['VALUM_CONFIG']['maxFileCount'] != 0 && count($_SESSION['VALUM_FILES']) >= $_SESSION['VALUM_CONFIG']['maxFileCount'] && !$objFile->checkIfIsFileOverwrite($arrConf['doNotOverwrite']))
+        if($arrConf['maxFileCount'] != 0 && $arrConf['fileCount'] >= $arrConf['maxFileCount'] && !$objFile->checkIfIsFileOverwrite($arrConf['doNotOverwrite'])
+                || $arrConf['maxFileCount'] != 0 && count($_SESSION['VALUM_FILES']) >= $arrConf['maxFileCount'] && !$objFile->checkIfIsFileOverwrite($arrConf['doNotOverwrite']))
         {
             $this->objHelper->setJsonEncode('ERR', 'val_max_files', array(), $strLogPos, array("success" => FALSE, "reason" => "val_max_files", "reasonText" => $GLOBALS['TL_LANG']['ERR']['val_max_files']));
         }        
@@ -213,10 +219,12 @@ class ValumsFileUploader extends Backend
 
         if(!$objFile->boolOverwrittenFile)
         {
-            $_SESSION['VALUM_CONFIG']['fileCount']++;
+            $arrConf['fileCount']++;
         }
         $arrJson['overwritten']         = $objFile->boolOverwrittenFile;        
         $arrJson['overwritten_message'] = sprintf($GLOBALS['TL_LANG']['UPL']['overwritten_message'], $objFile->newName);
+        
+        $this->objSession->set('VALUM_CONFIG', $arrConf);
         
         // Set json encoding
         $this->objHelper->setJsonEncode('UPL', 'log_success', array($objFile->newName, $objFile->uploadFolder), $strLogPos, $arrJson);

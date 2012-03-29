@@ -55,6 +55,7 @@ class ValumsBeFileUpload extends Widget
     protected $objInput;
     protected $objEnvironment;
     protected $objDatabase;
+    protected $objSession;
 
     /**
      * Initialize the object and set configurations
@@ -83,6 +84,8 @@ class ValumsBeFileUpload extends Widget
 
         $this->objHelper = new ValumsHelper();
         $this->objHelper->setHeaderData(($this->css) ? array('css' => $this->css) : FALSE);
+        
+        $this->objSession = Session::getInstance();
 
         $this->objUploader = new ValumsFileUploader();
         $this->objBeUser = BackendUser::getInstance();
@@ -108,10 +111,7 @@ class ValumsBeFileUpload extends Widget
         return parent::validate();
     }
 
-    public function generate()
-    {
-        
-    }
+    public function generate(){}
 
     /**
      * Parse the template file and return it as string
@@ -132,15 +132,17 @@ class ValumsBeFileUpload extends Widget
      */
     protected function setSessionData()
     {
-        $_SESSION['VALUM_CONFIG'] = array(
-            'fileCount' => 0,
-            'maxFileCount' => $this->maxFileCount,
-            'uploadFolder' => $this->path,
-            'maxFileLength' => $this->maxFileSize,
-            'extension' => $this->extensions,
-            'doNotOverwrite' => (($this->doNotOverwrite) ? $this->doNotOverwrite : 'overwriteFile'),
-            'resizeResolution' => $this->resizeResolution,
-            'imageSize' => $this->imageSize
+        $this->objSession->set('VALUM_CONFIG', 
+            array(
+                'fileCount' => 0,
+                'maxFileCount' => $this->maxFileCount,
+                'uploadFolder' => $this->path,
+                'maxFileLength' => $this->maxFileSize,
+                'extension' => $this->extensions,
+                'doNotOverwrite' => (($this->doNotOverwrite) ? $this->doNotOverwrite : 'overwriteFile'),
+                'resizeResolution' => $this->resizeResolution,
+                'imageSize' => $this->imageSize
+            )
         );
     }
 

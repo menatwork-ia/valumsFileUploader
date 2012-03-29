@@ -48,6 +48,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
     protected $objHelper;
     protected $objUploader;
     protected $objInput;
+    protected $objSession;
 
     /**
      * Initialize the object and set configurations
@@ -62,6 +63,8 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
 
         $this->objHelper = new ValumsHelper();
         $this->objHelper->setHeaderData();
+        
+        $this->objSession = Session::getInstance();        
 
         $this->objUploader = new ValumsFileUploader();
     }
@@ -160,7 +163,7 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
      */
     protected function setSessionData()
     {
-        $_SESSION['VALUM_CONFIG'] = array(
+        $arrConf = array(
             'fileCount' => ((count($_SESSION['VALUM_FILES']) > 0) ? count($_SESSION['VALUM_FILES']) : 0),
             'maxFileCount' => $this->maxFileCount,            
             'uploadFolder' => 'system/tmp',
@@ -173,8 +176,10 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
         $imageSize = deserialize($this->imageSize);
         if (is_array($imageSize) && $imageSize[0] != '' && $imageSize[1] != '')
         {
-            $_SESSION['VALUM_CONFIG']['imageSize'] = $imageSize;
+            $arrConf['imageSize'] = $imageSize;
         }
+        
+        $this->objSession->set('VALUM_CONFIG', $arrConf);
     }
 
     /**
@@ -194,11 +199,11 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
      * Process ajax request
      */
     public function generateAjax()
-    {        
-        $_SESSION['VALUM_CONFIG']['specialSessionAttr'] = array(
-            'formFieldId' => $this->Input->get('id'),
-            'formId' => $this->pid
-        );
+    {
+        $arrConf = $this->objSession->get('VALUM_CONFIG');
+        $arrConf['formFieldId'] = $this->Input->get('id');
+        $arrConf['formId'] = $this->pid;
+        $this->objSession->set('VALUM_CONFIG', $arrConf);
 
         if($this->objInput->get('value') == 'deleteFile')
         {
