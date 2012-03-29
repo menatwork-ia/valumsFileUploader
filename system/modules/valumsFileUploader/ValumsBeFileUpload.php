@@ -153,11 +153,6 @@ class ValumsBeFileUpload extends Widget
         {
             unset($_SESSION['VALUM_FILES']);
         }
-
-        if (is_array($_SESSION['VALUM_DB_FILES']))
-        {
-            unset($_SESSION['VALUM_DB_FILES']);
-        }
     }
 
     /**
@@ -192,7 +187,8 @@ class ValumsBeFileUpload extends Widget
         }
         else
         {
-            $this->doFiles                  = FALSE;                      
+            $this->doFiles                  = FALSE;
+            $this->arrSessionFiles          = $_SESSION['VALUM_FILES'];
             if (!is_null($this->overwrite)) 
                 $this->doNotOverwrite       = $this->overwrite;
             if ($this->resize != NULL)
@@ -304,16 +300,58 @@ class ValumsBeFileUpload extends Widget
      */
     public function onLoadCallback($varValue, DataContainer $dc)
     {
+        if($this->objInput->post('FORM_SUBMIT'))
+        {
+            return;
+        }
+
+        // Get session files after reload
+        $arrSessionFiles = ((is_array($_SESSION['VALUM_FILES'])) ? $_SESSION['VALUM_FILES'] : array());
+        
+        // Get files from database
         $strField = $dc->field;
-        $strDbFiles = $this->objDatabase
+        $strFiles = $this->objDatabase
                 ->prepare("
                     SELECT $dc->field FROM `$dc->table`
                     WHERE id = ?")
                 ->limit(1)
                 ->execute($dc->id);
-
-
-        $_SESSION['VALUM_DB_FILES'] = ((strlen($strDbFiles->$strField) > 0) ? deserialize($strDbFiles->$strField) : array());
+        $arrFiles = deserialize($strFiles->$strField);
+        
+        // Get array with filenames in session
+        $arrSearchFiles = array();
+        if(count($arrSessionFiles) > 0)
+        {
+            foreach($arrSessionFiles AS $arrSessionFile)
+            {
+                $arrSearchFiles[] = $arrSessionFile['name'];
+            }
+        }
+        
+        // Formate array from database for session
+        $arrAddToSessionFiles = array();
+        if(is_array($arrFiles) && count($arrFiles) > 0)
+        {
+            foreach ($arrFiles AS $file)
+            {
+                $fileInfo = pathinfo($file);
+                if(!in_array($fileInfo['basename'], $arrSearchFiles) && file_exists(TL_ROOT . '/' . $fileInfo['dirname']))
+                {
+                    $arrAddToSessionFiles[$fileInfo['basename']] = array(
+                        'name'      => $fileInfo['basename'],
+                        'orgName'   => $fileInfo['filename'],
+                        'type'      => $fileInfo['extension'],
+                        'error'     => '',
+                        'size'      => filesize(TL_ROOT . '/' . $fileInfo['dirname']),
+                        'uploaded'  => '', 
+                        'tmp_name' => $fileInfo['dirname']
+                    );
+                }
+            }
+        }                
+        
+        // Set session
+        $_SESSION['VALUM_FILES'] = array_merge($arrSessionFiles, $arrAddToSessionFiles);
     }
 
     /**
@@ -324,25 +362,20 @@ class ValumsBeFileUpload extends Widget
      */
     public function onSaveCallback($varValue, DataContainer $dc)
     {
-        $arrDbFiles = array();
-        if (count($_SESSION['VALUM_DB_FILES']))
-        {
-            $arrDbFiles = $_SESSION['VALUM_DB_FILES'];
-        }
-
+        // Prepare session files for database update
         $arrFiles = array();
         if (count($_SESSION['VALUM_FILES']))
         {
-            foreach ($_SESSION['VALUM_FILES'] as $k => $v)
+            foreach ($_SESSION['VALUM_FILES'] as $value)
             {
-                $arrFiles[$k] = str_replace(TL_ROOT . '/', '', $v['tmp_name']);
+                $arrFiles[] = $value['tmp_name'] . '/' . $value['name'];
             }
         }
 
-        $arrSaveFiles = array_merge($arrDbFiles, $arrFiles);
-        $strFiles = serialize($arrSaveFiles);
+        // Set files to database
+        $strFiles = serialize($arrFiles);
 
-        if (count($arrSaveFiles) > 0)
+        if (is_array($arrFiles))
         {
             $this->objDatabase
                     ->prepare("
@@ -352,9 +385,9 @@ class ValumsBeFileUpload extends Widget
                     ->execute($strFiles, $dc->id);
         }
 
+        // Clear session
         $this->removeSessionData();
     }
-
 }
 
 ?>

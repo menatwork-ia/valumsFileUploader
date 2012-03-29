@@ -137,6 +137,10 @@ var ValumsFileUploader = new Class(
                 ((this.options.responseJSON.overwritten) ? '<br />' + this.options.responseJSON.overwritten_message : ''), 
             'class' : 'qq-upload-success-text'
         }); 
+        
+        this.options.currentElem.getElement('span.qq-upload-size').set({
+            'html' : this.options.responseJSON.resized_size
+        });
     },
     
     /**

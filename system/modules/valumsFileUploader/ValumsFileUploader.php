@@ -196,6 +196,7 @@ class ValumsFileUploader extends Backend
             {
                 $arrJson['resized'] = TRUE;
                 $arrJson['resized_message'] = sprintf($GLOBALS['TL_LANG']['MSC']['fileResized'], $objFile->newName);
+                $arrJson['resized_size'] = $this->objHelper->getFormatedSize($objFile->size);
             }
             
         }

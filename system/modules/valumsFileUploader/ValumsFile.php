@@ -326,6 +326,7 @@ class ValumsFile extends Controller
                 {
                     $blnResized = true;
                     $this->resizeImage($newFile, $intImageWidth, 0);
+                    $this->size = filesize(TL_ROOT . '/' . $newFile);
 
                     // Recalculate image size
                     $arrImageSize = @getimagesize(TL_ROOT . '/' . $newFile);
@@ -336,6 +337,7 @@ class ValumsFile extends Controller
                 {
                     $blnResized = true;
                     $this->resizeImage($newFile, 0, $intImageHeigh);
+                    $this->size = filesize(TL_ROOT . '/' . $newFile);
                 }
             }
         }

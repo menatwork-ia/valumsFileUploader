@@ -7,6 +7,19 @@
     </noscript>
 </div>
 
+<?php if ($this->arrSessionFiles): ?>
+    <ul id="vfu_reload" class="qq-upload-list">
+        <?php foreach ($this->arrSessionFiles as $arrFile): ?>
+            <li class=" qq-upload-success">
+                <a class="qq-upload-delete" href="#" onclick="return false;"></a>
+                <span class="qq-upload-file"><?php echo $arrFile['name']; ?></span>
+                <span class="qq-upload-size" style="display: inline;"><?php echo $this->objHelper->getFormatedSize($arrFile['size']); ?></span>
+                <span class="qq-upload-failed-text"><?php echo $arrFile['error']; ?></span>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+
 <script type="text/javascript">
 function createUploader(vfu){
     var uploader = new qq.FileUploader({
@@ -51,9 +64,16 @@ window.addEvent('domready', function(){
         'fflId' : '<?php echo $this->strId; ?>',
         'fflIdName' : '<?php echo $this->uploaderId; ?>',            
         'detailsFailureMessage' : <?php echo (($this->detailsFailureMessage) ? 'true' : 'false'); ?>,
-        'allowDelete' : <?php echo ($this->allowDelete) ? 'true' : 'false'; ?>
+        'allowDelete' : <?php echo ($this->allowDelete) ? 'true' : 'false'; ?>,
+        'reloadList' : $('vfu_reload')
     });
     createUploader(vfu);
+    <?php if($this->allowDelete): ?>    
+    if($('vfu_reload'))
+    {
+        vfu.addDeleteToReloadElem($('vfu_reload'));
+    }
+    <?php endif; ?>    
 });
 </script>
 
