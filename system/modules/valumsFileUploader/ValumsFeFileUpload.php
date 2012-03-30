@@ -83,7 +83,15 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
         }
         $_SESSION['AJAX-FFL'][$this->strId][$strKey] = $varValue;
         switch ($strKey)
-        {          
+        {
+            case 'id':
+                $this->cssID = $varValue;
+                $this->strId = $varValue;
+                break;            
+            case 'class':
+                $this->class = $varValue;
+                $this->strClass = $varValue;
+                break;
             case 'val_uploader_debug':
                 $this->debug = $varValue;
                 break;

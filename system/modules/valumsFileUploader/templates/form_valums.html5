@@ -5,7 +5,7 @@
     </tr>
 <?php else: ?>
     <?php echo $this->generateLabel(); ?>
-    <div id="file-uploader-<?php echo $this->strId ?>" <?php echo (($this->strClass) ? 'class="' . $this->strClass . '"' : ''); ?>>
+    <div id="file-uploader-<?php echo $this->cssID; ?>" class="<?php echo $this->class; ?> block">
         <noscript>          
             <div><input type="file" name="<?php echo $this->strName; ?>" id="ctrl_<?php echo $this->strId; ?>" class="upload<?php echo ((strlen($this->strClass)) ? ' ' . $this->strClass : ''); ?>" /></div>
         </noscript>         
