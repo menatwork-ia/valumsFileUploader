@@ -1,6 +1,27 @@
 <?php if (!$this->tableless): ?>
     <tr class="<?php echo $this->rowClass; ?>">
-        <td class="col_0 col_first"><?php echo $this->generateLabel(); ?></td>
+        <td class="col_0 col_first">
+            <?php echo $this->generateLabel(); ?>
+            <div id="file-uploader-<?php echo $this->cssID; ?>" class="<?php echo $this->class; ?> block">
+                <noscript>          
+                    <div><input type="file" name="<?php echo $this->strName; ?>" id="ctrl_<?php echo $this->strId; ?>" class="upload<?php echo ((strlen($this->strClass)) ? ' ' . $this->strClass : ''); ?>" /></div>
+                </noscript>         
+            </div>
+
+            <?php if ($this->arrSessionFiles): ?>
+                <ul id="vfu_reload" class="qq-upload-list">
+                    <?php foreach ($this->arrSessionFiles as $arrFile): ?>
+                        <li class=" qq-upload-success">
+                            <a class="qq-upload-delete" href="#" onclick="return false;"></a>
+                            <span class="qq-upload-file"><?php echo $arrFile['name']; ?></span>
+                            <span class="qq-upload-size" style="display: inline;"><?php echo $this->objHelper->getFormatedSize($arrFile['size']); ?></span>
+                            <span class="qq-upload-failed-text"><?php echo $arrFile['error']; ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+            <?php echo $this->addSubmit(); ?>
+        </td>
         <td class="col_1 col_last"><?php echo $this->generateWithError(); ?></td>
     </tr>
 <?php else: ?>
