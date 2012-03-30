@@ -96,6 +96,9 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
             case 'val_drop_text':
                 $this->dropTextLabel = $varValue;
                 break;
+            case 'val_init_text':
+                $this->dropButtonLabel = $varValue;
+                break;
             case 'max_file_count':                
                 $this->maxFileCount = $varValue;
                 break;            
