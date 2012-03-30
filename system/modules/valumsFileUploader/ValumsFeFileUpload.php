@@ -212,8 +212,8 @@ class ValumsFeFileUpload extends FormFileUpload implements uploadable
     public function generateAjax()
     {
         $arrConf = $this->objSession->get('VALUM_CONFIG');
-        $arrConf['formFieldId'] = $this->Input->get('id');
-        $arrConf['formId'] = $this->pid;
+        $arrConf['specialSessionAttr']['formFieldId'] = $this->Input->get('id');
+        $arrConf['specialSessionAttr']['formId'] = $this->pid;
         $this->objSession->set('VALUM_CONFIG', $arrConf);
 
         if($this->objInput->get('value') == 'deleteFile')
