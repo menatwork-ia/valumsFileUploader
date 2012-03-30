@@ -107,7 +107,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields']['max_file_count'] = array(
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['allow_delete'] = array(
     'label' => &$GLOBALS['TL_LANG']['tl_form_field']['allow_delete'],
     'inputType' => 'checkbox',
-    'eval' => array('tl_class' => 'w50')
+    'eval' => array('tl_class' => 'clr w50')
 );
 
 $GLOBALS['TL_DCA']['tl_form_field']['fields']['resize_resolution'] = array(
