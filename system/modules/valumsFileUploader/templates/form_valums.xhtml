@@ -69,7 +69,7 @@ function createUploader(vfu){
             '<span class="qq-upload-spinner"><\/span>' +
             '<span class="qq-upload-size"><\/span>' +
             '<a class="qq-upload-cancel" href="#"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_cancel']; ?><\/a>' +
-            '<span class="qq-upload-text"><?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?><\/span>' +
+            '<span class="qq-upload-text"><\/span>' +
             '<\/li>',
         messages: {
             typeError: <?php echo $GLOBALS['TL_LANG']['ERR']['val_type_error']; ?>,
@@ -92,6 +92,7 @@ window.addEvent('domready', function(){
         'actionParam' : '<?php echo $this->actionParam; ?>',
         'fflId' : '<?php echo $this->strId; ?>',
         'fflIdName' : '<?php echo $this->uploaderId; ?>',
+        'failureMassage' : '<?php echo $GLOBALS['TL_LANG']['UPL']['upload_failed_text']; ?>',
         'detailsFailureMessage' : <?php echo (($this->detailsFailureMessage) ? 'true' : 'false'); ?>,
         'allowDelete' : <?php echo ($this->allowDelete) ? 'true' : 'false'; ?>,
         'reloadList' : $('vfu_reload')        

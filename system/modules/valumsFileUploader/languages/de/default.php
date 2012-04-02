@@ -70,6 +70,14 @@ $GLOBALS['TL_LANG']['ERR']['val_empty_error']           = '"{file} ist leer, bit
 $GLOBALS['TL_LANG']['ERR']['val_on_leave']              = '"Die Daten werden hochgeladen, wenn Sie die Seite jetzt verlassen wird der Prozess abgebrochen."';
 $GLOBALS['TL_LANG']['ERR']['val_be_noscript']           = 'Bitte aktivieren Sie Javascript um den Uploader zu nutzen<br />oder wählen Sie in Ihren <a href="%s" title="Benutzereinstellungen">Benutzereinstellungen</a> den Standard-Uploader aus.';
 
+// Detailed failure message
+$GLOBALS['TL_LANG']['ERR']['val_no_file']               = 'Die Datei konnte nicht erstellen werden.';
+$GLOBALS['TL_LANG']['ERR']['val_not_writeable']         = 'Das Uploadverzeichnis ist nicht beschreibbar.';
+$GLOBALS['TL_LANG']['ERR']['val_file_size_zero']        = 'Die Datei ist leer.';
+$GLOBALS['TL_LANG']['ERR']['val_max_size']              = 'Die Dateigröße zu groß.';
+$GLOBALS['TL_LANG']['ERR']['val_wrong_type']            = 'Die Dateiendung ist nicht korrekt.';
+$GLOBALS['TL_LANG']['ERR']['val_save_error']            = 'Die Datei Konnte nicht gespeichert werden.';
+
 // Logger
 $GLOBALS['TL_LANG']['ERR']['val_log_no_file']           = 'Konnte Datei nicht erstellen';
 $GLOBALS['TL_LANG']['ERR']['val_log_not_writeable']     = 'Verzeichnis ist nicht beschreibbar';

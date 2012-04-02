@@ -70,6 +70,14 @@ $GLOBALS['TL_LANG']['ERR']['val_empty_error']           = '"{file} is empty, ple
 $GLOBALS['TL_LANG']['ERR']['val_on_leave']              = '"The files are being uploaded, if you leave now the upload will be cancelled."';
 $GLOBALS['TL_LANG']['ERR']['val_be_no_script']          = 'Please enable JavaScript to use file uploader.<br />Or choose in your <a href="%s" title="User configuration">user configuration</a> the default uploader.';
 
+// Detailed failure message
+$GLOBALS['TL_LANG']['ERR']['val_no_file']               = 'Could not create file';
+$GLOBALS['TL_LANG']['ERR']['val_not_writeable']         = 'Folder is not writeable writeable';
+$GLOBALS['TL_LANG']['ERR']['val_file_size_zero']        = 'File is empty';
+$GLOBALS['TL_LANG']['ERR']['val_max_size']              = 'File size is to large';
+$GLOBALS['TL_LANG']['ERR']['val_wrong_type']            = 'Has invalid file type';
+$GLOBALS['TL_LANG']['ERR']['val_save_error']            = 'Could not save';
+
 // Logger
 $GLOBALS['TL_LANG']['ERR']['val_log_no_file']           = 'Could not create file';
 $GLOBALS['TL_LANG']['ERR']['val_log_not_writeable']     = 'Folder is not writeable writeable';

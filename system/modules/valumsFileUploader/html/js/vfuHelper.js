@@ -23,6 +23,7 @@ var ValumsFileUploader = new Class(
         fileName : false,
         responseJSON : false,
         currentElem : false,
+        failureMassage : false,
         detailsFailureMessage : false,
         allowDelete : false,
         action : false,
@@ -85,24 +86,17 @@ var ValumsFileUploader = new Class(
      * Run
      */
     run: function(){
-        this.options.currentElem = $(this.options.fflIdName).getElement('ul.qq-upload-list').getChildren()[this.options.id];
-
-        this.updateFileName();                   
+        this.options.currentElem = $(this.options.fflIdName).getElement('ul.qq-upload-list').getChildren()[this.options.id];                   
         
-        if(this.options.responseJSON.success && this.options.responseJSON.resized || 
-            this.options.responseJSON.success && this.options.responseJSON.exceeds)
+        if(this.options.responseJSON.success)
         {
-            this.updateSuccessResizedMsg();                      
-        }
-        else if(this.options.responseJSON.success)
-        {
+            this.updateFileName();
             this.updateSuccessMsg();
         }
-        
-        if(this.options.detailsFailureMessage && !this.options.responseJSON.success)
+        else
         {
-           this.updateDetailedFailureMsg();
-        }              
+           this.updateFailureMsg();
+        }
     },
     
     /**
@@ -116,30 +110,23 @@ var ValumsFileUploader = new Class(
     },
     
     /**
-     * Update the success message from current element in list when image was
-     * resized
+     * Update the failure message from current element in list
      */
-    updateSuccessResizedMsg: function()
+    updateFailureMsg: function()
     {
-        if(this.options.allowDelete)
-        {        
-            this.addDeleteButton(this.options.currentElem,
-                this.options.fflId,
-                this.options.responseJSON.filename,
-                this.options.action,
-                this.options.actionParam);
+        var failureMsg = '';
+        if(this.options.detailsFailureMessage && this.options.responseJSON.reasonText)
+        {
+            failureMsg = this.options.responseJSON.reasonText;
+        }
+        else
+        {
+            failureMsg = this.options.failureMassage;
         }
         
-        if(this.options.responseJSON.overwritten) this.removeOverwrittenFilesFromList();
-        
         this.options.currentElem.getElement('span.qq-upload-text').set({
-            'html' : '<br />' + this.options.responseJSON.resized_message + 
-                ((this.options.responseJSON.overwritten) ? '<br />' + this.options.responseJSON.overwritten_message : ''), 
-            'class' : 'qq-upload-success-text'
-        }); 
-        
-        this.options.currentElem.getElement('span.qq-upload-size').set({
-            'html' : this.options.responseJSON.resized_size
+            'html' : '<br />' + failureMsg,
+            'class' : 'qq-upload-failed-text'
         });
     },
     
@@ -157,10 +144,19 @@ var ValumsFileUploader = new Class(
                 this.options.actionParam);                
         }
         
+        var successMsg = '';
+        if(this.options.responseJSON.resized || this.options.responseJSON.exceeds)
+        {
+            this.options.currentElem.getElement('span.qq-upload-size').set({
+                'html' : this.options.responseJSON.resized_size
+            });
+            successMsg = this.options.responseJSON.resized_message;            
+        }
+        
         if(this.options.responseJSON.overwritten) this.removeOverwrittenFilesFromList();
         
         this.options.currentElem.getElement('span.qq-upload-text').set({
-            'html' : '' + 
+            'html' : '' + ((successMsg) ? '<br />' + successMsg : '') +  
                 ((this.options.responseJSON.overwritten) ? '<br />' + this.options.responseJSON.overwritten_message : ''), 
             'class' : 'qq-upload-success-text'
         });
@@ -198,17 +194,6 @@ var ValumsFileUploader = new Class(
         });
     },
     
-    /**
-     * Update the deatialed failure message from current element in list
-     */
-    updateDetailedFailureMsg: function()
-    {
-        this.options.currentElem.getElement('span.qq-upload-text').set({
-            html : this.options.responseJSON.reasonText, 
-            'class': 'qq-upload-failed-text'
-        });         
-    },
-
     /**
      * Add delete button and event to all elements from list after reload the
      * page
