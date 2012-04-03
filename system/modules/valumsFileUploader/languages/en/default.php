@@ -45,7 +45,7 @@ $GLOBALS['TL_LANG']['UPL']['log_success']               = 'Uploaded successfully
 
 // BE
 $GLOBALS['TL_LANG']['UPL']['be_upload_drop_area']       = 'Drop files here to upload';
-$GLOBALS['TL_LANG']['UPL']['be_upload_button']          = 'pload a file';
+$GLOBALS['TL_LANG']['UPL']['be_upload_button']          = 'Upload a file';
 $GLOBALS['TL_LANG']['UPL']['be_upload_file']            = array('File-Upload', 'Browse your local computer and select the files you want to upload to the server or drop files (only Firefox and Chrome) here.');
 
 $GLOBALS['TL_LANG']['UPL']['overwriteFile']             = 'Overwrite existing file';
