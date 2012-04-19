@@ -292,6 +292,9 @@ class ValumsFile extends Controller
      * Check if the uploaded image have the right dimensions and resize it if
      * not.
      * 
+     * Add bugfix for resize bug. Special thanks to AndreasA for this snippet.
+     * @link https://github.com/menatwork/valumsFileUploader/issues/47
+     * 
      * @param string $newFile
      * @param array $arrDissolution
      */
@@ -321,31 +324,34 @@ class ValumsFile extends Controller
                     $intImageHeigh = $GLOBALS['TL_CONFIG']['imageHeight'];
                 }
 
-                // Image exceeds maximum image width
+                // The image exceeds the maximum image width
                 if ($arrImageSize[0] > $intImageWidth)
                 {
                     $blnResized = true;
-                    $this->resizeImage($newFile, $intImageWidth, 0);
-                    $this->size = filesize(TL_ROOT . '/' . $newFile);
-
-                    // Recalculate image size
-                    $arrImageSize = @getimagesize(TL_ROOT . '/' . $newFile);
+                    $intHeight = ceil($intImageWidth * $arrImageSize[1] / $arrImageSize[0]);
+                    $arrImageSize = array($intImageWidth, $intHeight);
                 }
 
-                // Image exceeds maximum image height
+                // The image exceeds the maximum image height
                 if ($arrImageSize[1] > $intImageHeigh)
                 {
                     $blnResized = true;
-                    $this->resizeImage($newFile, 0, $intImageHeigh);
+                    $intWidth = ceil($intImageHeigh * $arrImageSize[0] / $arrImageSize[1]);
+                    $arrImageSize = array($intWidth, $intImageHeigh);
+                }
+
+                if ($blnResized)
+                {
+                    $this->resizeImage($newFile, $arrImageSize[0], $arrImageSize[1]);
                     $this->size = filesize(TL_ROOT . '/' . $newFile);
                 }
             }
         }
-        
+
         return array(
             'blnExceeds' => $blnExceeds,
             'blnResized' => $blnResized
-        );
+        );    
     }
 
     /**
