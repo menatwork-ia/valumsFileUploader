@@ -4,7 +4,7 @@ valumsFileUploader
 Screenshots
 -----------
 
-![personal configuration](http://img7.imagebanana.com/img/z1xt0aph/tl_user.jpg)
+![personal configuration](http://img7.imagebanana.com/img/c62l07y7/tl_user.jpg)
 
 Other screenshots
 https://github.com/menatwork/valumsFileUploader/wiki/Screenshots
