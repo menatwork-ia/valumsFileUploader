@@ -4,7 +4,7 @@ valumsFileUploader
 About
 -----
 
-The valumsFileUploader extension is a Multiple files uploader without flash in the frontend and backend.
+The valumsFileUploader extension is a Multiple file uploader without flash in the frontend and backend.
 
 He is based on the File Uploader from Andrew Valum
 
