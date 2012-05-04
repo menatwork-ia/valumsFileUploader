@@ -328,7 +328,7 @@ class ValumsFile extends Controller
                 if ($arrImageSize[0] > $intImageWidth)
                 {
                     $blnResized = true;
-                    $intHeight = ceil($intImageWidth * $arrImageSize[1] / $arrImageSize[0]);
+                    $intHeight = round($intImageWidth * $arrImageSize[1] / $arrImageSize[0]);
                     $arrImageSize = array($intImageWidth, $intHeight);
                 }
 
@@ -336,7 +336,7 @@ class ValumsFile extends Controller
                 if ($arrImageSize[1] > $intImageHeigh)
                 {
                     $blnResized = true;
-                    $intWidth = ceil($intImageHeigh * $arrImageSize[0] / $arrImageSize[1]);
+                    $intWidth = round($intImageHeigh * $arrImageSize[0] / $arrImageSize[1]);
                     $arrImageSize = array($intWidth, $intImageHeigh);
                 }
 
