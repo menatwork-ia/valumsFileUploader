@@ -61,6 +61,8 @@ $GLOBALS['TL_LANG']['UPL']['overwritten_message']       = 'Die Datei %s wurde er
 /**
  * Error
  */
+$GLOBALS['TL_LANG']['ERR']['val_mod_security']			= 'Auf Ihrem Server ist das Apache-Modul mod_security aktiviert. Dies kann zu Problemen beim Hochladen großer Dateien führen. Bitte deaktivieren Sie dieses Modul, oder wenden Sie sich an Ihren Administrator.';
+
 $GLOBALS['TL_LANG']['ERR']['val_wrong_config']          = 'Der "%s" wurde in der $GLOBALS["UPLOADER"] nicht konfiguriert. Bitte wählen Sie unter <a href="%s" title="Benutzereinstellungen">Benutzereinstellungen</a> einen anderen Uploader aus oder erweitern Sie den $GLOBALS["UPLOADER"] mit den benötigten Werten';
 $GLOBALS['TL_LANG']['ERR']['val_max_files']             = 'Sie haben die maximale Anzahl an Dateien hochgeladen';
 $GLOBALS['TL_LANG']['ERR']['val_type_error']            = '"{file} ist ein nicht erlaubter Dateityp. Nur die Dateitypen {extensions} sind erlaubt."';
@@ -76,7 +78,7 @@ $GLOBALS['TL_LANG']['ERR']['val_not_writeable']         = 'Das Uploadverzeichnis
 $GLOBALS['TL_LANG']['ERR']['val_file_size_zero']        = 'Die Datei ist leer.';
 $GLOBALS['TL_LANG']['ERR']['val_max_size']              = 'Die Dateigröße zu groß.';
 $GLOBALS['TL_LANG']['ERR']['val_wrong_type']            = 'Die Dateiendung ist nicht korrekt.';
-$GLOBALS['TL_LANG']['ERR']['val_save_error']            = 'Die Datei Konnte nicht gespeichert werden.';
+$GLOBALS['TL_LANG']['ERR']['val_save_error']            = 'Die Datei konnte nicht gespeichert werden.';
 
 // Logger
 $GLOBALS['TL_LANG']['ERR']['val_log_no_file']           = 'Konnte Datei nicht erstellen';

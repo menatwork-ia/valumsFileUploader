@@ -127,6 +127,11 @@ class ValumsHelper extends Backend
                     }
                 }
             }
+            
+            if(in_array('mod_security2', apache_get_modules()))
+            {
+                $_SESSION["TL_INFO"]["mod_security"] = $GLOBALS['TL_LANG']['ERR']['val_mod_security'];
+            }            
         }
 
         return $strContent;

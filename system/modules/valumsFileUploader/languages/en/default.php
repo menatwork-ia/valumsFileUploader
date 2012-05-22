@@ -61,6 +61,8 @@ $GLOBALS['TL_LANG']['UPL']['overwritten_message']       = 'File %s successfully 
 /**
  * Error
  */
+$GLOBALS['TL_LANG']['ERR']['val_mod_security']			= 'On your server is the apache module mod_security enabled. This can cause problems by uploading large files. Please disable this module or contact your administrator.'; 
+
 $GLOBALS['TL_LANG']['ERR']['val_wrong_config']          = 'The "%s" is not configured in $GLOBALS["UPLOADER"]. Please choose in your <a href="%s" title="User configuration">User configuration</a> another uploader or expand the $GLOBALS["UPLOADER"] configuration with the needed values';
 $GLOBALS['TL_LANG']['ERR']['val_max_files']             = 'Reached the maximum number of uploaded files.';
 $GLOBALS['TL_LANG']['ERR']['val_type_error']            = '"{file} has invalid extension. Only {extensions} are allowed."';
