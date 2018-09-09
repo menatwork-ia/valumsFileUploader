@@ -62,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_example']['fields']['vfuExample'] = array
         // Set the allowed file extensions comma seperated
         'extensions' => 'jpeg, jpg, png',
  
-        // Set the the value to not override existing files and 
+        // Set the value to not override existing files and 
         // choose the value to handle the files (useSuffix, useTimeStamp)
         'overwrite' => 'useSuffix',
  
